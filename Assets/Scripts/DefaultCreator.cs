@@ -37,12 +37,26 @@ namespace Zweronz.SavingSystem
 					currency = DefaultCreator.Create<CurrencyDefaultCreator>().currency,
 					teamSave = DefaultCreator.Create<TeamDefaultCreator>().teamSave,
 					heroes = DefaultCreator.Create<HeroDefaultCreator>().playerData,
-					worldNodes = DefaultCreator.Create<WorldNodeDefaultCreator>().gameProgressData
+					worldNodes = DefaultCreator.Create<WorldNodeDefaultCreator>().gameProgressData,
+					achievements = DefaultCreator.Create<AchievementDefaultCreator>().achievements
 				}
 			};
 		}
 
 		public SaveData saveData;
+	}
+
+	public class AchievementDefaultCreator : IDefaultCreator<AchievementDefaultCreator>
+	{
+		public AchievementDefaultCreator Create()
+		{
+			return new AchievementDefaultCreator
+			{
+				achievements = new AchievementSave()
+			};
+		}
+
+		public AchievementSave achievements;
 	}
 
 	public class TeamDefaultCreator : IDefaultCreator<TeamDefaultCreator>
@@ -219,28 +233,27 @@ namespace Zweronz.SavingSystem
 						costType = Defined.COST_TYPE.Money,
 						unlockCost = 75000
 					},
-					//add later
-					//new PlayerData
-					//{
-					//	heroIndex = 4,
-					//	state = Defined.ItemState.Purchase,
-					//	costType = Defined.COST_TYPE.Crystal,
-					//	unlockCost = 299
-					//},
-					//new PlayerData
-					//{
-					//	heroIndex = 5,
-					//	state = Defined.ItemState.Purchase,
-					//	costType = Defined.COST_TYPE.Crystal,
-					//	unlockCost = 299
-					//},
-					//	new PlayerData
-					//{
-					//	heroIndex = 8,
-					//	state = Defined.ItemState.Purchase,
-					//	costType = Defined.COST_TYPE.Crystal,
-					//	unlockCost = 449
-					//},
+					new PlayerData
+					{
+						heroIndex = 4,
+						state = Defined.ItemState.Purchase,
+						costType = Defined.COST_TYPE.Crystal,
+						unlockCost = 299
+					},
+					new PlayerData
+					{
+						heroIndex = 5,
+						state = Defined.ItemState.Purchase,
+						costType = Defined.COST_TYPE.Crystal,
+						unlockCost = 299
+					},
+						new PlayerData
+					{
+						heroIndex = 8,
+						state = Defined.ItemState.Purchase,
+						costType = Defined.COST_TYPE.Crystal,
+						unlockCost = 449
+					},
 				}
 			};
 

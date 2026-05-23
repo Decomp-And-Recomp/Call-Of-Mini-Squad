@@ -27,7 +27,8 @@ public class DataConf
 		SpecialAttribute = 6,
 		TeamSpecialAttribute = 7,
 		LoadingTips = 8,
-		None = 9
+		Achievement = 9,
+		None = 10
 	}
 
 	public class SkillInfo
@@ -1106,7 +1107,14 @@ public class DataConf
 
 	private List<string> m_loadingTips;
 
-	public DataConf()
+    private Dictionary<string, AchievementData> m_achievementDataDict = new Dictionary<string, AchievementData>();
+
+    public Dictionary<string, AchievementData> GetAchievementDataMap()
+    {
+        return m_achievementDataDict;
+    }
+
+    public DataConf()
 	{
 		LoadConf();
 	}
@@ -1120,7 +1128,51 @@ public class DataConf
 		return null;
 	}
 
-	public void LoadSpecialAttribteDataFromDisk()
+    public void LoadAchievementsFromDisk()
+    {
+        string text = FileUtil.LoadResourcesFile("Configs/Achievements");
+        if (!string.IsNullOrEmpty(text))
+        {
+            LoadAchievements(text);
+        }
+    }
+
+    public void LoadAchievements(string text)
+    {
+        XmlDocument xmlDocument = new XmlDocument();
+        xmlDocument.LoadXml(text);
+        XmlElement documentElement = xmlDocument.DocumentElement;
+
+        if (m_achievementDataDict == null)
+        {
+            m_achievementDataDict = new Dictionary<string, AchievementData>();
+        }
+        m_achievementDataDict.Clear();
+
+        int indexCounter = 0;
+        foreach (XmlElement element in documentElement.GetElementsByTagName("Quest"))
+        {
+            AchievementData achievementData = new AchievementData();
+            achievementData.id = element.GetAttribute("questId");
+            achievementData.site = indexCounter++;
+            achievementData.title = element.GetAttribute("name");
+            achievementData.des = element.GetAttribute("desc");
+            achievementData.money = int.Parse(element.GetAttribute("money"));
+            achievementData.crystal = int.Parse(element.GetAttribute("crystal"));
+            achievementData.honor = int.Parse(element.GetAttribute("honor"));
+            achievementData.hero = int.Parse(element.GetAttribute("hero"));
+            achievementData.state = int.Parse(element.GetAttribute("state"));
+            achievementData.scheduleMin = int.Parse(element.GetAttribute("process"));
+            achievementData.scheduleMax = int.Parse(element.GetAttribute("maxProcess"));
+            achievementData.bDaily = int.Parse(element.GetAttribute("daily")) != 0;
+            achievementData.counter = element.GetAttribute("counter");
+            achievementData.counterArg = element.GetAttribute("counterArg");
+
+            m_achievementDataDict.Add(achievementData.id, achievementData);
+        }
+    }
+
+    public void LoadSpecialAttribteDataFromDisk()
 	{
 		string text = FileUtil.LoadResourcesFile("Configs/SpecialAttribute");
 		if (text != null && text.Length > 0)
@@ -1901,6 +1953,7 @@ public class DataConf
 			LoadSpecailEffectDataFromDisk();
 			LoadTeamAttribteDataFromDisk();
 			LoadLoadingTipsFromDisk();
+			LoadAchievementsFromDisk();
 		}
 	}
 

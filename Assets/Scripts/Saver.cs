@@ -36,9 +36,27 @@ namespace Zweronz.SavingSystem
 	            heroes = TypeSaver.Save<HeroSaver>() as List<PlayerData>,
 	            teamSave = TypeSaver.Save<TeamSaver>() as TeamSave,
 	            currency = TypeSaver.Save<CurrencySaver>() as Currency,
-	            worldNodes = TypeSaver.Save<WorldNodeSaver>() as List<GameProgressData>
+	            worldNodes = TypeSaver.Save<WorldNodeSaver>() as List<GameProgressData>,
+	            achievements = TypeSaver.Save<AchievementSaver>() as AchievementSave
 	        };
 	    }
+	}
+
+	public class AchievementSaver : ISaver
+	{
+		public object Save()
+		{
+			DataSave s = DataCenter.Save();
+			return new AchievementSave
+			{
+				totalKills = s.achTotalKills,
+				iapCrystals = s.achIapCrystals,
+				dailyKills = s.achDailyKills,
+				dailyStages = s.achDailyStages,
+				dailyResetDate = s.achDailyResetDate ?? string.Empty,
+				claimed = new List<string>(s.achClaimed)
+			};
+		}
 	}
 	
 	public class HeroSaver : ISaver

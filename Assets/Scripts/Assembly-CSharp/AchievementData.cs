@@ -23,4 +23,8 @@ public class AchievementData
 	public int scheduleMax;
 
 	public bool bDaily;
+
+	public string counter = string.Empty;
+
+	public string counterArg = string.Empty;
 }

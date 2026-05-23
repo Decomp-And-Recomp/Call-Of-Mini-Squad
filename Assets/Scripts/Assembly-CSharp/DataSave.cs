@@ -147,6 +147,18 @@ public class DataSave
 
 	public Dictionary<string, string> configVersion;
 
+	public int achTotalKills;
+
+	public int achIapCrystals;
+
+	public int achDailyKills;
+
+	public int achDailyStages;
+
+	public string achDailyResetDate = string.Empty;
+
+	public HashSet<string> achClaimed = new HashSet<string>();
+
 	public bool m_bManualUseSkill = true;
 
 	public bool m_bCanChangeTeamMember;

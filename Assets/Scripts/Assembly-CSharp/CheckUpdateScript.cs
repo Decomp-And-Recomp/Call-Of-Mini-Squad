@@ -26,7 +26,7 @@ public class CheckUpdateScript : MonoBehaviour
 
 	private string[] m_labelTextLoading = new string[3] { "Loading...", "Loading.", "Loading.." };
 
-	private string[] theMoment = new string[] { "Enemies", "Heroes", "Stuffs", "Weapons", "Equips", "HeroSkill", "SpecialAttribute", "TeamSpecialAttribute", "LoadingTips" };
+	private string[] theMoment = new string[] { "Enemies", "Heroes", "Stuffs", "Weapons", "Equips", "HeroSkill", "SpecialAttribute", "TeamSpecialAttribute", "LoadingTips", "Achievements" };
 
 	private string m_labelPressAnykey = "Press any key to continue.";
 
@@ -103,7 +103,7 @@ public class CheckUpdateScript : MonoBehaviour
 		}
 		foreach (int value in Enum.GetValues(typeof(DataConf.ConfigType)))
 		{
-			if (value == 9)
+			if (value == 10)
 			{
 				break;
 			}
@@ -322,6 +322,9 @@ public class CheckUpdateScript : MonoBehaviour
 			break;
 		case DataConf.ConfigType.LoadingTips:
 			DataCenter.Conf().LoadLoadingTips(strContent);
+			break;
+		case DataConf.ConfigType.Achievement:
+			DataCenter.Conf().LoadAchievements(strContent);
 			break;
 		}
 	}

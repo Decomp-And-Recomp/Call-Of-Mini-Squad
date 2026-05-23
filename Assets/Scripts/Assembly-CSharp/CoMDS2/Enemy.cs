@@ -358,6 +358,7 @@ namespace CoMDS2
 		public override void OnDeath()
 		{
 			GameBattle.m_instance.KillEnemiesCount++;
+			AchievementTracker.OnZombieKilled();
 			if (HasNavigation())
 			{
 				StopNav();

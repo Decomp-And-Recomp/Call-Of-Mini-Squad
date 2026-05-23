@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class UINewAchievementManage : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class UINewAchievementManage : MonoBehaviour
 	private UIGrid[] grid;
 
 	[SerializeField]
+	private float rowHeight = 200f;
+
+	[SerializeField]
 	private AutoCreatByPrefab[] autoCreate;
 
 	protected Dictionary<string, ACHIEVEMENTITEMINFO> dictAchievementInfo = new Dictionary<string, ACHIEVEMENTITEMINFO>();
@@ -49,7 +53,8 @@ public class UINewAchievementManage : MonoBehaviour
 		UIPROPERTYINFO.SetBackBtnClickDelegate(HandleBackBtnClickEvent);
 		UIPROPERTYINFO.SetIAPBtnClickDelegate(HandleOpenShopBtnClickEvent);
 		UpdatePropertyInfoPart("ACHIEVEMENTS", DataCenter.Save().Honor, DataCenter.Save().Money, DataCenter.Save().Crystal);
-		RequestGetAchievementList();
+		LoadAchievements();
+		//RequestGetAchievementList();
 	}
 
 	public void UpdatePropertyInfoPart(string name, int rank, int gold, int crystal)
@@ -90,25 +95,95 @@ public class UINewAchievementManage : MonoBehaviour
 		{
 			Object.DestroyImmediate(item.Key);
 		}
+		for (int gi = 0; gi < grid.Length; gi++)
+		{
+			if (grid[gi] == null) continue;
+			Transform gridT = grid[gi].transform;
+			for (int c = gridT.childCount - 1; c >= 0; c--)
+			{
+				Transform child = gridT.GetChild(c);
+				if (child != null && child.name == "ScrollPadSpacer")
+				{
+					Object.DestroyImmediate(child.gameObject);
+				}
+			}
+		}
 		dictAchievementInfo.Clear();
 		dictMapAchievementInfo.Clear();
-		foreach (KeyValuePair<string, AchievementData> dict in dicts)
+
+		List<AchievementData> ordered = new List<AchievementData>(dicts.Values);
+		ordered.Sort(delegate(AchievementData a, AchievementData b) { return a.site.CompareTo(b.site); });
+
+		HashSet<string> familyShown = new HashSet<string>();
+		int dailyIndex = 0;
+		int achIndex = 0;
+		foreach (AchievementData data in ordered)
 		{
-			if (dict.Value.bDaily)
+			if (data.bDaily)
 			{
-				SerializeItem(dict.Value.site, dict.Key, dict.Value, autoCreate[0]);
+				SerializeItem(dailyIndex++, data.id, data, autoCreate[0]);
+				UpdateItemUI(data.id);
+				continue;
 			}
-			else
+			if (data.state == 2)
 			{
-				SerializeItem(dict.Value.site, dict.Key, dict.Value, autoCreate[1]);
+				continue;
 			}
-			UpdateItemUI(dict.Key);
+			string familyKey = data.title + "|" + data.counter + "|" + data.counterArg;
+			if (familyShown.Contains(familyKey))
+			{
+				continue;
+			}
+			familyShown.Add(familyKey);
+			SerializeItem(achIndex++, data.id, data, autoCreate[1]);
+			UpdateItemUI(data.id);
 		}
-		grid[0].repositionNow = true;
-		grid[1].repositionNow = true;
+		for (int gi = 0; gi < grid.Length; gi++)
+		{
+			if (grid[gi] == null) continue;
+			Transform gridT = grid[gi].transform;
+			foreach (KeyValuePair<GameObject, string> kvp in dictMapAchievementInfo)
+			{
+				if (kvp.Key != null && kvp.Key.transform.parent != gridT)
+				{
+					AchievementData d = dictAchievementInfo[kvp.Value].data;
+					bool isDaily = d.bDaily;
+					if ((gi == 0 && isDaily) || (gi == 1 && !isDaily))
+					{
+						kvp.Key.transform.parent = gridT;
+						kvp.Key.transform.localScale = Vector3.one;
+						kvp.Key.transform.localPosition = Vector3.zero;
+					}
+				}
+			}
+			GameObject spacer = new GameObject("ScrollPadSpacer");
+			spacer.layer = gridT.gameObject.layer;
+			spacer.transform.SetParent(gridT, false);
+			spacer.transform.localScale = Vector3.one;
+			spacer.transform.localPosition = Vector3.zero;
+			UIWidget spacerWidget = spacer.AddComponent<UIWidget>();
+			spacerWidget.width = 1;
+			spacerWidget.height = (int)rowHeight;
+			spacerWidget.alpha = 0f;
+			grid[gi].cellHeight = rowHeight;
+			grid[gi].enabled = true;
+			grid[gi].repositionNow = true;
+			grid[gi].Reposition();
+		}
 	}
 
-	protected void SerializeItem(int index, string _id, AchievementData data, AutoCreatByPrefab ac)
+    private void LoadAchievements()
+    {
+        AchievementTracker.RefreshAllProgress();
+        UIConstant.gDictAchievementData.Clear();
+        foreach (var kvp in DataCenter.Conf().GetAchievementDataMap())
+        {
+            UIConstant.gDictAchievementData.Add(kvp.Key, kvp.Value);
+        }
+        InitAchievement(UIConstant.gDictAchievementData);
+    }
+
+    protected void SerializeItem(int index, string _id, AchievementData data, AutoCreatByPrefab ac)
 	{
 		GameObject gameObject = ac.CreatePefab(index);
 		ACHIEVEMENTITEMINFO aCHIEVEMENTITEMINFO = new ACHIEVEMENTITEMINFO(gameObject, data);
@@ -198,14 +273,31 @@ public class UINewAchievementManage : MonoBehaviour
 		{
 			string text = dictMapAchievementInfo[go];
 			ACHIEVEMENTITEMINFO aCHIEVEMENTITEMINFO = dictAchievementInfo[text];
-			if (aCHIEVEMENTITEMINFO.data.state == 0)
+            if (UIConstant.gDictAchievementData.ContainsKey(text))
+            {
+                AchievementData data = UIConstant.gDictAchievementData[text];
+                if (data.state != 1)
+                {
+                    UIDialogManager.Instance.ShowDriftMsgInfoUI("Unable to claim.");
+                    return;
+                }
+                DataCenter.Save().Money += data.money;
+                DataCenter.Save().Crystal += data.crystal;
+                DataCenter.Save().Honor += data.honor;
+                data.state = 2;
+                AchievementTracker.MarkClaimed(data.id);
+                Save.Write();
+                InitAchievement(UIConstant.gDictAchievementData);
+                UpdatePropertyInfoPart("null#", DataCenter.Save().Honor, DataCenter.Save().Money, DataCenter.Save().Crystal);
+            }
+            /*if (aCHIEVEMENTITEMINFO.data.state == 0)
 			{
 				UIDialogManager.Instance.ShowDriftMsgInfoUI("Unable to claim.");
 			}
 			else
 			{
 				RequestClaimReward(text);
-			}
-		}
+			}*/
+        }
 	}
 }

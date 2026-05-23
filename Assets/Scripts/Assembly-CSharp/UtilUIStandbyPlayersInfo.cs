@@ -276,7 +276,7 @@ public class UtilUIStandbyPlayersInfo : MonoBehaviour
 				}
 			}
 		}
-		if (bShow)
+		if (bShow && go != null)
 		{
 			GameObject gameObject = Object.Instantiate(_selectPlayerEffectPrefab) as GameObject;
 			gameObject.transform.parent = go.transform;
@@ -288,6 +288,7 @@ public class UtilUIStandbyPlayersInfo : MonoBehaviour
 
 	public static void SetPlayerModelOutLineEffectVisable(bool bShow, GameObject go, float outLine = 5f)
 	{
+		if (go == null) return;
 		SkinnedMeshRenderer[] componentsInChildren = go.GetComponentsInChildren<SkinnedMeshRenderer>();
 		MeshRenderer[] componentsInChildren2 = go.GetComponentsInChildren<MeshRenderer>();
 		for (int i = 0; i < componentsInChildren.Length; i++)

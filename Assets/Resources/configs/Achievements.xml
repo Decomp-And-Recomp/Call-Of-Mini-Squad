@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Achievements>
+  <Quest questId="ach_bind_account" name="Bind Account" desc="Register a TRINITI account and login to the game to claim the reward." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="bind_account" counterArg="" />
+
+  <Quest questId="ach_kill_1000" name="Hundreds of Battles" desc="Eliminate 1000 zombies." money="10000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="1000" daily="0" counter="total_kills" counterArg="" />
+  <Quest questId="ach_kill_10000" name="Hundreds of Battles" desc="Eliminate 10000 zombies." money="50000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="10000" daily="0" counter="total_kills" counterArg="" />
+  <Quest questId="ach_kill_100000" name="Hundreds of Battles" desc="Eliminate 100000 zombies." money="100000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="100000" daily="0" counter="total_kills" counterArg="" />
+  <Quest questId="ach_kill_1000000" name="Hundreds of Battles" desc="Eliminate 1000000 zombies." money="100000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="1000000" daily="0" counter="total_kills" counterArg="" />
+
+  <Quest questId="ach_team_lv5" name="Leveling Expert" desc="Team Level reaches 5." money="0" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="5" daily="0" counter="team_level" counterArg="" />
+  <Quest questId="ach_team_lv10" name="Leveling Expert" desc="Team Level reaches 10." money="0" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="10" daily="0" counter="team_level" counterArg="" />
+  <Quest questId="ach_team_lv15" name="Leveling Expert" desc="Team Level reaches 15." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="15" daily="0" counter="team_level" counterArg="" />
+  <Quest questId="ach_team_lv20" name="Leveling Expert" desc="Team Level reaches 20." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="20" daily="0" counter="team_level" counterArg="" />
+  <Quest questId="ach_team_lv25" name="Leveling Expert" desc="Team Level reaches 25." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="25" daily="0" counter="team_level" counterArg="" />
+  <Quest questId="ach_team_lv35" name="Leveling Expert" desc="Team Level reaches 35." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="35" daily="0" counter="team_level" counterArg="" />
+
+  <Quest questId="ach_3star_normal_0" name="Cross the Threshold-Normal" desc="Achieving 3stars to clear all stages of &quot;Robin Wood Street&quot; in the Normal mode." money="50000" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_normal" counterArg="0" />
+  <Quest questId="ach_3star_normal_1" name="Cross the Threshold-Normal" desc="Achieving 3stars to clear all stages of &quot;Institute of Biology&quot; in the Normal mode." money="50000" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_normal" counterArg="1" />
+  <Quest questId="ach_3star_normal_2" name="Cross the Threshold-Normal" desc="Achieving 3stars to clear all stages of &quot;Sewers of Lakeside&quot; in the Normal mode." money="50000" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_normal" counterArg="2" />
+  <Quest questId="ach_3star_normal_3" name="Cross the Threshold-Normal" desc="Achieving 3stars to clear all stages of &quot;BlackGuard Prison&quot; in the Normal mode." money="50000" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_normal" counterArg="3" />
+
+  <Quest questId="ach_3star_hard_0" name="Cross the Threshold-Nightmare" desc="Achieving 3stars to clear all stages of &quot;Robin Wood Street&quot; in the Nightmare mode." money="100000" crystal="30" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hard" counterArg="0" />
+  <Quest questId="ach_3star_hard_1" name="Cross the Threshold-Nightmare" desc="Achieving 3stars to clear all stages of &quot;Institute of Biology&quot; in the Nightmare mode." money="100000" crystal="30" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hard" counterArg="1" />
+  <Quest questId="ach_3star_hard_2" name="Cross the Threshold-Nightmare" desc="Achieving 3stars to clear all stages of &quot;Sewers of Lakeside&quot; in the Nightmare mode." money="100000" crystal="30" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hard" counterArg="2" />
+  <Quest questId="ach_3star_hard_3" name="Cross the Threshold-Nightmare" desc="Achieving 3stars to clear all stages of &quot;BlackGuard Prison&quot; in the Nightmare mode." money="100000" crystal="30" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hard" counterArg="3" />
+
+  <Quest questId="ach_3star_hell_0" name="Cross the Threshold-Hell" desc="Achieving 3stars to clear all stages of &quot;Robin Wood Street&quot; in the Hell mode." money="150000" crystal="50" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hell" counterArg="0" />
+  <Quest questId="ach_3star_hell_1" name="Cross the Threshold-Hell" desc="Achieving 3stars to clear all stages of &quot;Institute of Biology&quot; in the Hell mode." money="150000" crystal="50" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hell" counterArg="1" />
+  <Quest questId="ach_3star_hell_2" name="Cross the Threshold-Hell" desc="Achieving 3stars to clear all stages of &quot;Sewers of Lakeside&quot; in the Hell mode." money="150000" crystal="50" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hell" counterArg="2" />
+  <Quest questId="ach_3star_hell_3" name="Cross the Threshold-Hell" desc="Achieving 3stars to clear all stages of &quot;BlackGuard Prison&quot; in the Hell mode." money="150000" crystal="50" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="3star_hell" counterArg="3" />
+
+  <Quest questId="ach_iap_50" name="tCrystal Collector" desc="Purchase 50 tCrystal in total." money="30000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="50" daily="0" counter="iap_crystals" counterArg="" />
+  <Quest questId="ach_iap_500" name="tCrystal Collector" desc="Purchase 500 tCrystal in total." money="200000" crystal="0" honor="0" hero="-1" state="0" process="0" maxProcess="500" daily="0" counter="iap_crystals" counterArg="" />
+
+  <Quest questId="ach_heroes_5" name="Super Hero" desc="Own 5 Heroes." money="0" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="5" daily="0" counter="hero_count" counterArg="" />
+  <Quest questId="ach_heroes_6" name="Super Hero" desc="Own 6 Heroes." money="0" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="6" daily="0" counter="hero_count" counterArg="" />
+
+  <Quest questId="ach_clear_normal_0" name="Cross the Threshold-Normal" desc="Clearing all stages of &quot;Robin Wood Street&quot; in Normal mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_normal" counterArg="0" />
+  <Quest questId="ach_clear_normal_1" name="Cross the Threshold-Normal" desc="Clearing all stages of &quot;Institute of Biology&quot; in Normal mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_normal" counterArg="1" />
+  <Quest questId="ach_clear_normal_2" name="Cross the Threshold-Normal" desc="Clearing all stages of &quot;Sewers of Lakeside&quot; in Normal mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_normal" counterArg="2" />
+  <Quest questId="ach_clear_normal_3" name="Cross the Threshold-Normal" desc="Clearing all stages of &quot;BlackGuard Prison&quot; in Normal mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_normal" counterArg="3" />
+
+  <Quest questId="ach_clear_hard_0" name="Cross the Threshold-Nightmare" desc="Clearing all stages of &quot;Robin Wood Street&quot; in Nightmare mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hard" counterArg="0" />
+  <Quest questId="ach_clear_hard_1" name="Cross the Threshold-Nightmare" desc="Clearing all stages of &quot;Institute of Biology&quot; in Nightmare mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hard" counterArg="1" />
+  <Quest questId="ach_clear_hard_2" name="Cross the Threshold-Nightmare" desc="Clearing all stages of &quot;Sewers of Lakeside&quot; in Nightmare mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hard" counterArg="2" />
+  <Quest questId="ach_clear_hard_3" name="Cross the Threshold-Nightmare" desc="Clearing all stages of &quot;BlackGuard Prison&quot; in Nightmare mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hard" counterArg="3" />
+
+  <Quest questId="ach_clear_hell_0" name="Cross the Threshold-Hell" desc="Clearing all stages of &quot;Robin Wood Street&quot; in Hell mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hell" counterArg="0" />
+  <Quest questId="ach_clear_hell_1" name="Cross the Threshold-Hell" desc="Clearing all stages of &quot;Institute of Biology&quot; in Hell mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hell" counterArg="1" />
+  <Quest questId="ach_clear_hell_2" name="Cross the Threshold-Hell" desc="Clearing all stages of &quot;Sewers of Lakeside&quot; in Hell mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hell" counterArg="2" />
+  <Quest questId="ach_clear_hell_3" name="Cross the Threshold-Hell" desc="Clearing all stages of &quot;BlackGuard Prison&quot; in Hell mode." money="0" crystal="10" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="clear_hell" counterArg="3" />
+
+  <Quest questId="ach_weapon_max" name="Powerful Weapon" desc="Any hero's weapon reaches max level." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="weapon_maxed" counterArg="" />
+  <Quest questId="ach_helmet_max" name="Powerful Helmet" desc="Any hero's helmet reaches max level." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="helmet_maxed" counterArg="" />
+  <Quest questId="ach_ornament_max" name="Powerful Ornament" desc="Any hero's ornament reaches max level." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="ornament_maxed" counterArg="" />
+  <Quest questId="ach_skill_max" name="Powerful Skill" desc="Any hero's skill reaches max level." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="1" daily="0" counter="skill_maxed" counterArg="" />
+
+  <Quest questId="ach_combat_5000" name="Powerful Army" desc="Battle points reaches 5000." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="5000" daily="0" counter="battle_points" counterArg="" />
+  <Quest questId="ach_combat_10000" name="Powerful Army" desc="Battle points reaches 10000." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="10000" daily="0" counter="battle_points" counterArg="" />
+  <Quest questId="ach_combat_20000" name="Powerful Army" desc="Battle points reaches 20000." money="0" crystal="20" honor="0" hero="-1" state="0" process="0" maxProcess="20000" daily="0" counter="battle_points" counterArg="" />
+
+  <Quest questId="daily_stage_5" name="Stage Challenge" desc="Clear 5 stages." money="2500" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="5" daily="1" counter="daily_stages" counterArg="" />
+  <Quest questId="daily_stage_15" name="Stage Challenge" desc="Clear 15 stages." money="2500" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="15" daily="1" counter="daily_stages" counterArg="" />
+  <Quest questId="daily_stage_30" name="Stage Challenge" desc="Clear 30 stages." money="2500" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="30" daily="1" counter="daily_stages" counterArg="" />
+  <Quest questId="daily_kill_1000" name="Zombies Killer" desc="Kill 1000 zombies." money="2500" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="1000" daily="1" counter="daily_kills" counterArg="" />
+  <Quest questId="daily_kill_5000" name="Zombies Killer" desc="Kill 5000 zombies." money="2500" crystal="5" honor="0" hero="-1" state="0" process="0" maxProcess="5000" daily="1" counter="daily_kills" counterArg="" />
+</Achievements>

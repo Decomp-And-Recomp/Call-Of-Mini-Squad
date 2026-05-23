@@ -118,8 +118,15 @@ public class UITeamModelManager : MonoBehaviour
 			modelInfo.gameObject = Create(modelInfo.siteIndex, modelInfo.fileName, ct, weapontType, rankType);
 			dictModelInfos.Add(siteIndex, modelInfo);
 			iconRenderCamera.Set(modelInfo.siteIndex, modelInfo.gameObject);
-			iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition = new Vector3(iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.x, iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.y - 150f, iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.z);
-			iconRenderCamera.Get(modelInfo.siteIndex).transform.Rotate(0f, 180f + fYRoation, 0f);
+			GameObject anchorGO = iconRenderCamera.Get(modelInfo.siteIndex);
+			if (anchorGO == null)
+			{
+				if (modelInfo.gameObject != null) Object.DestroyImmediate(modelInfo.gameObject);
+				dictModelInfos.Remove(siteIndex);
+				return false;
+			}
+			anchorGO.transform.localPosition = new Vector3(anchorGO.transform.localPosition.x, anchorGO.transform.localPosition.y - 150f, anchorGO.transform.localPosition.z);
+			anchorGO.transform.Rotate(0f, 180f + fYRoation, 0f);
 			if (bNeedAnimation)
 			{
 				UITeamModelAnimationManager uITeamModelAnimationManager = modelInfo.gameObject.GetComponent<UITeamModelAnimationManager>();
@@ -147,8 +154,15 @@ public class UITeamModelManager : MonoBehaviour
 			modelInfo.gameObject = Create(modelInfo.siteIndex, heroData, rankType);
 			dictModelInfos.Add(siteIndex, modelInfo);
 			iconRenderCamera.Set(modelInfo.siteIndex, modelInfo.gameObject);
-			iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition = new Vector3(iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.x, iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.y - 150f, iconRenderCamera.Get(modelInfo.siteIndex).transform.localPosition.z);
-			iconRenderCamera.Get(modelInfo.siteIndex).transform.Rotate(0f, 180f + fYRoation, 0f);
+			GameObject anchorGO = iconRenderCamera.Get(modelInfo.siteIndex);
+			if (anchorGO == null)
+			{
+				if (modelInfo.gameObject != null) Object.DestroyImmediate(modelInfo.gameObject);
+				dictModelInfos.Remove(siteIndex);
+				return false;
+			}
+			anchorGO.transform.localPosition = new Vector3(anchorGO.transform.localPosition.x, anchorGO.transform.localPosition.y - 150f, anchorGO.transform.localPosition.z);
+			anchorGO.transform.Rotate(0f, 180f + fYRoation, 0f);
 			if (bNeedAnimation)
 			{
 				string empty = string.Empty;

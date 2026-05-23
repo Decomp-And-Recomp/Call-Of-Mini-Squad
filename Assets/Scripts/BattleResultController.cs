@@ -14,6 +14,8 @@ public static class BattleResultController
 
 		DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelStars[DataCenter.State().selectLevelMode][DataCenter.State().selectAreaNode] = (ushort)DataCenter.State().battleStars;
 
+		AchievementTracker.OnStageCleared();
+
 		if (DataCenter.State().selectAreaNode + 1 <= DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelProgress[(int)DataCenter.State().selectLevelMode])
 		{
 			if (DataCenter.State().battleStars == 3)
