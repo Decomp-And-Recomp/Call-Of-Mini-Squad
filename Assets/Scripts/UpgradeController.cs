@@ -183,7 +183,7 @@ public static class UpgradeController
 			UpgradeCalcTest.Init();
 		}
 
-		PlayerData hero = DataCenter.Save().GetHeroList()[DataCenter.State().selectHeroIndex];
+		PlayerData hero = DataCenter.Save().GetPlayerData(DataCenter.State().selectHeroIndex);
 
 		if (DataCenter.Save().Money >= UpgradeCalcTest.upgrades[hero.weaponLevel + (hero.weaponStar - 1)][0] && hero.weaponLevel < 21)
 		{
@@ -276,7 +276,14 @@ public static class UpgradeController
 			UpgradeCalcTest.Init();
 		}
 
-		PlayerData hero = DataCenter.Save().GetHeroList()[DataCenter.State().selectHeroIndex];
+		PlayerData hero = DataCenter.Save().GetPlayerData(DataCenter.State().selectHeroIndex);
+
+		int requiredTeamLevel = GetLevelBreak(hero.weaponStar);
+		if (DataCenter.Save().GetTeamData().teamLevel < requiredTeamLevel)
+		{
+			UIDialogManager.Instance.ShowDriftMsgInfoUI("Reach Team Level " + requiredTeamLevel + " to unlock.");
+			return -1;
+		}
 
 		if (DataCenter.Save().Money >= UpgradeCalcTest.upgrades[hero.weaponLevel + (hero.weaponStar - 1)][0] && DataCenter.Save().Crystal >= GetCrystalBreak(hero.weaponStar))
 		{
@@ -311,7 +318,7 @@ public static class UpgradeController
 			UpgradeCalcTest.Init();
 		}
 
-		PlayerData hero = DataCenter.Save().GetHeroList()[DataCenter.State().selectHeroIndex];
+		PlayerData hero = DataCenter.Save().GetPlayerData(DataCenter.State().selectHeroIndex);
 
 		if (DataCenter.Save().Money >= UpgradeCalcTest.upgrades[hero.skillLevel + (hero.skillStar - 1)][1] && hero.skillLevel < 21)
 		{
@@ -348,7 +355,14 @@ public static class UpgradeController
 			UpgradeCalcTest.Init();
 		}
 
-		PlayerData hero = DataCenter.Save().GetHeroList()[DataCenter.State().selectHeroIndex];
+		PlayerData hero = DataCenter.Save().GetPlayerData(DataCenter.State().selectHeroIndex);
+
+		int requiredTeamLevel = GetLevelBreak(hero.skillStar);
+		if (DataCenter.Save().GetTeamData().teamLevel < requiredTeamLevel)
+		{
+			UIDialogManager.Instance.ShowDriftMsgInfoUI("Reach Team Level " + requiredTeamLevel + " to unlock.");
+			return -1;
+		}
 
 		if (DataCenter.Save().Money >= UpgradeCalcTest.upgrades[hero.skillLevel + (hero.skillStar - 1)][1] && DataCenter.Save().Crystal >= GetCrystalBreak(hero.skillStar))
 		{
