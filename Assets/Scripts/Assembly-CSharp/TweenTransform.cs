@@ -1,33 +1,42 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Tween the object's position, rotation and scale.
+/// </summary>
 
 [AddComponentMenu("NGUI/Tween/Tween Transform")]
 public class TweenTransform : UITweener
 {
 	public Transform from;
-
 	public Transform to;
+	public bool parentWhenFinished = false;
 
-	public bool parentWhenFinished;
+	Transform mTrans;
+	Vector3 mPos;
+	Quaternion mRot;
+	Vector3 mScale;
 
-	private Transform mTrans;
+	/// <summary>
+	/// Interpolate the position, scale, and rotation.
+	/// </summary>
 
-	private Vector3 mPos;
-
-	private Quaternion mRot;
-
-	private Vector3 mScale;
-
-	protected override void OnUpdate(float factor, bool isFinished)
+	protected override void OnUpdate (float factor, bool isFinished)
 	{
 		if (to != null)
 		{
 			if (mTrans == null)
 			{
-				mTrans = base.transform;
+				mTrans = transform;
 				mPos = mTrans.position;
 				mRot = mTrans.rotation;
 				mScale = mTrans.localScale;
 			}
+
 			if (from != null)
 			{
 				mTrans.position = from.position * (1f - factor) + to.position * factor;
@@ -40,28 +49,33 @@ public class TweenTransform : UITweener
 				mTrans.localScale = mScale * (1f - factor) + to.localScale * factor;
 				mTrans.rotation = Quaternion.Slerp(mRot, to.rotation, factor);
 			}
-			if (parentWhenFinished && isFinished)
-			{
-				mTrans.parent = to;
-			}
+
+			// Change the parent when finished, if requested
+			if (parentWhenFinished && isFinished) mTrans.parent = to;
 		}
 	}
 
-	public static TweenTransform Begin(GameObject go, float duration, Transform to)
-	{
-		return Begin(go, duration, null, to);
-	}
+	/// <summary>
+	/// Start the tweening operation from the current position/rotation/scale to the target transform.
+	/// </summary>
 
-	public static TweenTransform Begin(GameObject go, float duration, Transform from, Transform to)
+	static public TweenTransform Begin (GameObject go, float duration, Transform to) { return Begin(go, duration, null, to); }
+
+	/// <summary>
+	/// Start the tweening operation.
+	/// </summary>
+
+	static public TweenTransform Begin (GameObject go, float duration, Transform from, Transform to)
 	{
-		TweenTransform tweenTransform = UITweener.Begin<TweenTransform>(go, duration);
-		tweenTransform.from = from;
-		tweenTransform.to = to;
+		TweenTransform comp = UITweener.Begin<TweenTransform>(go, duration);
+		comp.from = from;
+		comp.to = to;
+
 		if (duration <= 0f)
 		{
-			tweenTransform.Sample(1f, true);
-			tweenTransform.enabled = false;
+			comp.Sample(1f, true);
+			comp.enabled = false;
 		}
-		return tweenTransform;
+		return comp;
 	}
 }

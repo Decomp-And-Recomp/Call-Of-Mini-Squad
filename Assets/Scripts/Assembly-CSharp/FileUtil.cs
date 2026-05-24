@@ -284,4 +284,9 @@ public class FileUtil
 			}
 		}
 	}
+
+	public static string GetProjectRelativePath(string p)
+	{
+		return Path.Combine(Application.dataPath, p);
+	}
 }

@@ -1,110 +1,82 @@
-using System;
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
 
-[AddComponentMenu("NGUI/Tween/Tween Width")]
+/// <summary>
+/// Tween the widget's size.
+/// </summary>
+
 [RequireComponent(typeof(UIWidget))]
+[AddComponentMenu("NGUI/Tween/Tween Width")]
 public class TweenWidth : UITweener
 {
 	public int from = 100;
-
 	public int to = 100;
+	public bool updateTable = false;
 
-	public bool updateTable;
+	UIWidget mWidget;
+	UITable mTable;
 
-	private UIWidget mWidget;
+	public UIWidget cachedWidget { get { if (mWidget == null) mWidget = GetComponent<UIWidget>(); return mWidget; } }
 
-	private UITable mTable;
+	[System.Obsolete("Use 'value' instead")]
+	public int width { get { return this.value; } set { this.value = value; } }
 
-	public UIWidget cachedWidget
+	/// <summary>
+	/// Tween's current value.
+	/// </summary>
+
+	public int value { get { return cachedWidget.width; } set { cachedWidget.width = value; } }
+
+	/// <summary>
+	/// Tween the value.
+	/// </summary>
+
+	protected override void OnUpdate (float factor, bool isFinished)
 	{
-		get
-		{
-			if (mWidget == null)
-			{
-				mWidget = GetComponent<UIWidget>();
-			}
-			return mWidget;
-		}
-	}
+		value = Mathf.RoundToInt(from * (1f - factor) + to * factor);
 
-	[Obsolete("Use 'value' instead")]
-	public int width
-	{
-		get
+		if (updateTable)
 		{
-			return value;
-		}
-		set
-		{
-			this.value = value;
-		}
-	}
-
-	public int value
-	{
-		get
-		{
-			return cachedWidget.width;
-		}
-		set
-		{
-			cachedWidget.width = value;
-		}
-	}
-
-	protected override void OnUpdate(float factor, bool isFinished)
-	{
-		value = Mathf.RoundToInt((float)from * (1f - factor) + (float)to * factor);
-		if (!updateTable)
-		{
-			return;
-		}
-		if (mTable == null)
-		{
-			mTable = NGUITools.FindInParents<UITable>(base.gameObject);
 			if (mTable == null)
 			{
-				updateTable = false;
-				return;
+				mTable = NGUITools.FindInParents<UITable>(gameObject);
+				if (mTable == null) { updateTable = false; return; }
 			}
+			mTable.repositionNow = true;
 		}
-		mTable.repositionNow = true;
 	}
 
-	public static TweenWidth Begin(UIWidget widget, float duration, int width)
+	/// <summary>
+	/// Start the tweening operation.
+	/// </summary>
+
+	static public TweenWidth Begin (UIWidget widget, float duration, int width)
 	{
-		TweenWidth tweenWidth = UITweener.Begin<TweenWidth>(widget.gameObject, duration);
-		tweenWidth.from = widget.width;
-		tweenWidth.to = width;
+		TweenWidth comp = UITweener.Begin<TweenWidth>(widget.gameObject, duration);
+		comp.from = widget.width;
+		comp.to = width;
+
 		if (duration <= 0f)
 		{
-			tweenWidth.Sample(1f, true);
-			tweenWidth.enabled = false;
+			comp.Sample(1f, true);
+			comp.enabled = false;
 		}
-		return tweenWidth;
+		return comp;
 	}
 
 	[ContextMenu("Set 'From' to current value")]
-	public override void SetStartToCurrentValue()
-	{
-		from = value;
-	}
+	public override void SetStartToCurrentValue () { from = value; }
 
 	[ContextMenu("Set 'To' to current value")]
-	public override void SetEndToCurrentValue()
-	{
-		to = value;
-	}
+	public override void SetEndToCurrentValue () { to = value; }
 
 	[ContextMenu("Assume value of 'From'")]
-	private void SetCurrentValueToStart()
-	{
-		value = from;
-	}
+	void SetCurrentValueToStart () { value = from; }
 
 	[ContextMenu("Assume value of 'To'")]
-	private void SetCurrentValueToEnd()
-	{
-		value = to;
-	}
+	void SetCurrentValueToEnd () { value = to; }
 }

@@ -1,32 +1,34 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Attaching this script to an element of a scroll view will make it possible to center on it by clicking on it.
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Center Scroll View on Click")]
 public class UICenterOnClick : MonoBehaviour
 {
-	private void OnClick()
+	void OnClick ()
 	{
-		UICenterOnChild uICenterOnChild = NGUITools.FindInParents<UICenterOnChild>(base.gameObject);
-		UIPanel uIPanel = NGUITools.FindInParents<UIPanel>(base.gameObject);
-		if (uICenterOnChild != null)
+		UICenterOnChild center = NGUITools.FindInParents<UICenterOnChild>(gameObject);
+		UIPanel panel = NGUITools.FindInParents<UIPanel>(gameObject);
+
+		if (center != null)
 		{
-			if (uICenterOnChild.enabled)
-			{
-				uICenterOnChild.CenterOn(base.transform);
-			}
+			if (center.enabled)
+				center.CenterOn(transform);
 		}
-		else if (uIPanel != null && uIPanel.clipping != 0)
+		else if (panel != null && panel.clipping != UIDrawCall.Clipping.None)
 		{
-			UIScrollView component = uIPanel.GetComponent<UIScrollView>();
-			Vector3 pos = -uIPanel.cachedTransform.InverseTransformPoint(base.transform.position);
-			if (!component.canMoveHorizontally)
-			{
-				pos.x = uIPanel.cachedTransform.localPosition.x;
-			}
-			if (!component.canMoveVertically)
-			{
-				pos.y = uIPanel.cachedTransform.localPosition.y;
-			}
-			SpringPanel.Begin(uIPanel.cachedGameObject, pos, 6f);
+			UIScrollView sv = panel.GetComponent<UIScrollView>();
+			Vector3 offset = -panel.cachedTransform.InverseTransformPoint(transform.position);
+			if (!sv.canMoveHorizontally) offset.x = panel.cachedTransform.localPosition.x;
+			if (!sv.canMoveVertically) offset.y = panel.cachedTransform.localPosition.y;
+			SpringPanel.Begin(panel.cachedGameObject, offset, 6f);
 		}
 	}
 }

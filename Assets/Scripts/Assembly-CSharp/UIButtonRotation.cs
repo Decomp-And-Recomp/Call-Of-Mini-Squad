@@ -1,83 +1,74 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Simple example script of how a button can be rotated visibly when the mouse hovers over it or it gets pressed.
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Button Rotation")]
 public class UIButtonRotation : MonoBehaviour
 {
 	public Transform tweenTarget;
-
 	public Vector3 hover = Vector3.zero;
-
 	public Vector3 pressed = Vector3.zero;
-
 	public float duration = 0.2f;
 
-	private Quaternion mRot;
+	Quaternion mRot;
+	bool mStarted = false;
 
-	private bool mStarted;
-
-	private void Start()
+	void Start ()
 	{
 		if (!mStarted)
 		{
 			mStarted = true;
-			if (tweenTarget == null)
-			{
-				tweenTarget = base.transform;
-			}
+			if (tweenTarget == null) tweenTarget = transform;
 			mRot = tweenTarget.localRotation;
 		}
 	}
 
-	private void OnEnable()
-	{
-		if (mStarted)
-		{
-			OnHover(UICamera.IsHighlighted(base.gameObject));
-		}
-	}
+	void OnEnable () { if (mStarted) OnHover(UICamera.IsHighlighted(gameObject)); }
 
-	private void OnDisable()
+	void OnDisable ()
 	{
 		if (mStarted && tweenTarget != null)
 		{
-			TweenRotation component = tweenTarget.GetComponent<TweenRotation>();
-			if (component != null)
+			TweenRotation tc = tweenTarget.GetComponent<TweenRotation>();
+
+			if (tc != null)
 			{
-				component.value = mRot;
-				component.enabled = false;
+				tc.value = mRot;
+				tc.enabled = false;
 			}
 		}
 	}
 
-	private void OnPress(bool isPressed)
+	void OnPress (bool isPressed)
 	{
-		if (base.enabled)
+		if (enabled)
 		{
-			if (!mStarted)
-			{
-				Start();
-			}
-			TweenRotation.Begin(tweenTarget.gameObject, duration, isPressed ? (mRot * Quaternion.Euler(pressed)) : ((!UICamera.IsHighlighted(base.gameObject)) ? mRot : (mRot * Quaternion.Euler(hover)))).method = UITweener.Method.EaseInOut;
+			if (!mStarted) Start();
+			TweenRotation.Begin(tweenTarget.gameObject, duration, isPressed ? mRot * Quaternion.Euler(pressed) :
+				(UICamera.IsHighlighted(gameObject) ? mRot * Quaternion.Euler(hover) : mRot)).method = UITweener.Method.EaseInOut;
 		}
 	}
 
-	private void OnHover(bool isOver)
+	void OnHover (bool isOver)
 	{
-		if (base.enabled)
+		if (enabled)
 		{
-			if (!mStarted)
-			{
-				Start();
-			}
-			TweenRotation.Begin(tweenTarget.gameObject, duration, (!isOver) ? mRot : (mRot * Quaternion.Euler(hover))).method = UITweener.Method.EaseInOut;
+			if (!mStarted) Start();
+			TweenRotation.Begin(tweenTarget.gameObject, duration, isOver ? mRot * Quaternion.Euler(hover) :
+				mRot).method = UITweener.Method.EaseInOut;
 		}
 	}
 
-	private void OnSelect(bool isSelected)
+	void OnSelect (bool isSelected)
 	{
-		if (base.enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
-		{
+		if (enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
 			OnHover(isSelected);
-		}
 	}
 }

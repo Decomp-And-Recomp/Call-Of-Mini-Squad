@@ -111,7 +111,7 @@ public class UtilUIStandbyPlayerAppearance : MonoBehaviour
 	{
 		if (bGray)
 		{
-			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI (AlphaClip)");
+			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI");
 		}
 		else
 		{

@@ -122,7 +122,7 @@ public class AutoCreatePage : MonoBehaviour
 			uIGrid.arrangement = UIGrid.Arrangement.Vertical;
 		}
 		uIGrid.maxPerLine = eachLineCount;
-		uIGrid.sorted = true;
+		uIGrid.sorting = UIGrid.Sorting.Horizontal;
 		uIGrid.cellWidth = cellWidth;
 		uIGrid.cellHeight = cellHeight;
 		if (bNeedBoxCollider)

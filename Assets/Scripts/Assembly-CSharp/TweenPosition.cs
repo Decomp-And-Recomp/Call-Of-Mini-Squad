@@ -1,63 +1,47 @@
-using System;
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Tween the object's position.
+/// </summary>
 
 [AddComponentMenu("NGUI/Tween/Tween Position")]
 public class TweenPosition : UITweener
 {
 	public Vector3 from;
-
 	public Vector3 to;
 
 	[HideInInspector]
-	public bool worldSpace;
+	public bool worldSpace = false;
 
-	private Transform mTrans;
+	Transform mTrans;
+	UIRect mRect;
 
-	private UIRect mRect;
+	public Transform cachedTransform { get { if (mTrans == null) mTrans = transform; return mTrans; } }
 
-	public Transform cachedTransform
-	{
-		get
-		{
-			if (mTrans == null)
-			{
-				mTrans = base.transform;
-			}
-			return mTrans;
-		}
-	}
+	[System.Obsolete("Use 'value' instead")]
+	public Vector3 position { get { return this.value; } set { this.value = value; } }
 
-	[Obsolete("Use 'value' instead")]
-	public Vector3 position
-	{
-		get
-		{
-			return value;
-		}
-		set
-		{
-			this.value = value;
-		}
-	}
+	/// <summary>
+	/// Tween's current value.
+	/// </summary>
 
 	public Vector3 value
 	{
 		get
 		{
-			return (!worldSpace) ? cachedTransform.localPosition : cachedTransform.position;
+			return worldSpace ? cachedTransform.position : cachedTransform.localPosition;
 		}
 		set
 		{
 			if (mRect == null || !mRect.isAnchored || worldSpace)
 			{
-				if (worldSpace)
-				{
-					cachedTransform.position = value;
-				}
-				else
-				{
-					cachedTransform.localPosition = value;
-				}
+				if (worldSpace) cachedTransform.position = value;
+				else cachedTransform.localPosition = value;
 			}
 			else
 			{
@@ -67,56 +51,60 @@ public class TweenPosition : UITweener
 		}
 	}
 
-	private void Awake()
-	{
-		mRect = GetComponent<UIRect>();
-		float x = ((from.x == -9999f) ? ((float)(-Screen.width / 2)) : ((from.x != 9999f) ? from.x : ((float)(Screen.width / 2))));
-		float y = ((from.y == -9999f) ? ((float)(-Screen.height / 2)) : ((from.y != 9999f) ? from.y : ((float)(Screen.height / 2))));
-		float x2 = ((to.x == -9999f) ? ((float)(-Screen.width / 2)) : ((to.x != 9999f) ? to.x : ((float)(Screen.width / 2))));
-		float y2 = ((to.y == -9999f) ? ((float)(-Screen.height / 2)) : ((to.y != 9999f) ? to.y : ((float)(Screen.height / 2))));
-		from = new Vector3(x, y, from.z);
-		to = new Vector3(x2, y2, to.z);
-	}
+	void Awake () { mRect = GetComponent<UIRect>(); }
 
-	protected override void OnUpdate(float factor, bool isFinished)
-	{
-		value = from * (1f - factor) + to * factor;
-	}
+	/// <summary>
+	/// Tween the value.
+	/// </summary>
 
-	public static TweenPosition Begin(GameObject go, float duration, Vector3 pos)
+	protected override void OnUpdate (float factor, bool isFinished) { value = from * (1f - factor) + to * factor; }
+
+	/// <summary>
+	/// Start the tweening operation.
+	/// </summary>
+
+	static public TweenPosition Begin (GameObject go, float duration, Vector3 pos)
 	{
-		TweenPosition tweenPosition = UITweener.Begin<TweenPosition>(go, duration);
-		tweenPosition.from = tweenPosition.value;
-		tweenPosition.to = pos;
+		TweenPosition comp = UITweener.Begin<TweenPosition>(go, duration);
+		comp.from = comp.value;
+		comp.to = pos;
+
 		if (duration <= 0f)
 		{
-			tweenPosition.Sample(1f, true);
-			tweenPosition.enabled = false;
+			comp.Sample(1f, true);
+			comp.enabled = false;
 		}
-		return tweenPosition;
+		return comp;
+	}
+
+	/// <summary>
+	/// Start the tweening operation.
+	/// </summary>
+
+	static public TweenPosition Begin (GameObject go, float duration, Vector3 pos, bool worldSpace)
+	{
+		TweenPosition comp = UITweener.Begin<TweenPosition>(go, duration);
+		comp.worldSpace = worldSpace;
+		comp.from = comp.value;
+		comp.to = pos;
+
+		if (duration <= 0f)
+		{
+			comp.Sample(1f, true);
+			comp.enabled = false;
+		}
+		return comp;
 	}
 
 	[ContextMenu("Set 'From' to current value")]
-	public override void SetStartToCurrentValue()
-	{
-		from = value;
-	}
+	public override void SetStartToCurrentValue () { from = value; }
 
 	[ContextMenu("Set 'To' to current value")]
-	public override void SetEndToCurrentValue()
-	{
-		to = value;
-	}
+	public override void SetEndToCurrentValue () { to = value; }
 
 	[ContextMenu("Assume value of 'From'")]
-	private void SetCurrentValueToStart()
-	{
-		value = from;
-	}
+	void SetCurrentValueToStart () { value = from; }
 
 	[ContextMenu("Assume value of 'To'")]
-	private void SetCurrentValueToEnd()
-	{
-		value = to;
-	}
+	void SetCurrentValueToEnd () { value = to; }
 }

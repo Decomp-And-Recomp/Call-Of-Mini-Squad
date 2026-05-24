@@ -1,29 +1,38 @@
+﻿//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Convenience script that resizes the camera's orthographic size to match the screen size.
+/// This script can be used to create pixel-perfect UI, however it's usually more convenient
+/// to create the UI that stays proportional as the screen scales. If that is what you
+/// want, you don't need this script (or at least don't need it to be active).
+/// </summary>
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("NGUI/UI/Orthographic Camera")]
 public class UIOrthoCamera : MonoBehaviour
 {
-	private Camera mCam;
+	Camera mCam;
+	Transform mTrans;
 
-	private Transform mTrans;
-
-	private void Start()
+	void Start ()
 	{
-		mCam = base.GetComponent<Camera>();
-		mTrans = base.transform;
+		mCam = GetComponent<Camera>();
+		mTrans = transform;
 		mCam.orthographic = true;
 	}
 
-	private void Update()
+	void Update ()
 	{
-		float num = mCam.rect.yMin * (float)Screen.height;
-		float num2 = mCam.rect.yMax * (float)Screen.height;
-		float num3 = (num2 - num) * 0.5f * mTrans.lossyScale.y;
-		if (!Mathf.Approximately(mCam.orthographicSize, num3))
-		{
-			mCam.orthographicSize = num3;
-		}
+		float y0 = mCam.rect.yMin * Screen.height;
+		float y1 = mCam.rect.yMax * Screen.height;
+
+		float size = (y1 - y0) * 0.5f * mTrans.lossyScale.y;
+		if (!Mathf.Approximately(mCam.orthographicSize, size)) mCam.orthographicSize = size;
 	}
 }

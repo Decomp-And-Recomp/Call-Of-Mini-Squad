@@ -1,104 +1,84 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Sends a message to the remote object when something happens.
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Button Message (Legacy)")]
 public class UIButtonMessage : MonoBehaviour
 {
 	public enum Trigger
 	{
-		OnClick = 0,
-		OnMouseOver = 1,
-		OnMouseOut = 2,
-		OnPress = 3,
-		OnRelease = 4,
-		OnDoubleClick = 5
+		OnClick,
+		OnMouseOver,
+		OnMouseOut,
+		OnPress,
+		OnRelease,
+		OnDoubleClick,
 	}
 
 	public GameObject target;
-
 	public string functionName;
+	public Trigger trigger = Trigger.OnClick;
+	public bool includeChildren = false;
 
-	public Trigger trigger;
+	bool mStarted = false;
 
-	public bool includeChildren;
+	void Start () { mStarted = true; }
 
-	private bool mStarted;
+	void OnEnable () { if (mStarted) OnHover(UICamera.IsHighlighted(gameObject)); }
 
-	private void Start()
+	void OnHover (bool isOver)
 	{
-		mStarted = true;
-	}
-
-	private void OnEnable()
-	{
-		if (mStarted)
+		if (enabled)
 		{
-			OnHover(UICamera.IsHighlighted(base.gameObject));
+			if (((isOver && trigger == Trigger.OnMouseOver) ||
+				(!isOver && trigger == Trigger.OnMouseOut))) Send();
 		}
 	}
 
-	private void OnHover(bool isOver)
+	void OnPress (bool isPressed)
 	{
-		if (base.enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
+		if (enabled)
 		{
-			Send();
+			if (((isPressed && trigger == Trigger.OnPress) ||
+				(!isPressed && trigger == Trigger.OnRelease))) Send();
 		}
 	}
 
-	private void OnPress(bool isPressed)
+	void OnSelect (bool isSelected)
 	{
-		if (base.enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
-		{
-			Send();
-		}
-	}
-
-	private void OnSelect(bool isSelected)
-	{
-		if (base.enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
-		{
+		if (enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
 			OnHover(isSelected);
-		}
 	}
 
-	private void OnClick()
-	{
-		if (base.enabled && trigger == Trigger.OnClick)
-		{
-			Send();
-		}
-	}
+	void OnClick () { if (enabled && trigger == Trigger.OnClick) Send(); }
 
-	private void OnDoubleClick()
-	{
-		if (base.enabled && trigger == Trigger.OnDoubleClick)
-		{
-			Send();
-		}
-	}
+	void OnDoubleClick () { if (enabled && trigger == Trigger.OnDoubleClick) Send(); }
 
-	private void Send()
+	void Send ()
 	{
-		if (string.IsNullOrEmpty(functionName))
-		{
-			return;
-		}
-		if (target == null)
-		{
-			target = base.gameObject;
-		}
+		if (string.IsNullOrEmpty(functionName)) return;
+		if (target == null) target = gameObject;
+
 		if (includeChildren)
 		{
-			Transform[] componentsInChildren = target.GetComponentsInChildren<Transform>();
-			int i = 0;
-			for (int num = componentsInChildren.Length; i < num; i++)
+			Transform[] transforms = target.GetComponentsInChildren<Transform>();
+
+			for (int i = 0, imax = transforms.Length; i < imax; ++i)
 			{
-				Transform transform = componentsInChildren[i];
-				transform.gameObject.SendMessage(functionName, base.gameObject, SendMessageOptions.DontRequireReceiver);
+				Transform t = transforms[i];
+				t.gameObject.SendMessage(functionName, gameObject, SendMessageOptions.DontRequireReceiver);
 			}
 		}
 		else
 		{
-			target.SendMessage(functionName, base.gameObject, SendMessageOptions.DontRequireReceiver);
+			target.SendMessage(functionName, gameObject, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }

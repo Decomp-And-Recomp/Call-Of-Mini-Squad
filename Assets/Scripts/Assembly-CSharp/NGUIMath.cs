@@ -1,217 +1,300 @@
-using System.Diagnostics;
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-public static class NGUIMath
+/// <summary>
+/// Helper class containing generic functions used throughout the UI library.
+/// </summary>
+
+static public class NGUIMath
 {
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static float Lerp(float from, float to, float factor)
-	{
-		return from * (1f - factor) + to * factor;
-	}
+	/// <summary>
+	/// Lerp function that doesn't clamp the 'factor' in 0-1 range.
+	/// </summary>
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static int ClampIndex(int val, int max)
-	{
-		return (val >= 0) ? ((val >= max) ? (max - 1) : val) : 0;
-	}
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public float Lerp (float from, float to, float factor) { return from * (1f - factor) + to * factor; }
 
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static int RepeatIndex(int val, int max)
+	/// <summary>
+	/// Clamp the specified integer to be between 0 and below 'max'.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public int ClampIndex (int val, int max) { return (val < 0) ? 0 : (val < max ? val : max - 1); }
+
+	/// <summary>
+	/// Wrap the index using repeating logic, so that for example +1 past the end means index of '1'.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public int RepeatIndex (int val, int max)
 	{
-		if (max < 1)
-		{
-			return 0;
-		}
-		while (val < 0)
-		{
-			val += max;
-		}
-		while (val >= max)
-		{
-			val -= max;
-		}
+		if (max < 1) return 0;
+		while (val < 0) val += max;
+		while (val >= max) val -= max;
 		return val;
 	}
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static float WrapAngle(float angle)
+	/// <summary>
+	/// Ensure that the angle is within -180 to 180 range.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public float WrapAngle (float angle)
 	{
-		while (angle > 180f)
-		{
-			angle -= 360f;
-		}
-		while (angle < -180f)
-		{
-			angle += 360f;
-		}
+		while (angle > 180f) angle -= 360f;
+		while (angle < -180f) angle += 360f;
 		return angle;
 	}
 
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static float Wrap01(float val)
-	{
-		return val - (float)Mathf.FloorToInt(val);
-	}
+	/// <summary>
+	/// In the shader, equivalent function would be 'fract'
+	/// </summary>
 
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static int HexToDecimal(char ch)
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public float Wrap01 (float val) { return val - Mathf.FloorToInt(val); }
+
+	/// <summary>
+	/// Convert a hexadecimal character to its decimal value.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public int HexToDecimal (char ch)
 	{
 		switch (ch)
 		{
-		case '0':
-			return 0;
-		case '1':
-			return 1;
-		case '2':
-			return 2;
-		case '3':
-			return 3;
-		case '4':
-			return 4;
-		case '5':
-			return 5;
-		case '6':
-			return 6;
-		case '7':
-			return 7;
-		case '8':
-			return 8;
-		case '9':
-			return 9;
-		case 'A':
-		case 'a':
-			return 10;
-		case 'B':
-		case 'b':
-			return 11;
-		case 'C':
-		case 'c':
-			return 12;
-		case 'D':
-		case 'd':
-			return 13;
-		case 'E':
-		case 'e':
-			return 14;
-		case 'F':
-		case 'f':
-			return 15;
-		default:
-			return 15;
+			case '0': return 0x0;
+			case '1': return 0x1;
+			case '2': return 0x2;
+			case '3': return 0x3;
+			case '4': return 0x4;
+			case '5': return 0x5;
+			case '6': return 0x6;
+			case '7': return 0x7;
+			case '8': return 0x8;
+			case '9': return 0x9;
+			case 'a':
+			case 'A': return 0xA;
+			case 'b':
+			case 'B': return 0xB;
+			case 'c':
+			case 'C': return 0xC;
+			case 'd':
+			case 'D': return 0xD;
+			case 'e':
+			case 'E': return 0xE;
+			case 'f':
+			case 'F': return 0xF;
 		}
+		return 0xF;
 	}
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static char DecimalToHexChar(int num)
+	/// <summary>
+	/// Convert a single 0-15 value into its hex representation.
+	/// It's coded because int.ToString(format) syntax doesn't seem to be supported by Unity's Flash. It just silently crashes.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public char DecimalToHexChar (int num)
 	{
-		if (num > 15)
-		{
-			return 'F';
-		}
-		if (num < 10)
-		{
-			return (char)(48 + num);
-		}
-		return (char)(65 + num - 10);
+		if (num > 15) return 'F';
+		if (num < 10) return (char)('0' + num);
+		return (char)('A' + num - 10);
 	}
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static string DecimalToHex(int num)
+	/// <summary>
+	/// Convert a decimal value to its hex representation.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public string DecimalToHex8 (int num)
+	{
+		num &= 0xFF;
+#if UNITY_FLASH
+		StringBuilder sb = new StringBuilder();
+		sb.Append(DecimalToHexChar((num >> 4) & 0xF));
+		sb.Append(DecimalToHexChar(num & 0xF));
+		return sb.ToString();
+#else
+		return num.ToString("X2");
+#endif
+	}
+
+	/// <summary>
+	/// Convert a decimal value to its hex representation.
+	/// It's coded because num.ToString("X6") syntax doesn't seem to be supported by Unity's Flash. It just silently crashes.
+	/// string.Format("{0,6:X}", num).Replace(' ', '0') doesn't work either. It returns the format string, not the formatted value.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public string DecimalToHex24 (int num)
 	{
 		num &= 0xFFFFFF;
+#if UNITY_FLASH
+		StringBuilder sb = new StringBuilder();
+		sb.Append(DecimalToHexChar((num >> 20) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 16) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 12) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 8) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 4) & 0xF));
+		sb.Append(DecimalToHexChar(num & 0xF));
+		return sb.ToString();
+#else
 		return num.ToString("X6");
+#endif
 	}
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static int ColorToInt(Color c)
+	/// <summary>
+	/// Convert a decimal value to its hex representation.
+	/// It's coded because num.ToString("X6") syntax doesn't seem to be supported by Unity's Flash. It just silently crashes.
+	/// string.Format("{0,6:X}", num).Replace(' ', '0') doesn't work either. It returns the format string, not the formatted value.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public string DecimalToHex32 (int num)
 	{
-		int num = 0;
-		num |= Mathf.RoundToInt(c.r * 255f) << 24;
-		num |= Mathf.RoundToInt(c.g * 255f) << 16;
-		num |= Mathf.RoundToInt(c.b * 255f) << 8;
-		return num | Mathf.RoundToInt(c.a * 255f);
+#if UNITY_FLASH
+		StringBuilder sb = new StringBuilder();
+		sb.Append(DecimalToHexChar((num >> 28) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 24) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 20) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 16) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 12) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 8) & 0xF));
+		sb.Append(DecimalToHexChar((num >> 4) & 0xF));
+		sb.Append(DecimalToHexChar(num & 0xF));
+		return sb.ToString();
+#else
+		return num.ToString("X8");
+#endif
 	}
 
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static Color IntToColor(int val)
+	/// <summary>
+	/// Convert the specified color to RGBA32 integer format.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public int ColorToInt (Color c)
 	{
-		float num = 0.003921569f;
-		Color black = Color.black;
-		black.r = num * (float)((val >> 24) & 0xFF);
-		black.g = num * (float)((val >> 16) & 0xFF);
-		black.b = num * (float)((val >> 8) & 0xFF);
-		black.a = num * (float)(val & 0xFF);
-		return black;
+		int retVal = 0;
+		retVal |= Mathf.RoundToInt(c.r * 255f) << 24;
+		retVal |= Mathf.RoundToInt(c.g * 255f) << 16;
+		retVal |= Mathf.RoundToInt(c.b * 255f) << 8;
+		retVal |= Mathf.RoundToInt(c.a * 255f);
+		return retVal;
 	}
 
-	[DebuggerHidden]
-	[DebuggerStepThrough]
-	public static string IntToBinary(int val, int bits)
+	/// <summary>
+	/// Convert the specified RGBA32 integer to Color.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public Color IntToColor (int val)
 	{
-		string text = string.Empty;
-		int num = bits;
-		while (num > 0)
+		float inv = 1f / 255f;
+		Color c = Color.black;
+		c.r = inv * ((val >> 24) & 0xFF);
+		c.g = inv * ((val >> 16) & 0xFF);
+		c.b = inv * ((val >> 8) & 0xFF);
+		c.a = inv * (val & 0xFF);
+		return c;
+	}
+
+	/// <summary>
+	/// Convert the specified integer to a human-readable string representing the binary value. Useful for debugging bytes.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public string IntToBinary (int val, int bits)
+	{
+		string final = "";
+
+		for (int i = bits; i > 0; )
 		{
-			if (num == 8 || num == 16 || num == 24)
-			{
-				text += " ";
-			}
-			text += (((val & (1 << --num)) == 0) ? '0' : '1');
+			if (i == 8 || i == 16 || i == 24) final += " ";
+			final += ((val & (1 << --i)) != 0) ? '1' : '0';
 		}
-		return text;
+		return final;
 	}
 
-	[DebuggerStepThrough]
-	[DebuggerHidden]
-	public static Color HexToColor(uint val)
+	/// <summary>
+	/// Convenience conversion function, allowing hex format (0xRrGgBbAa).
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public Color HexToColor (uint val)
 	{
 		return IntToColor((int)val);
 	}
 
-	public static Rect ConvertToTexCoords(Rect rect, int width, int height)
+	/// <summary>
+	/// Convert from top-left based pixel coordinates to bottom-left based UV coordinates.
+	/// </summary>
+
+	static public Rect ConvertToTexCoords (Rect rect, int width, int height)
 	{
-		Rect result = rect;
-		if ((float)width != 0f && (float)height != 0f)
+		Rect final = rect;
+
+		if (width != 0f && height != 0f)
 		{
-			result.xMin = rect.xMin / (float)width;
-			result.xMax = rect.xMax / (float)width;
-			result.yMin = 1f - rect.yMax / (float)height;
-			result.yMax = 1f - rect.yMin / (float)height;
+			final.xMin = rect.xMin / width;
+			final.xMax = rect.xMax / width;
+			final.yMin = 1f - rect.yMax / height;
+			final.yMax = 1f - rect.yMin / height;
 		}
-		return result;
+		return final;
 	}
 
-	public static Rect ConvertToPixels(Rect rect, int width, int height, bool round)
+	/// <summary>
+	/// Convert from bottom-left based UV coordinates to top-left based pixel coordinates.
+	/// </summary>
+
+	static public Rect ConvertToPixels (Rect rect, int width, int height, bool round)
 	{
-		Rect result = rect;
+		Rect final = rect;
+
 		if (round)
 		{
-			result.xMin = Mathf.RoundToInt(rect.xMin * (float)width);
-			result.xMax = Mathf.RoundToInt(rect.xMax * (float)width);
-			result.yMin = Mathf.RoundToInt((1f - rect.yMax) * (float)height);
-			result.yMax = Mathf.RoundToInt((1f - rect.yMin) * (float)height);
+			final.xMin = Mathf.RoundToInt(rect.xMin * width);
+			final.xMax = Mathf.RoundToInt(rect.xMax * width);
+			final.yMin = Mathf.RoundToInt((1f - rect.yMax) * height);
+			final.yMax = Mathf.RoundToInt((1f - rect.yMin) * height);
 		}
 		else
 		{
-			result.xMin = rect.xMin * (float)width;
-			result.xMax = rect.xMax * (float)width;
-			result.yMin = (1f - rect.yMax) * (float)height;
-			result.yMax = (1f - rect.yMin) * (float)height;
+			final.xMin = rect.xMin * width;
+			final.xMax = rect.xMax * width;
+			final.yMin = (1f - rect.yMax) * height;
+			final.yMax = (1f - rect.yMin) * height;
 		}
-		return result;
+		return final;
 	}
 
-	public static Rect MakePixelPerfect(Rect rect)
+	/// <summary>
+	/// Round the pixel rectangle's dimensions.
+	/// </summary>
+
+	static public Rect MakePixelPerfect (Rect rect)
 	{
 		rect.xMin = Mathf.RoundToInt(rect.xMin);
 		rect.yMin = Mathf.RoundToInt(rect.yMin);
@@ -220,7 +303,11 @@ public static class NGUIMath
 		return rect;
 	}
 
-	public static Rect MakePixelPerfect(Rect rect, int width, int height)
+	/// <summary>
+	/// Round the texture coordinate rectangle's dimensions.
+	/// </summary>
+
+	static public Rect MakePixelPerfect (Rect rect, int width, int height)
 	{
 		rect = ConvertToPixels(rect, width, height, true);
 		rect.xMin = Mathf.RoundToInt(rect.xMin);
@@ -230,602 +317,835 @@ public static class NGUIMath
 		return ConvertToTexCoords(rect, width, height);
 	}
 
-	public static Vector2 ConstrainRect(Vector2 minRect, Vector2 maxRect, Vector2 minArea, Vector2 maxArea)
+	/// <summary>
+	/// Constrain 'rect' to be within 'area' as much as possible, returning the Vector2 offset necessary for this to happen.
+	/// This function is useful when trying to restrict one area (window) to always be within another (viewport).
+	/// </summary>
+
+	static public Vector2 ConstrainRect (Vector2 minRect, Vector2 maxRect, Vector2 minArea, Vector2 maxArea)
 	{
-		Vector2 zero = Vector2.zero;
-		float num = maxRect.x - minRect.x;
-		float num2 = maxRect.y - minRect.y;
-		float num3 = maxArea.x - minArea.x;
-		float num4 = maxArea.y - minArea.y;
-		if (num > num3)
+		Vector2 offset = Vector2.zero;
+
+		float contentX = maxRect.x - minRect.x;
+		float contentY = maxRect.y - minRect.y;
+
+		float areaX = maxArea.x - minArea.x;
+		float areaY = maxArea.y - minArea.y;
+
+		if (contentX > areaX)
 		{
-			float num5 = num - num3;
-			minArea.x -= num5;
-			maxArea.x += num5;
+			float diff = contentX - areaX;
+			minArea.x -= diff;
+			maxArea.x += diff;
 		}
-		if (num2 > num4)
+
+		if (contentY > areaY)
 		{
-			float num6 = num2 - num4;
-			minArea.y -= num6;
-			maxArea.y += num6;
+			float diff = contentY - areaY;
+			minArea.y -= diff;
+			maxArea.y += diff;
 		}
-		if (minRect.x < minArea.x)
-		{
-			zero.x += minArea.x - minRect.x;
-		}
-		if (maxRect.x > maxArea.x)
-		{
-			zero.x -= maxRect.x - maxArea.x;
-		}
-		if (minRect.y < minArea.y)
-		{
-			zero.y += minArea.y - minRect.y;
-		}
-		if (maxRect.y > maxArea.y)
-		{
-			zero.y -= maxRect.y - maxArea.y;
-		}
-		return zero;
+
+		if (minRect.x < minArea.x) offset.x += minArea.x - minRect.x;
+		if (maxRect.x > maxArea.x) offset.x -= maxRect.x - maxArea.x;
+		if (minRect.y < minArea.y) offset.y += minArea.y - minRect.y;
+		if (maxRect.y > maxArea.y) offset.y -= maxRect.y - maxArea.y;
+		
+		return offset;
 	}
 
-	public static Bounds CalculateAbsoluteWidgetBounds(Transform trans)
+	/// <summary>
+	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in world space).
+	/// </summary>
+
+	static public Bounds CalculateAbsoluteWidgetBounds (Transform trans)
 	{
 		if (trans != null)
 		{
-			UIWidget[] componentsInChildren = trans.GetComponentsInChildren<UIWidget>();
-			if (componentsInChildren.Length == 0)
+			UIWidget[] widgets = trans.GetComponentsInChildren<UIWidget>() as UIWidget[];
+			if (widgets.Length == 0) return new Bounds(trans.position, Vector3.zero);
+
+			Vector3 vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+			Vector3 vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+			Vector3 v;
+
+			for (int i = 0, imax = widgets.Length; i < imax; ++i)
 			{
-				return new Bounds(trans.position, Vector3.zero);
-			}
-			Vector3 vector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-			Vector3 vector2 = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-			int i = 0;
-			for (int num = componentsInChildren.Length; i < num; i++)
-			{
-				UIWidget uIWidget = componentsInChildren[i];
-				if (uIWidget.enabled)
+				UIWidget w = widgets[i];
+				if (!w.enabled) continue;
+
+				Vector3[] corners = w.worldCorners;
+
+				for (int j = 0; j < 4; ++j)
 				{
-					Vector3[] worldCorners = uIWidget.worldCorners;
-					for (int j = 0; j < 4; j++)
-					{
-						vector2 = Vector3.Max(worldCorners[j], vector2);
-						vector = Vector3.Min(worldCorners[j], vector);
-					}
+					v = corners[j];
+
+					if (v.x > vMax.x) vMax.x = v.x;
+ 					if (v.y > vMax.y) vMax.y = v.y;
+ 					if (v.z > vMax.z) vMax.z = v.z;
+ 
+ 					if (v.x < vMin.x) vMin.x = v.x;
+ 					if (v.y < vMin.y) vMin.y = v.y;
+ 					if (v.z < vMin.z) vMin.z = v.z;
 				}
 			}
-			Bounds result = new Bounds(vector, Vector3.zero);
-			result.Encapsulate(vector2);
-			return result;
+
+			Bounds b = new Bounds(vMin, Vector3.zero);
+			b.Encapsulate(vMax);
+			return b;
 		}
 		return new Bounds(Vector3.zero, Vector3.zero);
 	}
 
-	public static Bounds CalculateRelativeWidgetBounds(Transform trans)
+	/// <summary>
+	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in relative-to-object space).
+	/// </summary>
+
+	static public Bounds CalculateRelativeWidgetBounds (Transform trans)
 	{
-		return CalculateRelativeWidgetBounds(trans, trans, false);
+		return CalculateRelativeWidgetBounds(trans, trans, !trans.gameObject.activeSelf);
 	}
 
-	public static Bounds CalculateRelativeWidgetBounds(Transform trans, bool considerInactive)
+	/// <summary>
+	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in relative-to-object space).
+	/// </summary>
+
+	static public Bounds CalculateRelativeWidgetBounds (Transform trans, bool considerInactive)
 	{
 		return CalculateRelativeWidgetBounds(trans, trans, considerInactive);
 	}
 
-	public static Bounds CalculateRelativeWidgetBounds(Transform root, Transform child)
+	/// <summary>
+	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in relative-to-object space).
+	/// </summary>
+
+	static public Bounds CalculateRelativeWidgetBounds (Transform relativeTo, Transform content)
 	{
-		return CalculateRelativeWidgetBounds(root, child, false);
+		return CalculateRelativeWidgetBounds(relativeTo, content, !content.gameObject.activeSelf);
 	}
 
-	public static Bounds CalculateRelativeWidgetBounds(Transform root, Transform child, bool considerInactive)
+	/// <summary>
+	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in relative-to-object space).
+	/// </summary>
+
+	static public Bounds CalculateRelativeWidgetBounds (Transform relativeTo, Transform content, bool considerInactive, bool considerChildren = true)
 	{
-		if (child != null)
+		if (content != null && relativeTo != null)
 		{
-			UIWidget[] componentsInChildren = child.GetComponentsInChildren<UIWidget>(considerInactive);
-			if (componentsInChildren.Length > 0)
+			bool isSet = false;
+			Matrix4x4 toLocal = relativeTo.worldToLocalMatrix;
+			Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+			Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+			CalculateRelativeWidgetBounds(content, considerInactive, true, ref toLocal, ref min, ref max, ref isSet, considerChildren);
+
+			if (isSet)
 			{
-				Vector3 vector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-				Vector3 vector2 = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-				Matrix4x4 worldToLocalMatrix = root.worldToLocalMatrix;
-				bool flag = false;
-				int i = 0;
-				for (int num = componentsInChildren.Length; i < num; i++)
-				{
-					UIWidget uIWidget = componentsInChildren[i];
-					if (considerInactive || uIWidget.enabled)
-					{
-						Vector3[] worldCorners = uIWidget.worldCorners;
-						for (int j = 0; j < 4; j++)
-						{
-							Vector3 lhs = worldToLocalMatrix.MultiplyPoint3x4(worldCorners[j]);
-							vector2 = Vector3.Max(lhs, vector2);
-							vector = Vector3.Min(lhs, vector);
-						}
-						flag = true;
-					}
-				}
-				if (flag)
-				{
-					Bounds result = new Bounds(vector, Vector3.zero);
-					result.Encapsulate(vector2);
-					return result;
-				}
+				Bounds b = new Bounds(min, Vector3.zero);
+				b.Encapsulate(max);
+				return b;
 			}
 		}
 		return new Bounds(Vector3.zero, Vector3.zero);
 	}
 
-	public static Vector3 SpringDampen(ref Vector3 velocity, float strength, float deltaTime)
+	/// <summary>
+	/// Recursive function used to calculate the widget bounds.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static void CalculateRelativeWidgetBounds (Transform content, bool considerInactive, bool isRoot,
+		ref Matrix4x4 toLocal, ref Vector3 vMin, ref Vector3 vMax, ref bool isSet, bool considerChildren)
 	{
-		if (deltaTime > 1f)
+		if (content == null) return;
+		if (!considerInactive && !NGUITools.GetActive(content.gameObject)) return;
+
+		// If this isn't a root node, check to see if there is a panel present
+		UIPanel p = isRoot ? null : content.GetComponent<UIPanel>();
+
+		// Ignore disabled panels as a disabled panel means invisible children
+		if (p != null && !p.enabled) return;
+
+		// If there is a clipped panel present simply include its dimensions
+		if (p != null && p.clipping != UIDrawCall.Clipping.None)
 		{
-			deltaTime = 1f;
+			Vector3[] corners = p.worldCorners;
+
+			for (int j = 0; j < 4; ++j)
+			{
+				Vector3 v = toLocal.MultiplyPoint3x4(corners[j]);
+
+				if (v.x > vMax.x) vMax.x = v.x;
+ 				if (v.y > vMax.y) vMax.y = v.y;
+ 				if (v.z > vMax.z) vMax.z = v.z;
+ 
+ 				if (v.x < vMin.x) vMin.x = v.x;
+ 				if (v.y < vMin.y) vMin.y = v.y;
+ 				if (v.z < vMin.z) vMin.z = v.z;
+
+				isSet = true;
+			}
 		}
-		float f = 1f - strength * 0.001f;
-		int num = Mathf.RoundToInt(deltaTime * 1000f);
-		float num2 = Mathf.Pow(f, num);
-		Vector3 vector = velocity * ((num2 - 1f) / Mathf.Log(f));
-		velocity *= num2;
-		return vector * 0.06f;
+		else // No panel present
+		{
+			// If there is a widget present, include its bounds
+			UIWidget w = content.GetComponent<UIWidget>();
+
+			if (w != null && w.enabled)
+			{
+				Vector3[] corners = w.worldCorners;
+
+				for (int j = 0; j < 4; ++j)
+				{
+					Vector3 v = toLocal.MultiplyPoint3x4(corners[j]);
+
+					if (v.x > vMax.x) vMax.x = v.x;
+					if (v.y > vMax.y) vMax.y = v.y;
+					if (v.z > vMax.z) vMax.z = v.z;
+
+					if (v.x < vMin.x) vMin.x = v.x;
+					if (v.y < vMin.y) vMin.y = v.y;
+					if (v.z < vMin.z) vMin.z = v.z;
+
+					isSet = true;
+				}
+
+				if (!considerChildren) return;
+			}
+			
+			for (int i = 0, imax = content.childCount; i < imax; ++i)
+				CalculateRelativeWidgetBounds(content.GetChild(i), considerInactive, false, ref toLocal, ref vMin, ref vMax, ref isSet, true);
+		}
 	}
 
-	public static Vector2 SpringDampen(ref Vector2 velocity, float strength, float deltaTime)
+	/// <summary>
+	/// This code is not framerate-independent:
+	/// 
+	/// target.position += velocity;
+	/// velocity = Vector3.Lerp(velocity, Vector3.zero, Time.deltaTime * 9f);
+	/// 
+	/// But this code is:
+	/// 
+	/// target.position += NGUIMath.SpringDampen(ref velocity, 9f, Time.deltaTime);
+	/// </summary>
+
+	static public Vector3 SpringDampen (ref Vector3 velocity, float strength, float deltaTime)
 	{
-		if (deltaTime > 1f)
-		{
-			deltaTime = 1f;
-		}
-		float f = 1f - strength * 0.001f;
-		int num = Mathf.RoundToInt(deltaTime * 1000f);
-		float num2 = Mathf.Pow(f, num);
-		Vector2 vector = velocity * ((num2 - 1f) / Mathf.Log(f));
-		velocity *= num2;
-		return vector * 0.06f;
+		if (deltaTime > 1f) deltaTime = 1f;
+		float dampeningFactor = 1f - strength * 0.001f;
+		int ms = Mathf.RoundToInt(deltaTime * 1000f);
+		float totalDampening = Mathf.Pow(dampeningFactor, ms);
+		Vector3 vTotal = velocity * ((totalDampening - 1f) / Mathf.Log(dampeningFactor));
+		velocity = velocity * totalDampening;
+		return vTotal * 0.06f;
 	}
 
-	public static float SpringLerp(float strength, float deltaTime)
+	/// <summary>
+	/// Same as the Vector3 version, it's a framerate-independent Lerp.
+	/// </summary>
+
+	static public Vector2 SpringDampen (ref Vector2 velocity, float strength, float deltaTime)
 	{
-		if (deltaTime > 1f)
-		{
-			deltaTime = 1f;
-		}
-		int num = Mathf.RoundToInt(deltaTime * 1000f);
+		if (deltaTime > 1f) deltaTime = 1f;
+		float dampeningFactor = 1f - strength * 0.001f;
+		int ms = Mathf.RoundToInt(deltaTime * 1000f);
+		float totalDampening = Mathf.Pow(dampeningFactor, ms);
+		Vector2 vTotal = velocity * ((totalDampening - 1f) / Mathf.Log(dampeningFactor));
+		velocity = velocity * totalDampening;
+		return vTotal * 0.06f;
+	}
+
+	/// <summary>
+	/// Calculate how much to interpolate by.
+	/// </summary>
+
+	static public float SpringLerp (float strength, float deltaTime)
+	{
+		if (deltaTime > 1f) deltaTime = 1f;
+		int ms = Mathf.RoundToInt(deltaTime * 1000f);
 		deltaTime = 0.001f * strength;
-		float num2 = 0f;
-		for (int i = 0; i < num; i++)
-		{
-			num2 = Mathf.Lerp(num2, 1f, deltaTime);
-		}
-		return num2;
+		float cumulative = 0f;
+		for (int i = 0; i < ms; ++i) cumulative = Mathf.Lerp(cumulative, 1f, deltaTime);
+		return cumulative;
 	}
 
-	public static float SpringLerp(float from, float to, float strength, float deltaTime)
+	/// <summary>
+	/// Mathf.Lerp(from, to, Time.deltaTime * strength) is not framerate-independent. This function is.
+	/// </summary>
+
+	static public float SpringLerp (float from, float to, float strength, float deltaTime)
 	{
-		if (deltaTime > 1f)
-		{
-			deltaTime = 1f;
-		}
-		int num = Mathf.RoundToInt(deltaTime * 1000f);
+		if (deltaTime > 1f) deltaTime = 1f;
+		int ms = Mathf.RoundToInt(deltaTime * 1000f);
 		deltaTime = 0.001f * strength;
-		for (int i = 0; i < num; i++)
-		{
-			from = Mathf.Lerp(from, to, deltaTime);
-		}
+		for (int i = 0; i < ms; ++i) from = Mathf.Lerp(from, to, deltaTime);
 		return from;
 	}
 
-	public static Vector2 SpringLerp(Vector2 from, Vector2 to, float strength, float deltaTime)
+	/// <summary>
+	/// Vector2.Lerp(from, to, Time.deltaTime * strength) is not framerate-independent. This function is.
+	/// </summary>
+
+	static public Vector2 SpringLerp (Vector2 from, Vector2 to, float strength, float deltaTime)
 	{
 		return Vector2.Lerp(from, to, SpringLerp(strength, deltaTime));
 	}
 
-	public static Vector3 SpringLerp(Vector3 from, Vector3 to, float strength, float deltaTime)
+	/// <summary>
+	/// Vector3.Lerp(from, to, Time.deltaTime * strength) is not framerate-independent. This function is.
+	/// </summary>
+
+	static public Vector3 SpringLerp (Vector3 from, Vector3 to, float strength, float deltaTime)
 	{
 		return Vector3.Lerp(from, to, SpringLerp(strength, deltaTime));
 	}
 
-	public static Quaternion SpringLerp(Quaternion from, Quaternion to, float strength, float deltaTime)
+	/// <summary>
+	/// Quaternion.Slerp(from, to, Time.deltaTime * strength) is not framerate-independent. This function is.
+	/// </summary>
+
+	static public Quaternion SpringLerp (Quaternion from, Quaternion to, float strength, float deltaTime)
 	{
 		return Quaternion.Slerp(from, to, SpringLerp(strength, deltaTime));
 	}
 
-	public static float RotateTowards(float from, float to, float maxAngle)
+	/// <summary>
+	/// Since there is no Mathf.RotateTowards...
+	/// </summary>
+
+	static public float RotateTowards (float from, float to, float maxAngle)
 	{
-		float num = WrapAngle(to - from);
-		if (Mathf.Abs(num) > maxAngle)
-		{
-			num = maxAngle * Mathf.Sign(num);
-		}
-		return from + num;
+		float diff = WrapAngle(to - from);
+		if (Mathf.Abs(diff) > maxAngle) diff = maxAngle * Mathf.Sign(diff);
+		return from + diff;
 	}
 
-	private static float DistancePointToLineSegment(Vector2 point, Vector2 a, Vector2 b)
+	/// <summary>
+	/// Determine the distance from the specified point to the line segment.
+	/// </summary>
+
+	static float DistancePointToLineSegment (Vector2 point, Vector2 a, Vector2 b)
 	{
-		float sqrMagnitude = (b - a).sqrMagnitude;
-		if (sqrMagnitude == 0f)
-		{
-			return (point - a).magnitude;
-		}
-		float num = Vector2.Dot(point - a, b - a) / sqrMagnitude;
-		if (num < 0f)
-		{
-			return (point - a).magnitude;
-		}
-		if (num > 1f)
-		{
-			return (point - b).magnitude;
-		}
-		Vector2 vector = a + num * (b - a);
-		return (point - vector).magnitude;
+		float l2 = (b - a).sqrMagnitude;
+		if (l2 == 0f) return (point - a).magnitude;
+		float t = Vector2.Dot(point - a, b - a) / l2;
+		if (t < 0f) return (point - a).magnitude;
+		else if (t > 1f) return (point - b).magnitude;
+		Vector2 projection = a + t * (b - a);
+		return (point - projection).magnitude;
 	}
 
-	public static float DistanceToRectangle(Vector2[] screenPoints, Vector2 mousePos)
+	/// <summary>
+	/// Determine the distance from the mouse position to the screen space rectangle specified by the 4 points.
+	/// </summary>
+
+	static public float DistanceToRectangle (Vector2[] screenPoints, Vector2 mousePos)
 	{
-		bool flag = false;
-		int val = 4;
+		bool oddNodes = false;
+		int j = 4;
+
 		for (int i = 0; i < 5; i++)
 		{
-			Vector3 vector = screenPoints[RepeatIndex(i, 4)];
-			Vector3 vector2 = screenPoints[RepeatIndex(val, 4)];
-			if (vector.y > mousePos.y != vector2.y > mousePos.y && mousePos.x < (vector2.x - vector.x) * (mousePos.y - vector.y) / (vector2.y - vector.y) + vector.x)
+			Vector3 v0 = screenPoints[NGUIMath.RepeatIndex(i, 4)];
+			Vector3 v1 = screenPoints[NGUIMath.RepeatIndex(j, 4)];
+
+			if ((v0.y > mousePos.y) != (v1.y > mousePos.y))
 			{
-				flag = !flag;
-			}
-			val = i;
-		}
-		if (!flag)
-		{
-			float num = -1f;
-			for (int j = 0; j < 4; j++)
-			{
-				Vector3 vector3 = screenPoints[j];
-				Vector3 vector4 = screenPoints[RepeatIndex(j + 1, 4)];
-				float num2 = DistancePointToLineSegment(mousePos, vector3, vector4);
-				if (num2 < num || num < 0f)
+				if (mousePos.x < (v1.x - v0.x) * (mousePos.y - v0.y) / (v1.y - v0.y) + v0.x)
 				{
-					num = num2;
+					oddNodes = !oddNodes;
 				}
 			}
-			return num;
+			j = i;
 		}
-		return 0f;
+
+		if (!oddNodes)
+		{
+			float dist, closestDist = -1f;
+
+			for (int i = 0; i < 4; i++)
+			{
+				Vector3 v0 = screenPoints[i];
+				Vector3 v1 = screenPoints[NGUIMath.RepeatIndex(i + 1, 4)];
+
+				dist = DistancePointToLineSegment(mousePos, v0, v1);
+
+				if (dist < closestDist || closestDist < 0f) closestDist = dist;
+			}
+			return closestDist;
+		}
+		else return 0f;
 	}
 
-	public static float DistanceToRectangle(Vector3[] worldPoints, Vector2 mousePos, Camera cam)
+	/// <summary>
+	/// Determine the distance from the mouse position to the world rectangle specified by the 4 points.
+	/// </summary>
+
+	static public float DistanceToRectangle (Vector3[] worldPoints, Vector2 mousePos, Camera cam)
 	{
-		Vector2[] array = new Vector2[4];
-		for (int i = 0; i < 4; i++)
-		{
-			array[i] = cam.WorldToScreenPoint(worldPoints[i]);
-		}
-		return DistanceToRectangle(array, mousePos);
+		Vector2[] screenPoints = new Vector2[4];
+		for (int i = 0; i < 4; ++i)
+			screenPoints[i] = cam.WorldToScreenPoint(worldPoints[i]);
+		return DistanceToRectangle(screenPoints, mousePos);
 	}
 
-	public static Vector2 GetPivotOffset(UIWidget.Pivot pv)
+	/// <summary>
+	/// Helper function that converts the widget's pivot enum into a 0-1 range vector.
+	/// </summary>
+
+	static public Vector2 GetPivotOffset (UIWidget.Pivot pv)
 	{
-		Vector2 zero = Vector2.zero;
-		switch (pv)
-		{
-		case UIWidget.Pivot.Top:
-		case UIWidget.Pivot.Center:
-		case UIWidget.Pivot.Bottom:
-			zero.x = 0.5f;
-			break;
-		case UIWidget.Pivot.TopRight:
-		case UIWidget.Pivot.Right:
-		case UIWidget.Pivot.BottomRight:
-			zero.x = 1f;
-			break;
-		default:
-			zero.x = 0f;
-			break;
-		}
-		switch (pv)
-		{
-		case UIWidget.Pivot.Left:
-		case UIWidget.Pivot.Center:
-		case UIWidget.Pivot.Right:
-			zero.y = 0.5f;
-			break;
-		case UIWidget.Pivot.TopLeft:
-		case UIWidget.Pivot.Top:
-		case UIWidget.Pivot.TopRight:
-			zero.y = 1f;
-			break;
-		default:
-			zero.y = 0f;
-			break;
-		}
-		return zero;
+		Vector2 v = Vector2.zero;
+
+		if (pv == UIWidget.Pivot.Top || pv == UIWidget.Pivot.Center || pv == UIWidget.Pivot.Bottom) v.x = 0.5f;
+		else if (pv == UIWidget.Pivot.TopRight || pv == UIWidget.Pivot.Right || pv == UIWidget.Pivot.BottomRight) v.x = 1f;
+		else v.x = 0f;
+
+		if (pv == UIWidget.Pivot.Left || pv == UIWidget.Pivot.Center || pv == UIWidget.Pivot.Right) v.y = 0.5f;
+		else if (pv == UIWidget.Pivot.TopLeft || pv == UIWidget.Pivot.Top || pv == UIWidget.Pivot.TopRight) v.y = 1f;
+		else v.y = 0f;
+
+		return v;
 	}
 
-	public static UIWidget.Pivot GetPivot(Vector2 offset)
+	/// <summary>
+	/// Helper function that converts the pivot offset to a pivot point.
+	/// </summary>
+
+	static public UIWidget.Pivot GetPivot (Vector2 offset)
 	{
 		if (offset.x == 0f)
 		{
-			if (offset.y == 0f)
-			{
-				return UIWidget.Pivot.BottomLeft;
-			}
-			if (offset.y == 1f)
-			{
-				return UIWidget.Pivot.TopLeft;
-			}
+			if (offset.y == 0f) return UIWidget.Pivot.BottomLeft;
+			if (offset.y == 1f) return UIWidget.Pivot.TopLeft;
 			return UIWidget.Pivot.Left;
 		}
-		if (offset.x == 1f)
+		else if (offset.x == 1f)
 		{
-			if (offset.y == 0f)
-			{
-				return UIWidget.Pivot.BottomRight;
-			}
-			if (offset.y == 1f)
-			{
-				return UIWidget.Pivot.TopRight;
-			}
+			if (offset.y == 0f) return UIWidget.Pivot.BottomRight;
+			if (offset.y == 1f) return UIWidget.Pivot.TopRight;
 			return UIWidget.Pivot.Right;
 		}
-		if (offset.y == 0f)
+		else
 		{
-			return UIWidget.Pivot.Bottom;
+			if (offset.y == 0f) return UIWidget.Pivot.Bottom;
+			if (offset.y == 1f) return UIWidget.Pivot.Top;
+			return UIWidget.Pivot.Center;
 		}
-		if (offset.y == 1f)
-		{
-			return UIWidget.Pivot.Top;
-		}
-		return UIWidget.Pivot.Center;
 	}
 
-	public static void MoveWidget(UIRect w, float x, float y)
+	/// <summary>
+	/// Adjust the widget's position using the specified local delta coordinates.
+	/// </summary>
+
+	static public void MoveWidget (UIRect w, float x, float y) { MoveRect(w, x, y); }
+
+	/// <summary>
+	/// Adjust the rectangle's position using the specified local delta coordinates.
+	/// </summary>
+
+	static public void MoveRect (UIRect rect, float x, float y)
 	{
-		MoveRect(w, x, y);
+		int ix = Mathf.FloorToInt(x + 0.5f);
+		int iy = Mathf.FloorToInt(y + 0.5f);
+
+		Transform t = rect.cachedTransform;
+		t.localPosition += new Vector3(ix, iy);
+		int anchorCount = 0;
+
+		if (rect.leftAnchor.target)
+		{
+			++anchorCount;
+			rect.leftAnchor.absolute += ix;
+		}
+
+		if (rect.rightAnchor.target)
+		{
+			++anchorCount;
+			rect.rightAnchor.absolute += ix;
+		}
+
+		if (rect.bottomAnchor.target)
+		{
+			++anchorCount;
+			rect.bottomAnchor.absolute += iy;
+		}
+
+		if (rect.topAnchor.target)
+		{
+			++anchorCount;
+			rect.topAnchor.absolute += iy;
+		}
+
+#if UNITY_EDITOR
+		NGUITools.SetDirty(rect);
+#endif
+
+		// If all sides were anchored, we're done
+		if (anchorCount != 0) rect.UpdateAnchors();
 	}
 
-	public static void MoveRect(UIRect rect, float x, float y)
-	{
-		int num = Mathf.FloorToInt(x + 0.5f);
-		int num2 = Mathf.FloorToInt(y + 0.5f);
-		rect.cachedTransform.localPosition += new Vector3(num, num2);
-		int num3 = 0;
-		if ((bool)rect.leftAnchor.target)
-		{
-			num3++;
-			rect.leftAnchor.absolute += num;
-		}
-		if ((bool)rect.rightAnchor.target)
-		{
-			num3++;
-			rect.rightAnchor.absolute += num;
-		}
-		if ((bool)rect.bottomAnchor.target)
-		{
-			num3++;
-			rect.bottomAnchor.absolute += num2;
-		}
-		if ((bool)rect.topAnchor.target)
-		{
-			num3++;
-			rect.topAnchor.absolute += num2;
-		}
-		if (num3 != 0)
-		{
-			rect.UpdateAnchors();
-		}
-	}
+	/// <summary>
+	/// Given the specified dragged pivot point, adjust the widget's dimensions.
+	/// </summary>
 
-	public static void ResizeWidget(UIWidget w, UIWidget.Pivot pivot, float x, float y, int minWidth, int minHeight)
+	static public void ResizeWidget (UIWidget w, UIWidget.Pivot pivot, float x, float y, int minWidth, int minHeight)
 	{
 		ResizeWidget(w, pivot, x, y, 2, 2, 100000, 100000);
 	}
 
-	public static void ResizeWidget(UIWidget w, UIWidget.Pivot pivot, float x, float y, int minWidth, int minHeight, int maxWidth, int maxHeight)
+	/// <summary>
+	/// Given the specified dragged pivot point, adjust the widget's dimensions.
+	/// </summary>
+
+	static public void ResizeWidget (UIWidget w, UIWidget.Pivot pivot, float x, float y, int minWidth, int minHeight, int maxWidth, int maxHeight)
 	{
 		if (pivot == UIWidget.Pivot.Center)
 		{
-			int num = Mathf.RoundToInt(x - (float)w.width);
-			int num2 = Mathf.RoundToInt(y - (float)w.height);
-			num -= num & 1;
-			num2 -= num2 & 1;
-			if ((num | num2) != 0)
+			int diffX = Mathf.RoundToInt(x - w.width);
+			int diffY = Mathf.RoundToInt(y - w.height);
+
+			diffX = diffX - (diffX & 1);
+			diffY = diffY - (diffY & 1);
+
+			if ((diffX | diffY) != 0)
 			{
-				num >>= 1;
-				num2 >>= 1;
-				AdjustWidget(w, -num, -num2, num, num2, minWidth, minHeight);
+				diffX >>= 1;
+				diffY >>= 1;
+				AdjustWidget(w, -diffX, -diffY, diffX, diffY, minWidth, minHeight);
 			}
 			return;
 		}
-		Vector3 vector = new Vector3(x, y);
-		vector = Quaternion.Inverse(w.cachedTransform.localRotation) * vector;
+
+		Vector3 v = new Vector3(x, y);
+		v = Quaternion.Inverse(w.cachedTransform.localRotation) * v;
+
 		switch (pivot)
 		{
-		case UIWidget.Pivot.BottomLeft:
-			AdjustWidget(w, vector.x, vector.y, 0f, 0f, minWidth, minHeight, maxWidth, maxHeight);
+			case UIWidget.Pivot.BottomLeft:
+			AdjustWidget(w, v.x, v.y, 0, 0, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.Left:
-			AdjustWidget(w, vector.x, 0f, 0f, 0f, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.Left:
+			AdjustWidget(w, v.x, 0, 0, 0, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.TopLeft:
-			AdjustWidget(w, vector.x, 0f, 0f, vector.y, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.TopLeft:
+			AdjustWidget(w, v.x, 0, 0, v.y, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.Top:
-			AdjustWidget(w, 0f, 0f, 0f, vector.y, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.Top:
+			AdjustWidget(w, 0, 0, 0, v.y, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.TopRight:
-			AdjustWidget(w, 0f, 0f, vector.x, vector.y, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.TopRight:
+			AdjustWidget(w, 0, 0, v.x, v.y, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.Right:
-			AdjustWidget(w, 0f, 0f, vector.x, 0f, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.Right:
+			AdjustWidget(w, 0, 0, v.x, 0, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.BottomRight:
-			AdjustWidget(w, 0f, vector.y, vector.x, 0f, minWidth, minHeight, maxWidth, maxHeight);
+
+			case UIWidget.Pivot.BottomRight:
+			AdjustWidget(w, 0, v.y, v.x, 0, minWidth, minHeight, maxWidth, maxHeight);
 			break;
-		case UIWidget.Pivot.Bottom:
-			AdjustWidget(w, 0f, vector.y, 0f, 0f, minWidth, minHeight, maxWidth, maxHeight);
-			break;
-		case UIWidget.Pivot.Center:
+
+			case UIWidget.Pivot.Bottom:
+			AdjustWidget(w, 0, v.y, 0, 0, minWidth, minHeight, maxWidth, maxHeight);
 			break;
 		}
 	}
 
-	public static void AdjustWidget(UIWidget w, float left, float bottom, float right, float top)
+	/// <summary>
+	/// Adjust the widget's rectangle based on the specified modifier values.
+	/// </summary>
+
+	static public void AdjustWidget (UIWidget w, float left, float bottom, float right, float top)
 	{
 		AdjustWidget(w, left, bottom, right, top, 2, 2, 100000, 100000);
 	}
 
-	public static void AdjustWidget(UIWidget w, float left, float bottom, float right, float top, int minWidth, int minHeight)
+	/// <summary>
+	/// Adjust the widget's rectangle based on the specified modifier values.
+	/// </summary>
+
+	static public void AdjustWidget (UIWidget w, float left, float bottom, float right, float top, int minWidth, int minHeight)
 	{
 		AdjustWidget(w, left, bottom, right, top, minWidth, minHeight, 100000, 100000);
 	}
 
-	public static void AdjustWidget(UIWidget w, float left, float bottom, float right, float top, int minWidth, int minHeight, int maxWidth, int maxHeight)
+	/// <summary>
+	/// Adjust the widget's rectangle based on the specified modifier values.
+	/// </summary>
+
+	static public void AdjustWidget (UIWidget w, float left, float bottom, float right, float top,
+		int minWidth, int minHeight, int maxWidth, int maxHeight)
 	{
-		Vector2 pivotOffset = w.pivotOffset;
-		Transform cachedTransform = w.cachedTransform;
-		Quaternion localRotation = cachedTransform.localRotation;
-		int num = Mathf.FloorToInt(left + 0.5f);
-		int num2 = Mathf.FloorToInt(bottom + 0.5f);
-		int num3 = Mathf.FloorToInt(right + 0.5f);
-		int num4 = Mathf.FloorToInt(top + 0.5f);
-		if (pivotOffset.x == 0.5f && (num == 0 || num3 == 0))
+		Vector2 piv = w.pivotOffset;
+		Transform t = w.cachedTransform;
+		Quaternion rot = t.localRotation;
+
+		// We should be working with whole integers
+		int iLeft = Mathf.FloorToInt(left + 0.5f);
+		int iBottom = Mathf.FloorToInt(bottom + 0.5f);
+		int iRight = Mathf.FloorToInt(right + 0.5f);
+		int iTop = Mathf.FloorToInt(top + 0.5f);
+
+		// Centered pivot should mean having to perform even number adjustments
+		if (piv.x == 0.5f && (iLeft == 0 || iRight == 0))
 		{
-			num = num >> 1 << 1;
-			num3 = num3 >> 1 << 1;
+			iLeft = ((iLeft >> 1) << 1);
+			iRight = ((iRight >> 1) << 1);
 		}
-		if (pivotOffset.y == 0.5f && (num2 == 0 || num4 == 0))
+
+		if (piv.y == 0.5f && (iBottom == 0 || iTop == 0))
 		{
-			num2 = num2 >> 1 << 1;
-			num4 = num4 >> 1 << 1;
+			iBottom = ((iBottom >> 1) << 1);
+			iTop = ((iTop >> 1) << 1);
 		}
-		Vector3 vector = localRotation * new Vector3(num, num4);
-		Vector3 vector2 = localRotation * new Vector3(num3, num4);
-		Vector3 vector3 = localRotation * new Vector3(num, num2);
-		Vector3 vector4 = localRotation * new Vector3(num3, num2);
-		Vector3 vector5 = localRotation * new Vector3(num, 0f);
-		Vector3 vector6 = localRotation * new Vector3(num3, 0f);
-		Vector3 vector7 = localRotation * new Vector3(0f, num4);
-		Vector3 vector8 = localRotation * new Vector3(0f, num2);
-		Vector3 zero = Vector3.zero;
-		if (pivotOffset.x == 0f && pivotOffset.y == 1f)
+
+		// The widget's position (pivot point) uses a different coordinate system than
+		// other corners. This is a source of major PITA, and results in a lot of extra math.
+		Vector3 rotatedTL = rot * new Vector3(iLeft, iTop);
+		Vector3 rotatedTR = rot * new Vector3(iRight, iTop);
+		Vector3 rotatedBL = rot * new Vector3(iLeft, iBottom);
+		Vector3 rotatedBR = rot * new Vector3(iRight, iBottom);
+		Vector3 rotatedL = rot * new Vector3(iLeft, 0f);
+		Vector3 rotatedR = rot * new Vector3(iRight, 0f);
+		Vector3 rotatedT = rot * new Vector3(0f, iTop);
+		Vector3 rotatedB = rot * new Vector3(0f, iBottom);
+
+		Vector3 offset = Vector3.zero;
+
+		if (piv.x == 0f && piv.y == 1f)
 		{
-			zero.x = vector.x;
-			zero.y = vector.y;
+			offset.x = rotatedTL.x;
+			offset.y = rotatedTL.y;
 		}
-		else if (pivotOffset.x == 1f && pivotOffset.y == 0f)
+		else if (piv.x == 1f && piv.y == 0f)
 		{
-			zero.x = vector4.x;
-			zero.y = vector4.y;
+			offset.x = rotatedBR.x;
+			offset.y = rotatedBR.y;
 		}
-		else if (pivotOffset.x == 0f && pivotOffset.y == 0f)
+		else if (piv.x == 0f && piv.y == 0f)
 		{
-			zero.x = vector3.x;
-			zero.y = vector3.y;
+			offset.x = rotatedBL.x;
+			offset.y = rotatedBL.y;
 		}
-		else if (pivotOffset.x == 1f && pivotOffset.y == 1f)
+		else if (piv.x == 1f && piv.y == 1f)
 		{
-			zero.x = vector2.x;
-			zero.y = vector2.y;
+			offset.x = rotatedTR.x;
+			offset.y = rotatedTR.y;
 		}
-		else if (pivotOffset.x == 0f && pivotOffset.y == 0.5f)
+		else if (piv.x == 0f && piv.y == 0.5f)
 		{
-			zero.x = vector5.x + (vector7.x + vector8.x) * 0.5f;
-			zero.y = vector5.y + (vector7.y + vector8.y) * 0.5f;
+			offset.x = rotatedL.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = rotatedL.y + (rotatedT.y + rotatedB.y) * 0.5f;
 		}
-		else if (pivotOffset.x == 1f && pivotOffset.y == 0.5f)
+		else if (piv.x == 1f && piv.y == 0.5f)
 		{
-			zero.x = vector6.x + (vector7.x + vector8.x) * 0.5f;
-			zero.y = vector6.y + (vector7.y + vector8.y) * 0.5f;
+			offset.x = rotatedR.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = rotatedR.y + (rotatedT.y + rotatedB.y) * 0.5f;
 		}
-		else if (pivotOffset.x == 0.5f && pivotOffset.y == 1f)
+		else if (piv.x == 0.5f && piv.y == 1f)
 		{
-			zero.x = vector7.x + (vector5.x + vector6.x) * 0.5f;
-			zero.y = vector7.y + (vector5.y + vector6.y) * 0.5f;
+			offset.x = rotatedT.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			offset.y = rotatedT.y + (rotatedL.y + rotatedR.y) * 0.5f;
 		}
-		else if (pivotOffset.x == 0.5f && pivotOffset.y == 0f)
+		else if (piv.x == 0.5f && piv.y == 0f)
 		{
-			zero.x = vector8.x + (vector5.x + vector6.x) * 0.5f;
-			zero.y = vector8.y + (vector5.y + vector6.y) * 0.5f;
+			offset.x = rotatedB.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			offset.y = rotatedB.y + (rotatedL.y + rotatedR.y) * 0.5f;
 		}
-		else if (pivotOffset.x == 0.5f && pivotOffset.y == 0.5f)
+		else if (piv.x == 0.5f && piv.y == 0.5f)
 		{
-			zero.x = (vector5.x + vector6.x + vector7.x + vector8.x) * 0.5f;
-			zero.y = (vector7.y + vector8.y + vector5.y + vector6.y) * 0.5f;
+			offset.x = (rotatedL.x + rotatedR.x + rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = (rotatedT.y + rotatedB.y + rotatedL.y + rotatedR.y) * 0.5f;
 		}
+
 		minWidth = Mathf.Max(minWidth, w.minWidth);
 		minHeight = Mathf.Max(minHeight, w.minHeight);
-		int num5 = w.width + num3 - num;
-		int num6 = w.height + num4 - num2;
-		Vector3 zero2 = Vector3.zero;
-		int num7 = num5;
-		if (num5 < minWidth)
+
+		// Calculate the widget's width and height after the requested adjustments
+		int finalWidth = w.width + iRight - iLeft;
+		int finalHeight = w.height + iTop - iBottom;
+
+		// Now it's time to constrain the width and height so that they can't go below min values
+		Vector3 constraint = Vector3.zero;
+
+		int limitWidth = finalWidth;
+		if (finalWidth < minWidth) limitWidth = minWidth;
+		else if (finalWidth > maxWidth) limitWidth = maxWidth;
+
+		if (finalWidth != limitWidth)
 		{
-			num7 = minWidth;
+			if (iLeft != 0) constraint.x -= Mathf.Lerp(limitWidth - finalWidth, 0f, piv.x);
+			else constraint.x += Mathf.Lerp(0f, limitWidth - finalWidth, piv.x);
+			finalWidth = limitWidth;
 		}
-		else if (num5 > maxWidth)
+
+		int limitHeight = finalHeight;
+		if (finalHeight < minHeight) limitHeight = minHeight;
+		else if (finalHeight > maxHeight) limitHeight = maxHeight;
+
+		if (finalHeight != limitHeight)
 		{
-			num7 = maxWidth;
+			if (iBottom != 0) constraint.y -= Mathf.Lerp(limitHeight - finalHeight, 0f, piv.y);
+			else constraint.y += Mathf.Lerp(0f, limitHeight - finalHeight, piv.y);
+			finalHeight = limitHeight;
 		}
-		if (num5 != num7)
-		{
-			if (num != 0)
-			{
-				zero2.x -= Mathf.Lerp(num7 - num5, 0f, pivotOffset.x);
-			}
-			else
-			{
-				zero2.x += Mathf.Lerp(0f, num7 - num5, pivotOffset.x);
-			}
-			num5 = num7;
-		}
-		int num8 = num6;
-		if (num6 < minHeight)
-		{
-			num8 = minHeight;
-		}
-		else if (num6 > maxHeight)
-		{
-			num8 = maxHeight;
-		}
-		if (num6 != num8)
-		{
-			if (num2 != 0)
-			{
-				zero2.y -= Mathf.Lerp(num8 - num6, 0f, pivotOffset.y);
-			}
-			else
-			{
-				zero2.y += Mathf.Lerp(0f, num8 - num6, pivotOffset.y);
-			}
-			num6 = num8;
-		}
-		if (pivotOffset.x == 0.5f)
-		{
-			num5 = num5 >> 1 << 1;
-		}
-		if (pivotOffset.y == 0.5f)
-		{
-			num6 = num6 >> 1 << 1;
-		}
-		Vector3 vector10 = (cachedTransform.localPosition = cachedTransform.localPosition + zero + localRotation * zero2);
-		w.SetDimensions(num5, num6);
+
+		// Centered pivot requires power-of-two dimensions
+		if (piv.x == 0.5f) finalWidth  = ((finalWidth  >> 1) << 1);
+		if (piv.y == 0.5f) finalHeight = ((finalHeight >> 1) << 1);
+
+		// Update the position, width and height
+		Vector3 pos = t.localPosition + offset + rot * constraint;
+		t.localPosition = pos;
+		w.SetDimensions(finalWidth, finalHeight);
+
+		// If the widget is anchored, we should update the anchors as well
 		if (w.isAnchored)
 		{
-			cachedTransform = cachedTransform.parent;
-			float num9 = vector10.x - pivotOffset.x * (float)num5;
-			float num10 = vector10.y - pivotOffset.y * (float)num6;
-			if ((bool)w.leftAnchor.target)
-			{
-				w.leftAnchor.SetHorizontal(cachedTransform, num9);
-			}
-			if ((bool)w.rightAnchor.target)
-			{
-				w.rightAnchor.SetHorizontal(cachedTransform, num9 + (float)num5);
-			}
-			if ((bool)w.bottomAnchor.target)
-			{
-				w.bottomAnchor.SetVertical(cachedTransform, num10);
-			}
-			if ((bool)w.topAnchor.target)
-			{
-				w.topAnchor.SetVertical(cachedTransform, num10 + (float)num6);
-			}
+			t = t.parent;
+			float x = pos.x - piv.x * finalWidth;
+			float y = pos.y - piv.y * finalHeight;
+
+			if (w.leftAnchor.target) w.leftAnchor.SetHorizontal(t, x);
+			if (w.rightAnchor.target) w.rightAnchor.SetHorizontal(t, x + finalWidth);
+			if (w.bottomAnchor.target) w.bottomAnchor.SetVertical(t, y);
+			if (w.topAnchor.target) w.topAnchor.SetVertical(t, y + finalHeight);
 		}
+
+#if UNITY_EDITOR
+		NGUITools.SetDirty(w);
+#endif
+	}
+
+	/// <summary>
+	/// Adjust the specified value by DPI: height * 96 / DPI.
+	/// This will result in in a smaller value returned for higher pixel density devices.
+	/// </summary>
+
+	static public int AdjustByDPI (float height)
+	{
+		float dpi = Screen.dpi;
+
+		RuntimePlatform platform = Application.platform;
+
+		if (dpi == 0f)
+		{
+			dpi = (platform == RuntimePlatform.Android || platform == RuntimePlatform.IPhonePlayer) ? 160f : 96f;
+#if UNITY_BLACKBERRY
+			if (platform == RuntimePlatform.BB10Player) dpi = 160f;
+#elif UNITY_WP8 || UNITY_WP_8_1
+			if (platform == RuntimePlatform.WP8Player) dpi = 160f;
+#endif
+		}
+
+		int h = Mathf.RoundToInt(height * (96f / dpi));
+		if ((h & 1) == 1) ++h;
+		return h;
+	}
+
+	/// <summary>
+	/// Convert the specified position, making it relative to the specified object.
+	/// </summary>
+
+	static public Vector2 ScreenToPixels (Vector2 pos, Transform relativeTo)
+	{
+		int layer = relativeTo.gameObject.layer;
+		Camera cam = NGUITools.FindCameraForLayer(layer);
+
+		if (cam == null)
+		{
+			Debug.LogWarning("No camera found for layer " + layer);
+			return pos;
+		}
+
+		Vector3 wp = cam.ScreenToWorldPoint(pos);
+		return relativeTo.InverseTransformPoint(wp);
+	}
+
+	/// <summary>
+	/// Convert the specified position, making it relative to the specified object's parent.
+	/// Useful if you plan on positioning the widget using the specified value (think mouse cursor).
+	/// </summary>
+
+	static public Vector2 ScreenToParentPixels (Vector2 pos, Transform relativeTo)
+	{
+		int layer = relativeTo.gameObject.layer;
+		if (relativeTo.parent != null)
+			relativeTo = relativeTo.parent;
+
+		Camera cam = NGUITools.FindCameraForLayer(layer);
+
+		if (cam == null)
+		{
+			Debug.LogWarning("No camera found for layer " + layer);
+			return pos;
+		}
+
+		Vector3 wp = cam.ScreenToWorldPoint(pos);
+		return (relativeTo != null) ? relativeTo.InverseTransformPoint(wp) : wp;
+	}
+
+	/// <summary>
+	/// Convert the specified world point from one camera's world space to another, then make it relative to the specified transform.
+	/// You should use this function if you want to position a widget using some 3D point in space.
+	/// Pass your main camera for the "worldCam", and your UI camera for "uiCam", then the widget's transform for "relativeTo".
+	/// You can then assign the widget's localPosition to the returned value.
+	/// </summary>
+
+	static public Vector3 WorldToLocalPoint (Vector3 worldPos, Camera worldCam, Camera uiCam, Transform relativeTo)
+	{
+		worldPos = worldCam.WorldToViewportPoint(worldPos);
+		worldPos = uiCam.ViewportToWorldPoint(worldPos);
+		if (relativeTo == null) return worldPos;
+		relativeTo = relativeTo.parent;
+		if (relativeTo == null) return worldPos;
+		return relativeTo.InverseTransformPoint(worldPos);
+	}
+
+	/// <summary>
+	/// Helper function that can set the transform's position to be at the specified world position.
+	/// Ideal usage: positioning a UI element to be directly over a 3D point in space.
+	/// </summary>
+	/// <param name="worldPos">World position, visible by the worldCam</param>
+	/// <param name="worldCam">Camera that is able to see the worldPos</param>
+	/// <param name="myCam">Camera that is able to see the transform this function is called on</param>
+
+	static public void OverlayPosition (this Transform trans, Vector3 worldPos, Camera worldCam, Camera myCam)
+	{
+		worldPos = worldCam.WorldToViewportPoint(worldPos);
+		worldPos = myCam.ViewportToWorldPoint(worldPos);
+		Transform parent = trans.parent;
+		trans.localPosition = (parent != null) ? parent.InverseTransformPoint(worldPos) : worldPos;
+	}
+
+	/// <summary>
+	/// Helper function that can set the transform's position to be at the specified world position.
+	/// Ideal usage: positioning a UI element to be directly over a 3D point in space.
+	/// </summary>
+	/// <param name="worldPos">World position, visible by the worldCam</param>
+	/// <param name="worldCam">Camera that is able to see the worldPos</param>
+
+	static public void OverlayPosition (this Transform trans, Vector3 worldPos, Camera worldCam)
+	{
+		Camera myCam = NGUITools.FindCameraForLayer(trans.gameObject.layer);
+		if (myCam != null) trans.OverlayPosition(worldPos, worldCam, myCam);
+	}
+
+	/// <summary>
+	/// Helper function that can set the transform's position to be over the specified target transform.
+	/// Ideal usage: positioning a UI element to be directly over a 3D object in space.
+	/// </summary>
+	/// <param name="target">Target over which the transform should be positioned</param>
+
+	static public void OverlayPosition (this Transform trans, Transform target)
+	{
+		Camera myCam = NGUITools.FindCameraForLayer(trans.gameObject.layer);
+		Camera worldCam = NGUITools.FindCameraForLayer(target.gameObject.layer);
+		if (myCam != null && worldCam != null) trans.OverlayPosition(target.position, worldCam, myCam);
 	}
 }

@@ -1,205 +1,303 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
 
+/// <summary>
+/// This script, when attached to a panel turns it into a scroll view.
+/// You can then attach UIDragScrollView to colliders within to make it draggable.
+/// </summary>
+
+[ExecuteInEditMode]
 [RequireComponent(typeof(UIPanel))]
 [AddComponentMenu("NGUI/Interaction/Scroll View")]
-[ExecuteInEditMode]
 public class UIScrollView : MonoBehaviour
 {
+	static public BetterList<UIScrollView> list = new BetterList<UIScrollView>();
+
 	public enum Movement
 	{
-		Horizontal = 0,
-		Vertical = 1,
-		Unrestricted = 2,
-		Custom = 3
+		Horizontal,
+		Vertical,
+		Unrestricted,
+		Custom,
 	}
 
 	public enum DragEffect
 	{
-		None = 0,
-		Momentum = 1,
-		MomentumAndSpring = 2
+		None,
+		Momentum,
+		MomentumAndSpring,
 	}
 
 	public enum ShowCondition
 	{
-		Always = 0,
-		OnlyIfNeeded = 1,
-		WhenDragging = 2
+		Always,
+		OnlyIfNeeded,
+		WhenDragging,
 	}
 
-	public delegate void OnDragFinished();
+	public delegate void OnDragNotification ();
 
-	public static BetterList<UIScrollView> list = new BetterList<UIScrollView>();
+	/// <summary>
+	/// Type of movement allowed by the scroll view.
+	/// </summary>
 
-	public Movement movement;
+	public Movement movement = Movement.Horizontal;
+
+	/// <summary>
+	/// Effect to apply when dragging.
+	/// </summary>
 
 	public DragEffect dragEffect = DragEffect.MomentumAndSpring;
 
+	/// <summary>
+	/// Whether the dragging will be restricted to be within the scroll view's bounds.
+	/// </summary>
+
 	public bool restrictWithinPanel = true;
 
-	public bool disableDragIfFits;
+	/// <summary>
+	/// Whether the scroll view will execute its constrain within bounds logic on every drag operation.
+	/// </summary>
+
+	[Tooltip("Whether the scroll view will execute its constrain within bounds logic on every drag operation")]
+	public bool constrainOnDrag = false;
+
+	/// <summary>
+	/// Whether dragging will be disabled if the contents fit.
+	/// </summary>
+
+	public bool disableDragIfFits = false;
+
+	/// <summary>
+	/// Whether the drag operation will be started smoothly, or if if it will be precise (but will have a noticeable "jump").
+	/// </summary>
 
 	public bool smoothDragStart = true;
 
+	/// <summary>
+	/// Whether to use iOS drag emulation, where the content only drags at half the speed of the touch/mouse movement when the content edge is within the clipping area.
+	/// </summary>	
+	
 	public bool iOSDragEmulation = true;
+
+	/// <summary>
+	/// Effect the scroll wheel will have on the momentum.
+	/// </summary>
 
 	public float scrollWheelFactor = 0.25f;
 
+	/// <summary>
+	/// How much momentum gets applied when the press is released after dragging.
+	/// </summary>
+
 	public float momentumAmount = 35f;
+
+	/// <summary>
+	/// Strength of the spring dampening effect.
+	/// </summary>
+
+	public float dampenStrength = 9f;
+
+	/// <summary>
+	/// Horizontal scrollbar used for visualization.
+	/// </summary>
 
 	public UIProgressBar horizontalScrollBar;
 
+	/// <summary>
+	/// Vertical scrollbar used for visualization.
+	/// </summary>
+
 	public UIProgressBar verticalScrollBar;
+
+	/// <summary>
+	/// Condition that must be met for the scroll bars to become visible.
+	/// </summary>
 
 	public ShowCondition showScrollBars = ShowCondition.OnlyIfNeeded;
 
+	/// <summary>
+	/// Custom movement, if the 'movement' field is set to 'Custom'.
+	/// </summary>
+
 	public Vector2 customMovement = new Vector2(1f, 0f);
 
-	public UIWidget.Pivot contentPivot;
+	/// <summary>
+	/// Content's pivot point -- where it originates from by default.
+	/// </summary>
 
-	public OnDragFinished onDragFinished;
+	public UIWidget.Pivot contentPivot = UIWidget.Pivot.TopLeft;
 
-	[SerializeField]
-	[HideInInspector]
-	private Vector3 scale = new Vector3(1f, 0f, 0f);
+	/// <summary>
+	/// Event callback to trigger when the drag process begins.
+	/// </summary>
 
-	[HideInInspector]
-	[SerializeField]
-	private Vector2 relativePositionOnReset = Vector2.zero;
+	public OnDragNotification onDragStarted;
 
-	private Transform mTrans;
+	/// <summary>
+	/// Event callback to trigger when the drag process finished. Can be used for additional effects, such as centering on some object.
+	/// </summary>
 
-	private UIPanel mPanel;
+	public OnDragNotification onDragFinished;
 
-	private Plane mPlane;
+	/// <summary>
+	/// Event callback triggered when the scroll view is moving as a result of momentum in between of OnDragFinished and OnStoppedMoving.
+	/// </summary>
 
-	private Vector3 mLastPos;
+	public OnDragNotification onMomentumMove;
 
-	private bool mPressed;
+	/// <summary>
+	/// Event callback to trigger when the scroll view's movement ends.
+	/// </summary>
 
-	private Vector3 mMomentum = Vector3.zero;
+	public OnDragNotification onStoppedMoving;
 
-	private float mScroll;
+	// Deprecated functionality. Use 'movement' instead.
+	[HideInInspector][SerializeField] Vector3 scale = new Vector3(1f, 0f, 0f);
 
-	private Bounds mBounds;
+	// Deprecated functionality. Use 'contentPivot' instead.
+	[SerializeField][HideInInspector] Vector2 relativePositionOnReset = Vector2.zero;
 
-	private bool mCalculatedBounds;
+	protected Transform mTrans;
+	protected UIPanel mPanel;
+	protected Plane mPlane;
+	protected Vector3 mLastPos;
+	protected bool mPressed = false;
+	protected Vector3 mMomentum = Vector3.zero;
+	protected float mScroll = 0f;
+	protected Bounds mBounds;
+	protected bool mCalculatedBounds = false;
+	protected bool mShouldMove = false;
+	protected bool mIgnoreCallbacks = false;
+	protected int mDragID = -10;
+	protected Vector2 mDragStartOffset = Vector2.zero;
+	protected bool mDragStarted = false;
 
-	private bool mShouldMove;
+	/// <summary>
+	/// Panel that's being dragged.
+	/// </summary>
 
-	private bool mIgnoreCallbacks;
+	public UIPanel panel { get { return mPanel; } }
 
-	private int mDragID = -10;
+	/// <summary>
+	/// Whether the scroll view is being dragged.
+	/// </summary>
 
-	private Vector2 mDragStartOffset = Vector2.zero;
+	public bool isDragging { get { return mPressed && mDragStarted; } }
 
-	private bool mDragStarted;
+	/// <summary>
+	/// Calculate the bounds used by the widgets.
+	/// </summary>
 
-	public UIPanel panel
-	{
-		get
-		{
-			return mPanel;
-		}
-	}
-
-	public Bounds bounds
+	public virtual Bounds bounds
 	{
 		get
 		{
 			if (!mCalculatedBounds)
 			{
 				mCalculatedBounds = true;
-				mTrans = base.transform;
+				mTrans = transform;
 				mBounds = NGUIMath.CalculateRelativeWidgetBounds(mTrans, mTrans);
 			}
 			return mBounds;
 		}
 	}
 
+	/// <summary>
+	/// Whether the scroll view can move horizontally.
+	/// </summary>
+
 	public bool canMoveHorizontally
 	{
 		get
 		{
-			return movement == Movement.Horizontal || movement == Movement.Unrestricted || (movement == Movement.Custom && customMovement.x != 0f);
+			return movement == Movement.Horizontal ||
+				movement == Movement.Unrestricted ||
+				(movement == Movement.Custom && customMovement.x != 0f);
 		}
 	}
+
+	/// <summary>
+	/// Whether the scroll view can move vertically.
+	/// </summary>
 
 	public bool canMoveVertically
 	{
 		get
 		{
-			return movement == Movement.Vertical || movement == Movement.Unrestricted || (movement == Movement.Custom && customMovement.y != 0f);
+			return movement == Movement.Vertical ||
+				movement == Movement.Unrestricted ||
+				(movement == Movement.Custom && customMovement.y != 0f);
 		}
 	}
+
+	/// <summary>
+	/// Whether the scroll view should be able to move horizontally (contents don't fit).
+	/// </summary>
 
 	public virtual bool shouldMoveHorizontally
 	{
 		get
 		{
-			float num = bounds.size.x;
-			if (mPanel.clipping == UIDrawCall.Clipping.SoftClip)
-			{
-				num += mPanel.clipSoftness.x * 2f;
-			}
-			return num > mPanel.width;
+			float size = bounds.size.x;
+			if (mPanel.clipping == UIDrawCall.Clipping.SoftClip) size += mPanel.clipSoftness.x * 2f;
+			return Mathf.RoundToInt(size - mPanel.width) > 0;
 		}
 	}
+
+	/// <summary>
+	/// Whether the scroll view should be able to move vertically (contents don't fit).
+	/// </summary>
 
 	public virtual bool shouldMoveVertically
 	{
 		get
 		{
-			float num = bounds.size.y;
-			if (mPanel.clipping == UIDrawCall.Clipping.SoftClip)
-			{
-				num += mPanel.clipSoftness.y * 2f;
-			}
-			return num > mPanel.height;
+			float size = bounds.size.y;
+			if (mPanel.clipping == UIDrawCall.Clipping.SoftClip) size += mPanel.clipSoftness.y * 2f;
+			return Mathf.RoundToInt(size - mPanel.height) > 0;
 		}
 	}
+
+	/// <summary>
+	/// Whether the contents of the scroll view should actually be draggable depends on whether they currently fit or not.
+	/// </summary>
 
 	protected virtual bool shouldMove
 	{
 		get
 		{
-			if (!disableDragIfFits)
-			{
-				return true;
-			}
-			if (mPanel == null)
-			{
-				mPanel = GetComponent<UIPanel>();
-			}
-			Vector4 finalClipRegion = mPanel.finalClipRegion;
-			Bounds bounds = this.bounds;
-			float num = ((finalClipRegion.z != 0f) ? (finalClipRegion.z * 0.5f) : ((float)Screen.width));
-			float num2 = ((finalClipRegion.w != 0f) ? (finalClipRegion.w * 0.5f) : ((float)Screen.height));
+			if (!disableDragIfFits) return true;
+
+			if (mPanel == null) mPanel = GetComponent<UIPanel>();
+			Vector4 clip = mPanel.finalClipRegion;
+			Bounds b = bounds;
+
+			float hx = (clip.z == 0f) ? Screen.width  : clip.z * 0.5f;
+			float hy = (clip.w == 0f) ? Screen.height : clip.w * 0.5f;
+
 			if (canMoveHorizontally)
 			{
-				if (bounds.min.x < finalClipRegion.x - num)
-				{
-					return true;
-				}
-				if (bounds.max.x > finalClipRegion.x + num)
-				{
-					return true;
-				}
+				if (b.min.x + 0.001f < clip.x - hx) return true;
+				if (b.max.x - 0.001f > clip.x + hx) return true;
 			}
+
 			if (canMoveVertically)
 			{
-				if (bounds.min.y < finalClipRegion.y - num2)
-				{
-					return true;
-				}
-				if (bounds.max.y > finalClipRegion.y + num2)
-				{
-					return true;
-				}
+				if (b.min.y + 0.001f < clip.y - hy) return true;
+				if (b.max.y - 0.001f > clip.y + hy) return true;
 			}
 			return false;
 		}
 	}
+
+	/// <summary>
+	/// Current momentum, exposed just in case it's needed.
+	/// </summary>
 
 	public Vector3 currentMomentum
 	{
@@ -214,14 +312,19 @@ public class UIScrollView : MonoBehaviour
 		}
 	}
 
-	private void Awake()
+	/// <summary>
+	/// Cache the transform and the panel.
+	/// </summary>
+
+	void Awake ()
 	{
-		mTrans = base.transform;
+		mTrans = transform;
 		mPanel = GetComponent<UIPanel>();
+
 		if (mPanel.clipping == UIDrawCall.Clipping.None)
-		{
 			mPanel.clipping = UIDrawCall.Clipping.ConstrainButDontClip;
-		}
+		
+		// Auto-upgrade
 		if (movement != Movement.Custom && scale.sqrMagnitude > 0.001f)
 		{
 			if (scale.x == 1f && scale.y == 0f)
@@ -243,71 +346,94 @@ public class UIScrollView : MonoBehaviour
 				customMovement.y = scale.y;
 			}
 			scale = Vector3.zero;
+#if UNITY_EDITOR
+			NGUITools.SetDirty(this);
+#endif
 		}
+
+		// Auto-upgrade
 		if (contentPivot == UIWidget.Pivot.TopLeft && relativePositionOnReset != Vector2.zero)
 		{
 			contentPivot = NGUIMath.GetPivot(new Vector2(relativePositionOnReset.x, 1f - relativePositionOnReset.y));
 			relativePositionOnReset = Vector2.zero;
+#if UNITY_EDITOR
+			NGUITools.SetDirty(this);
+#endif
 		}
 	}
 
-	private void OnEnable()
+	[System.NonSerialized] bool mStarted = false;
+
+	void OnEnable ()
 	{
 		list.Add(this);
+		if (mStarted && Application.isPlaying) CheckScrollbars();
 	}
 
-	private void OnDisable()
+	void Start ()
 	{
-		list.Remove(this);
+		mStarted = true;
+		if (Application.isPlaying) CheckScrollbars();
 	}
 
-	private void Start()
+	void CheckScrollbars ()
 	{
-		if (Application.isPlaying)
+		if (horizontalScrollBar != null)
 		{
-			if (horizontalScrollBar != null)
-			{
-				EventDelegate.Add(horizontalScrollBar.onChange, OnScrollBar);
-				horizontalScrollBar.alpha = ((showScrollBars != 0 && !shouldMoveHorizontally) ? 0f : 1f);
-			}
-			if (verticalScrollBar != null)
-			{
-				EventDelegate.Add(verticalScrollBar.onChange, OnScrollBar);
-				verticalScrollBar.alpha = ((showScrollBars != 0 && !shouldMoveVertically) ? 0f : 1f);
-			}
+			EventDelegate.Add(horizontalScrollBar.onChange, OnScrollBar);
+			horizontalScrollBar.BroadcastMessage("CacheDefaultColor", SendMessageOptions.DontRequireReceiver);
+			horizontalScrollBar.alpha = ((showScrollBars == ShowCondition.Always) || shouldMoveHorizontally) ? 1f : 0f;
+		}
+
+		if (verticalScrollBar != null)
+		{
+			EventDelegate.Add(verticalScrollBar.onChange, OnScrollBar);
+			verticalScrollBar.BroadcastMessage("CacheDefaultColor", SendMessageOptions.DontRequireReceiver);
+			verticalScrollBar.alpha = ((showScrollBars == ShowCondition.Always) || shouldMoveVertically) ? 1f : 0f;
 		}
 	}
 
-	public bool RestrictWithinBounds(bool instant)
-	{
-		return RestrictWithinBounds(instant, true, true);
-	}
+	void OnDisable () { list.Remove(this); mPressed = false; }
 
-	public bool RestrictWithinBounds(bool instant, bool horizontal, bool vertical)
+	/// <summary>
+	/// Restrict the scroll view's contents to be within the scroll view's bounds.
+	/// </summary>
+
+	public bool RestrictWithinBounds (bool instant) { return RestrictWithinBounds(instant, true, true); }
+
+	/// <summary>
+	/// Restrict the scroll view's contents to be within the scroll view's bounds.
+	/// </summary>
+
+	public bool RestrictWithinBounds (bool instant, bool horizontal, bool vertical)
 	{
-		Bounds bounds = this.bounds;
-		Vector3 vector = mPanel.CalculateConstrainOffset(bounds.min, bounds.max);
-		if (!horizontal)
-		{
-			vector.x = 0f;
-		}
-		if (!vertical)
-		{
-			vector.y = 0f;
-		}
-		if (vector.magnitude > 1f)
+		if (mPanel == null) return false;
+
+		Bounds b = bounds;
+		Vector3 constraint = mPanel.CalculateConstrainOffset(b.min, b.max);
+
+		if (!horizontal) constraint.x = 0f;
+		if (!vertical) constraint.y = 0f;
+
+		if (constraint.sqrMagnitude > 0.1f)
 		{
 			if (!instant && dragEffect == DragEffect.MomentumAndSpring)
 			{
-				Vector3 pos = mTrans.localPosition + vector;
+				// Spring back into place
+				Vector3 pos = mTrans.localPosition + constraint;
 				pos.x = Mathf.Round(pos.x);
 				pos.y = Mathf.Round(pos.y);
-				SpringPanel.Begin(mPanel.gameObject, pos, 13f);
+				SpringPanel.Begin(mPanel.gameObject, pos, 8f);
 			}
 			else
 			{
-				MoveRelative(vector);
-				mMomentum = Vector3.zero;
+				// Jump back into place
+				MoveRelative(constraint);
+
+				// Clear the momentum in the constrained direction
+				if (Mathf.Abs(constraint.x) > 0.01f) mMomentum.x = 0;
+				if (Mathf.Abs(constraint.y) > 0.01f) mMomentum.y = 0;
+				if (Mathf.Abs(constraint.z) > 0.01f) mMomentum.z = 0;
 				mScroll = 0f;
 			}
 			return true;
@@ -315,21 +441,30 @@ public class UIScrollView : MonoBehaviour
 		return false;
 	}
 
-	public void DisableSpring()
+	/// <summary>
+	/// Disable the spring movement.
+	/// </summary>
+
+	public void DisableSpring ()
 	{
-		SpringPanel component = GetComponent<SpringPanel>();
-		if (component != null)
-		{
-			component.enabled = false;
-		}
+		SpringPanel sp = GetComponent<SpringPanel>();
+		if (sp != null) sp.enabled = false;
 	}
 
-	public virtual void UpdateScrollbars(bool recalculateBounds)
+	/// <summary>
+	/// Update the values of the associated scroll bars.
+	/// </summary>
+
+	public void UpdateScrollbars () { UpdateScrollbars(true); }
+
+	/// <summary>
+	/// Update the values of the associated scroll bars.
+	/// </summary>
+
+	public virtual void UpdateScrollbars (bool recalculateBounds)
 	{
-		if (mPanel == null)
-		{
-			return;
-		}
+		if (mPanel == null) return;
+
 		if (horizontalScrollBar != null || verticalScrollBar != null)
 		{
 			if (recalculateBounds)
@@ -337,56 +472,57 @@ public class UIScrollView : MonoBehaviour
 				mCalculatedBounds = false;
 				mShouldMove = shouldMove;
 			}
-			Bounds bounds = this.bounds;
-			Vector2 vector = bounds.min;
-			Vector2 vector2 = bounds.max;
-			if (horizontalScrollBar != null && vector2.x > vector.x)
+
+			Bounds b = bounds;
+			Vector2 bmin = b.min;
+			Vector2 bmax = b.max;
+
+			if (horizontalScrollBar != null && bmax.x > bmin.x)
 			{
-				Vector4 finalClipRegion = mPanel.finalClipRegion;
-				int num = Mathf.RoundToInt(finalClipRegion.z);
-				if (((uint)num & (true ? 1u : 0u)) != 0)
-				{
-					num--;
-				}
-				float f = (float)num * 0.5f;
-				f = Mathf.Round(f);
+				Vector4 clip = mPanel.finalClipRegion;
+				int intViewSize = Mathf.RoundToInt(clip.z);
+				if ((intViewSize & 1) != 0) intViewSize -= 1;
+				float halfViewSize = intViewSize * 0.5f;
+				halfViewSize = Mathf.Round(halfViewSize);
+
 				if (mPanel.clipping == UIDrawCall.Clipping.SoftClip)
-				{
-					f -= mPanel.clipSoftness.x;
-				}
-				float contentSize = vector2.x - vector.x;
-				float viewSize = f * 2f;
-				float x = vector.x;
-				float x2 = vector2.x;
-				float num2 = finalClipRegion.x - f;
-				float num3 = finalClipRegion.x + f;
-				x = num2 - x;
-				x2 -= num3;
-				UpdateScrollbars(horizontalScrollBar as UIScrollBar, x, x2, contentSize, viewSize, false);
+					halfViewSize -= mPanel.clipSoftness.x;
+
+				float contentSize = bmax.x - bmin.x;
+				float viewSize = halfViewSize * 2f;
+				float contentMin = bmin.x;
+				float contentMax = bmax.x;
+				float viewMin = clip.x - halfViewSize;
+				float viewMax = clip.x + halfViewSize;
+
+				contentMin = viewMin - contentMin;
+				contentMax = contentMax - viewMax;
+
+				UpdateScrollbars(horizontalScrollBar, contentMin, contentMax, contentSize, viewSize, false);
 			}
-			if (verticalScrollBar != null && vector2.y > vector.y)
+
+			if (verticalScrollBar != null && bmax.y > bmin.y)
 			{
-				Vector4 finalClipRegion2 = mPanel.finalClipRegion;
-				int num4 = Mathf.RoundToInt(finalClipRegion2.w);
-				if (((uint)num4 & (true ? 1u : 0u)) != 0)
-				{
-					num4--;
-				}
-				float f2 = (float)num4 * 0.5f;
-				f2 = Mathf.Round(f2);
+				Vector4 clip = mPanel.finalClipRegion;
+				int intViewSize = Mathf.RoundToInt(clip.w);
+				if ((intViewSize & 1) != 0) intViewSize -= 1;
+				float halfViewSize = intViewSize * 0.5f;
+				halfViewSize = Mathf.Round(halfViewSize);
+
 				if (mPanel.clipping == UIDrawCall.Clipping.SoftClip)
-				{
-					f2 -= mPanel.clipSoftness.y;
-				}
-				float contentSize2 = vector2.y - vector.y;
-				float viewSize2 = f2 * 2f;
-				float y = vector.y;
-				float y2 = vector2.y;
-				float num5 = finalClipRegion2.y - f2;
-				float num6 = finalClipRegion2.y + f2;
-				y = num5 - y;
-				y2 -= num6;
-				UpdateScrollbars(verticalScrollBar as UIScrollBar, y, y2, contentSize2, viewSize2, true);
+					halfViewSize -= mPanel.clipSoftness.y;
+
+				float contentSize = bmax.y - bmin.y;
+				float viewSize = halfViewSize * 2f;
+				float contentMin = bmin.y;
+				float contentMax = bmax.y;
+				float viewMin = clip.y - halfViewSize;
+				float viewMax = clip.y + halfViewSize;
+
+				contentMin = viewMin - contentMin;
+				contentMax = contentMax - viewMax;
+
+				UpdateScrollbars(verticalScrollBar, contentMin, contentMax, contentSize, viewSize, true);
 			}
 		}
 		else if (recalculateBounds)
@@ -395,357 +531,534 @@ public class UIScrollView : MonoBehaviour
 		}
 	}
 
-	private void UpdateScrollbars(UIScrollBar sb, float contentMin, float contentMax, float contentSize, float viewSize, bool inverted)
+	/// <summary>
+	/// Helper function used in UpdateScrollbars(float) function above.
+	/// </summary>
+
+	protected void UpdateScrollbars (UIProgressBar slider, float contentMin, float contentMax, float contentSize, float viewSize, bool inverted)
 	{
-		if (viewSize < contentSize)
-		{
-			contentMin = Mathf.Clamp01(contentMin / contentSize);
-			contentMax = Mathf.Clamp01(contentMax / contentSize);
-		}
-		else
-		{
-			contentMin = Mathf.Clamp01((0f - contentMin) / contentSize);
-			contentMax = Mathf.Clamp01((0f - contentMax) / contentSize);
-		}
+		if (slider == null) return;
+
 		mIgnoreCallbacks = true;
-		float num = contentMin + contentMax;
-		sb.value = (inverted ? ((!(num > 0.001f)) ? 0f : (1f - contentMin / num)) : ((!(num > 0.001f)) ? 1f : (contentMin / num)));
-		if (sb != null)
 		{
-			sb.barSize = 1f - num;
+			float contentPadding;
+
+			if (viewSize < contentSize)
+			{
+				contentMin = Mathf.Clamp01(contentMin / contentSize);
+				contentMax = Mathf.Clamp01(contentMax / contentSize);
+
+				contentPadding = contentMin + contentMax;
+				slider.value = inverted ? ((contentPadding > 0.001f) ? 1f - contentMin / contentPadding : 0f) :
+					((contentPadding > 0.001f) ? contentMin / contentPadding : 1f);
+			}
+			else
+			{
+				contentMin = Mathf.Clamp01(-contentMin / contentSize);
+				contentMax = Mathf.Clamp01(-contentMax / contentSize);
+
+				contentPadding = contentMin + contentMax;
+				slider.value = inverted ? ((contentPadding > 0.001f) ? 1f - contentMin / contentPadding : 0f) :
+					((contentPadding > 0.001f) ? contentMin / contentPadding : 1f);
+
+				if (contentSize > 0)
+				{
+					contentMin = Mathf.Clamp01(contentMin / contentSize);
+					contentMax = Mathf.Clamp01(contentMax / contentSize);
+					contentPadding = contentMin + contentMax;
+				}
+			}
+
+			UIScrollBar sb = slider as UIScrollBar;
+			if (sb != null) sb.barSize = 1f - contentPadding;
 		}
 		mIgnoreCallbacks = false;
 	}
 
-	public virtual void SetDragAmount(float x, float y, bool updateScrollbars)
+	/// <summary>
+	/// Changes the drag amount of the scroll view to the specified 0-1 range values.
+	/// (0, 0) is the top-left corner, (1, 1) is the bottom-right.
+	/// </summary>
+
+	public virtual void SetDragAmount (float x, float y, bool updateScrollbars)
 	{
-		if (mPanel == null)
-		{
-			mPanel = GetComponent<UIPanel>();
-		}
+		if (mPanel == null) mPanel = GetComponent<UIPanel>();
+
 		DisableSpring();
-		Bounds bounds = this.bounds;
-		if (bounds.min.x == bounds.max.x || bounds.min.y == bounds.max.y)
-		{
-			return;
-		}
-		Vector4 finalClipRegion = mPanel.finalClipRegion;
-		finalClipRegion.x = Mathf.Round(finalClipRegion.x);
-		finalClipRegion.y = Mathf.Round(finalClipRegion.y);
-		finalClipRegion.z = Mathf.Round(finalClipRegion.z);
-		finalClipRegion.w = Mathf.Round(finalClipRegion.w);
-		float num = finalClipRegion.z * 0.5f;
-		float num2 = finalClipRegion.w * 0.5f;
-		float num3 = bounds.min.x + num;
-		float num4 = bounds.max.x - num;
-		float num5 = bounds.min.y + num2;
-		float num6 = bounds.max.y - num2;
+
+		Bounds b = bounds;
+		if (b.min.x == b.max.x || b.min.y == b.max.y) return;
+
+		Vector4 clip = mPanel.finalClipRegion;
+
+		float hx = clip.z * 0.5f;
+		float hy = clip.w * 0.5f;
+		float left = b.min.x + hx;
+		float right = b.max.x - hx;
+		float bottom = b.min.y + hy;
+		float top = b.max.y - hy;
+
 		if (mPanel.clipping == UIDrawCall.Clipping.SoftClip)
 		{
-			num3 -= mPanel.clipSoftness.x;
-			num4 += mPanel.clipSoftness.x;
-			num5 -= mPanel.clipSoftness.y;
-			num6 += mPanel.clipSoftness.y;
+			left -= mPanel.clipSoftness.x;
+			right += mPanel.clipSoftness.x;
+			bottom -= mPanel.clipSoftness.y;
+			top += mPanel.clipSoftness.y;
 		}
-		float f = Mathf.Lerp(num3, num4, x);
-		float f2 = Mathf.Lerp(num6, num5, y);
-		f = Mathf.Round(f);
-		f2 = Mathf.Round(f2);
+
+		// Calculate the offset based on the scroll value
+		float ox = Mathf.Lerp(left, right, x);
+		float oy = Mathf.Lerp(top, bottom, y);
+
+		// Update the position
 		if (!updateScrollbars)
 		{
-			Vector3 localPosition = mTrans.localPosition;
-			if (canMoveHorizontally)
-			{
-				localPosition.x += finalClipRegion.x - f;
-			}
-			if (canMoveVertically)
-			{
-				localPosition.y += finalClipRegion.y - f2;
-			}
-			mTrans.localPosition = localPosition;
+			Vector3 pos = mTrans.localPosition;
+			if (canMoveHorizontally) pos.x += clip.x - ox;
+			if (canMoveVertically) pos.y += clip.y - oy;
+			mTrans.localPosition = pos;
 		}
-		if (canMoveHorizontally)
-		{
-			finalClipRegion.x = f;
-		}
-		if (canMoveVertically)
-		{
-			finalClipRegion.y = f2;
-		}
-		Vector4 baseClipRegion = mPanel.baseClipRegion;
-		mPanel.clipOffset = new Vector2(finalClipRegion.x - baseClipRegion.x, finalClipRegion.y - baseClipRegion.y);
-		if (updateScrollbars)
-		{
-			UpdateScrollbars(mDragID == -10);
-		}
+
+		if (canMoveHorizontally) clip.x = ox;
+		if (canMoveVertically) clip.y = oy;
+
+		// Update the clipping offset
+		Vector4 cr = mPanel.baseClipRegion;
+		mPanel.clipOffset = new Vector2(clip.x - cr.x, clip.y - cr.y);
+
+		// Update the scrollbars, reflecting this change
+		if (updateScrollbars) UpdateScrollbars(mDragID == -10);
 	}
+
+	/// <summary>
+	/// Manually invalidate the scroll view's bounds so that they update next time.
+	/// </summary>
+
+	public void InvalidateBounds () { mCalculatedBounds = false; }
+
+	/// <summary>
+	/// Reset the scroll view's position to the top-left corner.
+	/// It's recommended to call this function before AND after you re-populate the scroll view's contents (ex: switching window tabs).
+	/// Another option is to populate the scroll view's contents, reset its position, then call this function to reposition the clipping.
+	/// </summary>
 
 	[ContextMenu("Reset Clipping Position")]
 	public void ResetPosition()
 	{
 		if (NGUITools.GetActive(this))
 		{
+			// Invalidate the bounds
 			mCalculatedBounds = false;
-			Vector2 pivotOffset = NGUIMath.GetPivotOffset(contentPivot);
-			SetDragAmount(pivotOffset.x, 1f - pivotOffset.y, false);
-			SetDragAmount(pivotOffset.x, 1f - pivotOffset.y, true);
+			Vector2 pv = NGUIMath.GetPivotOffset(contentPivot);
+
+			// First move the position back to where it would be if the scroll bars got reset to zero
+			SetDragAmount(pv.x, 1f - pv.y, false);
+
+			// Next move the clipping area back and update the scroll bars
+			SetDragAmount(pv.x, 1f - pv.y, true);
 		}
 	}
 
-	public void UpdatePosition()
+	/// <summary>
+	/// Call this function after you adjust the scroll view's bounds if you want it to maintain the current scrolled position
+	/// </summary>
+
+	public void UpdatePosition ()
 	{
-		if (!mIgnoreCallbacks)
+		if (!mIgnoreCallbacks && (horizontalScrollBar != null || verticalScrollBar != null))
 		{
 			mIgnoreCallbacks = true;
 			mCalculatedBounds = false;
-			Vector2 pivotOffset = NGUIMath.GetPivotOffset(contentPivot);
-			float x = ((!(horizontalScrollBar != null)) ? pivotOffset.x : horizontalScrollBar.value);
-			float y = ((!(verticalScrollBar != null)) ? (1f - pivotOffset.y) : verticalScrollBar.value);
+			Vector2 pv = NGUIMath.GetPivotOffset(contentPivot);
+			float x = (horizontalScrollBar != null) ? horizontalScrollBar.value : pv.x;
+			float y = (verticalScrollBar != null) ? verticalScrollBar.value : 1f - pv.y;
 			SetDragAmount(x, y, false);
 			UpdateScrollbars(true);
 			mIgnoreCallbacks = false;
 		}
 	}
 
-	public void OnScrollBar()
+	/// <summary>
+	/// Triggered by the scroll bars when they change.
+	/// </summary>
+
+	public void OnScrollBar ()
 	{
 		if (!mIgnoreCallbacks)
 		{
 			mIgnoreCallbacks = true;
-			float x = ((!(horizontalScrollBar != null)) ? 0f : horizontalScrollBar.value);
-			float y = ((!(verticalScrollBar != null)) ? 0f : verticalScrollBar.value);
+			float x = (horizontalScrollBar != null) ? horizontalScrollBar.value : 0f;
+			float y = (verticalScrollBar != null) ? verticalScrollBar.value : 0f;
 			SetDragAmount(x, y, false);
 			mIgnoreCallbacks = false;
 		}
 	}
 
-	public virtual void MoveRelative(Vector3 relative)
+	/// <summary>
+	/// Move the scroll view by the specified local space amount.
+	/// </summary>
+
+	public virtual void MoveRelative (Vector3 relative)
 	{
 		mTrans.localPosition += relative;
-		Vector2 clipOffset = mPanel.clipOffset;
-		clipOffset.x -= relative.x;
-		clipOffset.y -= relative.y;
-		mPanel.clipOffset = clipOffset;
+		Vector2 co = mPanel.clipOffset;
+		co.x -= relative.x;
+		co.y -= relative.y;
+		mPanel.clipOffset = co;
+
+		// Update the scroll bars
 		UpdateScrollbars(false);
 	}
 
-	public void MoveAbsolute(Vector3 absolute)
+	/// <summary>
+	/// Move the scroll view by the specified world space amount.
+	/// </summary>
+
+	public void MoveAbsolute (Vector3 absolute)
 	{
-		Vector3 vector = mTrans.InverseTransformPoint(absolute);
-		Vector3 vector2 = mTrans.InverseTransformPoint(Vector3.zero);
-		MoveRelative(vector - vector2);
+		Vector3 a = mTrans.InverseTransformPoint(absolute);
+		Vector3 b = mTrans.InverseTransformPoint(Vector3.zero);
+		MoveRelative(a - b);
 	}
 
-	public void Press(bool pressed)
+	/// <summary>
+	/// Create a plane on which we will be performing the dragging.
+	/// </summary>
+
+	public void Press (bool pressed)
 	{
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+
 		if (smoothDragStart && pressed)
 		{
 			mDragStarted = false;
 			mDragStartOffset = Vector2.zero;
 		}
-		if (!base.enabled || !NGUITools.GetActive(base.gameObject))
-		{
-			return;
-		}
-		if (!pressed && mDragID == UICamera.currentTouchID)
-		{
-			mDragID = -10;
-		}
-		mCalculatedBounds = false;
-		mShouldMove = shouldMove;
-		if (!mShouldMove)
-		{
-			return;
-		}
-		mPressed = pressed;
-		if (pressed)
-		{
-			mMomentum = Vector3.zero;
-			mScroll = 0f;
-			DisableSpring();
-			mLastPos = UICamera.lastHit.point;
-			mPlane = new Plane(mTrans.rotation * Vector3.back, mLastPos);
-			Vector2 clipOffset = mPanel.clipOffset;
-			clipOffset.x = Mathf.Round(clipOffset.x);
-			clipOffset.y = Mathf.Round(clipOffset.y);
-			mPanel.clipOffset = clipOffset;
-			Vector3 localPosition = mTrans.localPosition;
-			localPosition.x = Mathf.Round(localPosition.x);
-			localPosition.y = Mathf.Round(localPosition.y);
-			mTrans.localPosition = localPosition;
-		}
-		else
-		{
-			if (restrictWithinPanel && mPanel.clipping != 0 && dragEffect == DragEffect.MomentumAndSpring)
-			{
-				RestrictWithinBounds(false, canMoveHorizontally, canMoveVertically);
-			}
-			if (onDragFinished != null)
-			{
-				onDragFinished();
-			}
-		}
-	}
 
-	public void Drag()
-	{
-		if (!base.enabled || !NGUITools.GetActive(base.gameObject) || !mShouldMove)
+		if (enabled && NGUITools.GetActive(gameObject))
 		{
-			return;
-		}
-		if (mDragID == -10)
-		{
-			mDragID = UICamera.currentTouchID;
-		}
-		UICamera.currentTouch.clickNotification = UICamera.ClickNotification.BasedOnDelta;
-		if (smoothDragStart && !mDragStarted)
-		{
-			mDragStarted = true;
-			mDragStartOffset = UICamera.currentTouch.totalDelta;
-		}
-		Ray ray = ((!smoothDragStart) ? UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos) : UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos - mDragStartOffset));
-		float enter = 0f;
-		if (!mPlane.Raycast(ray, out enter))
-		{
-			return;
-		}
-		Vector3 point = ray.GetPoint(enter);
-		Vector3 vector = point - mLastPos;
-		mLastPos = point;
-		if (vector.x != 0f || vector.y != 0f)
-		{
-			vector = mTrans.InverseTransformDirection(vector);
-			if (movement == Movement.Horizontal)
+			if (!pressed && mDragID == UICamera.currentTouchID) mDragID = -10;
+
+			mCalculatedBounds = false;
+			mShouldMove = shouldMove;
+			if (!mShouldMove) return;
+			mPressed = pressed;
+
+			if (pressed)
 			{
-				vector.y = 0f;
-				vector.z = 0f;
+				// Remove all momentum on press
+				mMomentum = Vector3.zero;
+				mScroll = 0f;
+
+				// Disable the spring movement
+				DisableSpring();
+
+				// Remember the hit position
+				mLastPos = UICamera.lastWorldPosition;
+
+				// Create the plane to drag along
+				mPlane = new Plane(mTrans.rotation * Vector3.back, mLastPos);
+
+				// Ensure that we're working with whole numbers, keeping everything pixel-perfect
+				Vector2 co = mPanel.clipOffset;
+				co.x = Mathf.Round(co.x);
+				co.y = Mathf.Round(co.y);
+				mPanel.clipOffset = co;
+
+				Vector3 v = mTrans.localPosition;
+				v.x = Mathf.Round(v.x);
+				v.y = Mathf.Round(v.y);
+				mTrans.localPosition = v;
+
+				if (!smoothDragStart)
+				{
+					mDragStarted = true;
+					mDragStartOffset = Vector2.zero;
+					if (onDragStarted != null) onDragStarted();
+				}
 			}
-			else if (movement == Movement.Vertical)
+			else if (centerOnChild)
 			{
-				vector.x = 0f;
-				vector.z = 0f;
-			}
-			else if (movement == Movement.Unrestricted)
-			{
-				vector.z = 0f;
+				if (mDragStarted && onDragFinished != null) onDragFinished();
+				centerOnChild.Recenter();
 			}
 			else
 			{
-				vector.Scale(customMovement);
+				if (mDragStarted && restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None)
+					RestrictWithinBounds(dragEffect == DragEffect.None, canMoveHorizontally, canMoveVertically);
+
+				if (mDragStarted && onDragFinished != null) onDragFinished();
+				if (!mShouldMove && onStoppedMoving != null)
+					onStoppedMoving();
 			}
-			vector = mTrans.TransformDirection(vector);
-		}
-		mMomentum = Vector3.Lerp(mMomentum, mMomentum + vector * (0.01f * momentumAmount), 0.67f);
-		if (!iOSDragEmulation)
-		{
-			MoveAbsolute(vector);
-		}
-		else if (mPanel.CalculateConstrainOffset(bounds.min, bounds.max).magnitude > 1f)
-		{
-			MoveAbsolute(vector * 0.5f);
-			mMomentum *= 0.5f;
-		}
-		else
-		{
-			MoveAbsolute(vector);
-		}
-		if (restrictWithinPanel && mPanel.clipping != 0 && dragEffect != DragEffect.MomentumAndSpring)
-		{
-			RestrictWithinBounds(true, canMoveHorizontally, canMoveVertically);
 		}
 	}
 
-	public void Scroll(float delta)
+	/// <summary>
+	/// Drag the object along the plane.
+	/// </summary>
+
+	public void Drag ()
 	{
-		if (base.enabled && NGUITools.GetActive(base.gameObject) && scrollWheelFactor != 0f)
+		if (!mPressed || UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+
+		if (enabled && NGUITools.GetActive(gameObject) && mShouldMove)
+		{
+			if (mDragID == -10) mDragID = UICamera.currentTouchID;
+			UICamera.currentTouch.clickNotification = UICamera.ClickNotification.BasedOnDelta;
+
+			// Prevents the drag "jump". Contributed by 'mixd' from the Tasharen forums.
+			if (smoothDragStart && !mDragStarted)
+			{
+				mDragStarted = true;
+				mDragStartOffset = UICamera.currentTouch.totalDelta;
+				if (onDragStarted != null) onDragStarted();
+			}
+
+			Ray ray = smoothDragStart ?
+				UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos - mDragStartOffset) :
+				UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos);
+
+			float dist = 0f;
+
+			if (mPlane.Raycast(ray, out dist))
+			{
+				Vector3 currentPos = ray.GetPoint(dist);
+				Vector3 offset = currentPos - mLastPos;
+				mLastPos = currentPos;
+
+				if (offset.x != 0f || offset.y != 0f || offset.z != 0f)
+				{
+					offset = mTrans.InverseTransformDirection(offset);
+
+					if (movement == Movement.Horizontal)
+					{
+						offset.y = 0f;
+						offset.z = 0f;
+					}
+					else if (movement == Movement.Vertical)
+					{
+						offset.x = 0f;
+						offset.z = 0f;
+					}
+					else if (movement == Movement.Unrestricted)
+					{
+						offset.z = 0f;
+					}
+					else
+					{
+						offset.Scale((Vector3)customMovement);
+					}
+					offset = mTrans.TransformDirection(offset);
+				}
+
+				// Adjust the momentum
+				if (dragEffect == DragEffect.None) mMomentum = Vector3.zero;
+				else mMomentum = Vector3.Lerp(mMomentum, mMomentum + offset * (0.01f * momentumAmount), 0.67f);
+
+				// Move the scroll view
+				if (!iOSDragEmulation || dragEffect != DragEffect.MomentumAndSpring)
+				{
+					MoveAbsolute(offset);
+				}
+				else
+				{
+					Vector3 constraint = mPanel.CalculateConstrainOffset(bounds.min, bounds.max);
+
+					if (movement == Movement.Horizontal)
+					{
+						constraint.y = 0f;
+					}
+					else if (movement == Movement.Vertical)
+					{
+						constraint.x = 0f;
+					}
+					else if (movement == Movement.Custom)
+					{
+						constraint.x *= customMovement.x;
+						constraint.y *= customMovement.y;
+					}
+
+					if (constraint.magnitude > 1f)
+					{
+						MoveAbsolute(offset * 0.5f);
+						mMomentum *= 0.5f;
+					}
+					else MoveAbsolute(offset);
+				}
+
+				// We want to constrain the UI to be within bounds
+				if (constrainOnDrag && restrictWithinPanel &&
+					mPanel.clipping != UIDrawCall.Clipping.None &&
+					dragEffect != DragEffect.MomentumAndSpring)
+				{
+					RestrictWithinBounds(true, canMoveHorizontally, canMoveVertically);
+				}
+			}
+		}
+	}
+
+	[HideInInspector]
+	public UICenterOnChild centerOnChild = null;
+
+	/// <summary>
+	/// If the object should support the scroll wheel, do it.
+	/// </summary>
+
+	public void Scroll (float delta)
+	{
+		if (enabled && NGUITools.GetActive(gameObject) && scrollWheelFactor != 0f)
 		{
 			DisableSpring();
-			mShouldMove = shouldMove;
-			if (Mathf.Sign(mScroll) != Mathf.Sign(delta))
-			{
-				mScroll = 0f;
-			}
+			mShouldMove |= shouldMove;
+			if (Mathf.Sign(mScroll) != Mathf.Sign(delta)) mScroll = 0f;
 			mScroll += delta * scrollWheelFactor;
 		}
 	}
 
-	private void LateUpdate()
+	/// <summary>
+	/// Apply the dragging momentum.
+	/// </summary>
+
+	void LateUpdate ()
 	{
-		if (!Application.isPlaying)
+		if (!Application.isPlaying) return;
+		float delta = RealTime.deltaTime;
+
+		// Fade the scroll bars if needed
+		if (showScrollBars != ShowCondition.Always && (verticalScrollBar || horizontalScrollBar))
 		{
-			return;
-		}
-		float deltaTime = RealTime.deltaTime;
-		if (showScrollBars != 0 && ((bool)verticalScrollBar || (bool)horizontalScrollBar))
-		{
-			bool flag = false;
-			bool flag2 = false;
+			bool vertical = false;
+			bool horizontal = false;
+
 			if (showScrollBars != ShowCondition.WhenDragging || mDragID != -10 || mMomentum.magnitude > 0.01f)
 			{
-				flag = shouldMoveVertically;
-				flag2 = shouldMoveHorizontally;
+				vertical = shouldMoveVertically;
+				horizontal = shouldMoveHorizontally;
 			}
-			if ((bool)verticalScrollBar)
+
+			if (verticalScrollBar)
 			{
 				float alpha = verticalScrollBar.alpha;
-				alpha += ((!flag) ? ((0f - deltaTime) * 3f) : (deltaTime * 6f));
+				alpha += vertical ? delta * 6f : -delta * 3f;
 				alpha = Mathf.Clamp01(alpha);
-				if (verticalScrollBar.alpha != alpha)
-				{
-					verticalScrollBar.alpha = alpha;
-				}
+				if (verticalScrollBar.alpha != alpha) verticalScrollBar.alpha = alpha;
 			}
-			if ((bool)horizontalScrollBar)
+
+			if (horizontalScrollBar)
 			{
-				float alpha2 = horizontalScrollBar.alpha;
-				alpha2 += ((!flag2) ? ((0f - deltaTime) * 3f) : (deltaTime * 6f));
-				alpha2 = Mathf.Clamp01(alpha2);
-				if (horizontalScrollBar.alpha != alpha2)
-				{
-					horizontalScrollBar.alpha = alpha2;
-				}
+				float alpha = horizontalScrollBar.alpha;
+				alpha += horizontal ? delta * 6f : -delta * 3f;
+				alpha = Mathf.Clamp01(alpha);
+				if (horizontalScrollBar.alpha != alpha) horizontalScrollBar.alpha = alpha;
 			}
 		}
-		if (mShouldMove && !mPressed)
+
+		if (!mShouldMove) return;
+
+		// Apply momentum
+		if (!mPressed)
 		{
-			if (movement == Movement.Horizontal)
+			if (mMomentum.magnitude > 0.0001f || Mathf.Abs(mScroll) > 0.0001f)
 			{
-				mMomentum -= mTrans.TransformDirection(new Vector3(mScroll * 0.05f, 0f, 0f));
-			}
-			else if (movement == Movement.Vertical)
-			{
-				mMomentum -= mTrans.TransformDirection(new Vector3(0f, mScroll * 0.05f, 0f));
-			}
-			else if (movement == Movement.Unrestricted)
-			{
-				mMomentum -= mTrans.TransformDirection(new Vector3(mScroll * 0.05f, mScroll * 0.05f, 0f));
+				if (movement == Movement.Horizontal)
+				{
+					mMomentum -= mTrans.TransformDirection(new Vector3(mScroll * 0.05f, 0f, 0f));
+				}
+				else if (movement == Movement.Vertical)
+				{
+					mMomentum -= mTrans.TransformDirection(new Vector3(0f, mScroll * 0.05f, 0f));
+				}
+				else if (movement == Movement.Unrestricted)
+				{
+					mMomentum -= mTrans.TransformDirection(new Vector3(mScroll * 0.05f, mScroll * 0.05f, 0f));
+				}
+				else
+				{
+					mMomentum -= mTrans.TransformDirection(new Vector3(
+						mScroll * customMovement.x * 0.05f,
+						mScroll * customMovement.y * 0.05f, 0f));
+				}
+				mScroll = NGUIMath.SpringLerp(mScroll, 0f, 20f, delta);
+
+				// Move the scroll view
+				Vector3 offset = NGUIMath.SpringDampen(ref mMomentum, dampenStrength, delta);
+				MoveAbsolute(offset);
+
+				// Restrict the contents to be within the scroll view's bounds
+				if (restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None)
+				{
+					if (NGUITools.GetActive(centerOnChild))
+					{
+						if (centerOnChild.nextPageThreshold != 0f)
+						{
+							mMomentum = Vector3.zero;
+							mScroll = 0f;
+						}
+						else centerOnChild.Recenter();
+					}
+					else
+					{
+						RestrictWithinBounds(false, canMoveHorizontally, canMoveVertically);
+					}
+				}
+
+				if (onMomentumMove != null)
+					onMomentumMove();
 			}
 			else
 			{
-				mMomentum -= mTrans.TransformDirection(new Vector3(mScroll * customMovement.x * 0.05f, mScroll * customMovement.y * 0.05f, 0f));
+				mScroll = 0f;
+				mMomentum = Vector3.zero;
+
+				SpringPanel sp = GetComponent<SpringPanel>();
+				if (sp != null && sp.enabled) return;
+
+				mShouldMove = false;
+				if (onStoppedMoving != null)
+					onStoppedMoving();
 			}
-			if (mMomentum.magnitude > 0.0001f)
-			{
-				mScroll = NGUIMath.SpringLerp(mScroll, 0f, 20f, deltaTime);
-				Vector3 absolute = NGUIMath.SpringDampen(ref mMomentum, 9f, deltaTime);
-				MoveAbsolute(absolute);
-				if (restrictWithinPanel && mPanel.clipping != 0)
-				{
-					RestrictWithinBounds(false, canMoveHorizontally, canMoveVertically);
-				}
-				if (mMomentum.magnitude < 0.0001f && onDragFinished != null)
-				{
-					onDragFinished();
-				}
-				return;
-			}
-			mScroll = 0f;
-			mMomentum = Vector3.zero;
 		}
 		else
 		{
+			// Dampen the momentum
 			mScroll = 0f;
+			NGUIMath.SpringDampen(ref mMomentum, 9f, delta);
 		}
-		NGUIMath.SpringDampen(ref mMomentum, 9f, deltaTime);
 	}
+
+	/// <summary>
+	/// Pan the scroll view.
+	/// </summary>
+
+	public void OnPan (Vector2 delta)
+	{
+		if (horizontalScrollBar != null) horizontalScrollBar.OnPan(delta);
+		if (verticalScrollBar != null) verticalScrollBar.OnPan(delta);
+
+		if (horizontalScrollBar == null && verticalScrollBar == null)
+		{
+			if (canMoveHorizontally) Scroll(delta.x);
+			else if (canMoveVertically) Scroll(delta.y);
+		}
+	}
+
+#if UNITY_EDITOR
+
+	/// <summary>
+	/// Draw a visible orange outline of the bounds.
+	/// </summary>
+
+	void OnDrawGizmos ()
+	{
+		if (mPanel != null)
+		{
+			if (!Application.isPlaying) mCalculatedBounds = false;
+			Bounds b = bounds;
+			Gizmos.matrix = transform.localToWorldMatrix;
+			Gizmos.color = new Color(1f, 0.4f, 0f);
+			Gizmos.DrawWireCube(new Vector3(b.center.x, b.center.y, b.min.z), new Vector3(b.size.x, b.size.y, 0f));
+		}
+	}
+#endif
 }

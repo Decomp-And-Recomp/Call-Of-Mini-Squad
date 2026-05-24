@@ -11,7 +11,7 @@ public class UtilUISoliderMapDrag : UIDragDropItem
 		lsMoveDelta.Clear();
 	}
 
-	protected override void OnDragDropMove(Vector3 delta)
+	protected override void OnDragDropMove(Vector2 delta)
 	{
 		SolidMapCameraControl.mInstance.MoveCamera(delta);
 	}

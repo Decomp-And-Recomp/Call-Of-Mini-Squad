@@ -1,86 +1,112 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
 
-[AddComponentMenu("NGUI/Internal/Spring Panel")]
+/// <summary>
+/// Similar to SpringPosition, but also moves the panel's clipping. Works in local coordinates.
+/// </summary>
+
 [RequireComponent(typeof(UIPanel))]
+[AddComponentMenu("NGUI/Internal/Spring Panel")]
 public class SpringPanel : MonoBehaviour
 {
-	public delegate void OnFinished();
+	static public SpringPanel current;
 
-	public static SpringPanel current;
+	/// <summary>
+	/// Target position to spring the panel to.
+	/// </summary>
 
 	public Vector3 target = Vector3.zero;
 
+	/// <summary>
+	/// Strength of the spring. The higher the value, the faster the movement.
+	/// </summary>
+
 	public float strength = 10f;
+
+	public delegate void OnFinished ();
+
+	/// <summary>
+	/// Delegate function to call when the operation finishes.
+	/// </summary>
 
 	public OnFinished onFinished;
 
-	private UIPanel mPanel;
+	UIPanel mPanel;
+	Transform mTrans;
+	UIScrollView mDrag;
 
-	private Transform mTrans;
+	/// <summary>
+	/// Cache the transform.
+	/// </summary>
 
-	private float mThreshold;
-
-	private UIScrollView mDrag;
-
-	private void Start()
+	void Start ()
 	{
 		mPanel = GetComponent<UIPanel>();
 		mDrag = GetComponent<UIScrollView>();
-		mTrans = base.transform;
+		mTrans = transform;
 	}
 
-	private void Update()
+	/// <summary>
+	/// Advance toward the target position.
+	/// </summary>
+
+	void Update ()
 	{
-		AdvanceTowardsPosition();
+	    AdvanceTowardsPosition();
 	}
 
-	protected virtual void AdvanceTowardsPosition()
+    /// <summary>
+    /// Advance toward the target position.
+	/// </summary>
+
+	protected virtual void AdvanceTowardsPosition ()
 	{
-		float deltaTime = RealTime.deltaTime;
-		if (mThreshold == 0f)
+		float delta = RealTime.deltaTime;
+
+		bool trigger = false;
+		Vector3 before = mTrans.localPosition;
+		Vector3 after = NGUIMath.SpringLerp(mTrans.localPosition, target, strength, delta);
+
+		if ((after - target).sqrMagnitude < 0.01f)
 		{
-			mThreshold = (target - mTrans.localPosition).magnitude * 0.005f;
-			mThreshold = Mathf.Max(mThreshold, 1E-05f);
+			after = target;
+			enabled = false;
+			trigger = true;
 		}
-		bool flag = false;
-		Vector3 localPosition = mTrans.localPosition;
-		Vector3 vector = NGUIMath.SpringLerp(mTrans.localPosition, target, strength, deltaTime);
-		if (mThreshold >= Vector3.Magnitude(vector - target))
-		{
-			vector = target;
-			base.enabled = false;
-			flag = true;
-		}
-		mTrans.localPosition = vector;
-		Vector3 vector2 = vector - localPosition;
-		Vector2 clipOffset = mPanel.clipOffset;
-		clipOffset.x -= vector2.x;
-		clipOffset.y -= vector2.y;
-		mPanel.clipOffset = clipOffset;
-		if (mDrag != null)
-		{
-			mDrag.UpdateScrollbars(false);
-		}
-		if (flag && onFinished != null)
+		mTrans.localPosition = after;
+
+		Vector3 offset = after - before;
+		Vector2 cr = mPanel.clipOffset;
+		cr.x -= offset.x;
+		cr.y -= offset.y;
+		mPanel.clipOffset = cr;
+
+		if (mDrag != null) mDrag.UpdateScrollbars(false);
+
+		if (trigger && onFinished != null)
 		{
 			current = this;
 			onFinished();
 			current = null;
 		}
-	}
+    }
 
-	public static SpringPanel Begin(GameObject go, Vector3 pos, float strength)
+	/// <summary>
+	/// Start the tweening process.
+	/// </summary>
+
+	static public SpringPanel Begin (GameObject go, Vector3 pos, float strength)
 	{
-		SpringPanel springPanel = go.GetComponent<SpringPanel>();
-		if (springPanel == null)
-		{
-			springPanel = go.AddComponent<SpringPanel>();
-		}
-		springPanel.target = pos;
-		springPanel.strength = strength;
-		springPanel.onFinished = null;
-		springPanel.mThreshold = 0f;
-		springPanel.enabled = true;
-		return springPanel;
+		SpringPanel sp = go.GetComponent<SpringPanel>();
+		if (sp == null) sp = go.AddComponent<SpringPanel>();
+		sp.target = pos;
+		sp.strength = strength;
+		sp.onFinished = null;
+		sp.enabled = true;
+		return sp;
 	}
 }

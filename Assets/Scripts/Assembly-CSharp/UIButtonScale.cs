@@ -1,83 +1,73 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Simple example script of how a button can be scaled visibly when the mouse hovers over it or it gets pressed.
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Button Scale")]
 public class UIButtonScale : MonoBehaviour
 {
 	public Transform tweenTarget;
-
 	public Vector3 hover = new Vector3(1.1f, 1.1f, 1.1f);
-
 	public Vector3 pressed = new Vector3(1.05f, 1.05f, 1.05f);
-
 	public float duration = 0.2f;
 
-	private Vector3 mScale;
+	Vector3 mScale;
+	bool mStarted = false;
 
-	private bool mStarted;
-
-	private void Start()
+	void Start ()
 	{
 		if (!mStarted)
 		{
 			mStarted = true;
-			if (tweenTarget == null)
-			{
-				tweenTarget = base.transform;
-			}
+			if (tweenTarget == null) tweenTarget = transform;
 			mScale = tweenTarget.localScale;
 		}
 	}
 
-	private void OnEnable()
-	{
-		if (mStarted)
-		{
-			OnHover(UICamera.IsHighlighted(base.gameObject));
-		}
-	}
+	void OnEnable () { if (mStarted) OnHover(UICamera.IsHighlighted(gameObject)); }
 
-	private void OnDisable()
+	void OnDisable ()
 	{
 		if (mStarted && tweenTarget != null)
 		{
-			TweenScale component = tweenTarget.GetComponent<TweenScale>();
-			if (component != null)
+			TweenScale tc = tweenTarget.GetComponent<TweenScale>();
+
+			if (tc != null)
 			{
-				component.value = mScale;
-				component.enabled = false;
+				tc.value = mScale;
+				tc.enabled = false;
 			}
 		}
 	}
 
-	private void OnPress(bool isPressed)
+	void OnPress (bool isPressed)
 	{
-		if (base.enabled)
+		if (enabled)
 		{
-			if (!mStarted)
-			{
-				Start();
-			}
-			TweenScale.Begin(tweenTarget.gameObject, duration, isPressed ? Vector3.Scale(mScale, pressed) : ((!UICamera.IsHighlighted(base.gameObject)) ? mScale : Vector3.Scale(mScale, hover))).method = UITweener.Method.EaseInOut;
+			if (!mStarted) Start();
+			TweenScale.Begin(tweenTarget.gameObject, duration, isPressed ? Vector3.Scale(mScale, pressed) :
+				(UICamera.IsHighlighted(gameObject) ? Vector3.Scale(mScale, hover) : mScale)).method = UITweener.Method.EaseInOut;
 		}
 	}
 
-	private void OnHover(bool isOver)
+	void OnHover (bool isOver)
 	{
-		if (base.enabled)
+		if (enabled)
 		{
-			if (!mStarted)
-			{
-				Start();
-			}
-			TweenScale.Begin(tweenTarget.gameObject, duration, (!isOver) ? mScale : Vector3.Scale(mScale, hover)).method = UITweener.Method.EaseInOut;
+			if (!mStarted) Start();
+			TweenScale.Begin(tweenTarget.gameObject, duration, isOver ? Vector3.Scale(mScale, hover) : mScale).method = UITweener.Method.EaseInOut;
 		}
 	}
 
-	private void OnSelect(bool isSelected)
+	void OnSelect (bool isSelected)
 	{
-		if (base.enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
-		{
+		if (enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
 			OnHover(isSelected);
-		}
 	}
 }

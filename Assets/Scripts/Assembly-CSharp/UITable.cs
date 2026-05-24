@@ -1,202 +1,317 @@
-using System.Collections.Generic;
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+using System.Collections.Generic;
+
+/// <summary>
+/// All children added to the game object with this script will be arranged into a table
+/// with rows and columns automatically adjusting their size to fit their content
+/// (think "table" tag in HTML).
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Table")]
 public class UITable : UIWidgetContainer
 {
+	public delegate void OnReposition ();
+
 	public enum Direction
 	{
-		Down = 0,
-		Up = 1
+		Down,
+		Up,
 	}
 
-	public delegate void OnReposition();
+	public enum Sorting
+	{
+		None,
+		Alphabetic,
+		Horizontal,
+		Vertical,
+		Custom,
+	}
 
-	public int columns;
+	/// <summary>
+	/// How many columns there will be before a new line is started. 0 means unlimited.
+	/// </summary>
 
-	public Direction direction;
+	public int columns = 0;
 
-	public bool sorted;
+	/// <summary>
+	/// Which way the new lines will be added.
+	/// </summary>
+
+	public Direction direction = Direction.Down;
+
+	/// <summary>
+	/// How to sort the grid's elements.
+	/// </summary>
+
+	public Sorting sorting = Sorting.None;
+
+	/// <summary>
+	/// Final pivot point for the table itself.
+	/// </summary>
+
+	public UIWidget.Pivot pivot = UIWidget.Pivot.TopLeft;
+
+	/// <summary>
+	/// Final pivot point for the table's content.
+	/// </summary>
+
+	public UIWidget.Pivot cellAlignment = UIWidget.Pivot.TopLeft;
+
+	/// <summary>
+	/// Whether inactive children will be discarded from the table's calculations.
+	/// </summary>
 
 	public bool hideInactive = true;
 
-	public bool keepWithinPanel;
+	/// <summary>
+	/// Whether the parent container will be notified of the table's changes.
+	/// </summary>
+
+	public bool keepWithinPanel = false;
+
+	/// <summary>
+	/// Padding around each entry, in pixels.
+	/// </summary>
 
 	public Vector2 padding = Vector2.zero;
 
+	/// <summary>
+	/// Delegate function that will be called when the table repositions its content.
+	/// </summary>
+
 	public OnReposition onReposition;
 
+	/// <summary>
+	/// Custom sort delegate, used when the sorting method is set to 'custom'.
+	/// </summary>
+
+	public System.Comparison<Transform> onCustomSort;
+
 	protected UIPanel mPanel;
+	protected bool mInitDone = false;
+	protected bool mReposition = false;
 
-	protected bool mInitDone;
+	/// <summary>
+	/// Reposition the children on the next Update().
+	/// </summary>
 
-	protected bool mReposition;
+	public bool repositionNow { set { if (value) { mReposition = true; enabled = true; } } }
 
-	protected List<Transform> mChildren = new List<Transform>();
+	/// <summary>
+	/// Get the current list of the grid's children.
+	/// </summary>
 
-	public bool repositionNow
+	public List<Transform> GetChildList ()
 	{
-		set
+		Transform myTrans = transform;
+		List<Transform> list = new List<Transform>();
+
+		for (int i = 0; i < myTrans.childCount; ++i)
 		{
-			if (value)
-			{
-				mReposition = true;
-				base.enabled = true;
-			}
+			Transform t = myTrans.GetChild(i);
+			if (!hideInactive || (t && NGUITools.GetActive(t.gameObject)))
+				list.Add(t);
 		}
+
+		// Sort the list using the desired sorting logic
+		if (sorting != Sorting.None)
+		{
+			if (sorting == Sorting.Alphabetic) list.Sort(UIGrid.SortByName);
+			else if (sorting == Sorting.Horizontal) list.Sort(UIGrid.SortHorizontal);
+			else if (sorting == Sorting.Vertical) list.Sort(UIGrid.SortVertical);
+			else if (onCustomSort != null) list.Sort(onCustomSort);
+			else Sort(list);
+		}
+		return list;
 	}
 
-	public List<Transform> children
-	{
-		get
-		{
-			if (mChildren.Count == 0)
-			{
-				Transform transform = base.transform;
-				mChildren.Clear();
-				for (int i = 0; i < transform.childCount; i++)
-				{
-					Transform child = transform.GetChild(i);
-					if ((bool)child && (bool)child.gameObject && (!hideInactive || NGUITools.GetActive(child.gameObject)))
-					{
-						mChildren.Add(child);
-					}
-				}
-				if (sorted)
-				{
-					Sort(mChildren);
-				}
-			}
-			return mChildren;
-		}
-	}
+	/// <summary>
+	/// Want your own custom sorting logic? Override this function.
+	/// </summary>
 
-	protected static int SortByName(Transform a, Transform b)
-	{
-		return string.Compare(a.name, b.name);
-	}
+	protected virtual void Sort (List<Transform> list) { list.Sort(UIGrid.SortByName); }
 
-	protected virtual void Sort(List<Transform> list)
-	{
-		list.Sort(SortByName);
-	}
+	/// <summary>
+	/// Position the grid's contents when the script starts.
+	/// </summary>
 
-	protected void RepositionVariableSize(List<Transform> children)
-	{
-		float num = 0f;
-		float num2 = 0f;
-		int num3 = ((columns <= 0) ? 1 : (children.Count / columns + 1));
-		int num4 = ((columns <= 0) ? children.Count : columns);
-		Bounds[,] array = new Bounds[num3, num4];
-		Bounds[] array2 = new Bounds[num4];
-		Bounds[] array3 = new Bounds[num3];
-		int num5 = 0;
-		int num6 = 0;
-		int i = 0;
-		for (int count = children.Count; i < count; i++)
-		{
-			Transform transform = children[i];
-			Bounds bounds = NGUIMath.CalculateRelativeWidgetBounds(transform, !hideInactive);
-			Vector3 localScale = transform.localScale;
-			bounds.min = Vector3.Scale(bounds.min, localScale);
-			bounds.max = Vector3.Scale(bounds.max, localScale);
-			array[num6, num5] = bounds;
-			array2[num5].Encapsulate(bounds);
-			array3[num6].Encapsulate(bounds);
-			if (++num5 >= columns && columns > 0)
-			{
-				num5 = 0;
-				num6++;
-			}
-		}
-		num5 = 0;
-		num6 = 0;
-		int j = 0;
-		for (int count2 = children.Count; j < count2; j++)
-		{
-			Transform transform2 = children[j];
-			Bounds bounds2 = array[num6, num5];
-			Bounds bounds3 = array2[num5];
-			Bounds bounds4 = array3[num6];
-			Vector3 localPosition = transform2.localPosition;
-			localPosition.x = num + bounds2.extents.x - bounds2.center.x;
-			localPosition.x += bounds2.min.x - bounds3.min.x + padding.x;
-			if (direction == Direction.Down)
-			{
-				localPosition.y = 0f - num2 - bounds2.extents.y - bounds2.center.y;
-				localPosition.y += (bounds2.max.y - bounds2.min.y - bounds4.max.y + bounds4.min.y) * 0.5f - padding.y;
-			}
-			else
-			{
-				localPosition.y = num2 + (bounds2.extents.y - bounds2.center.y);
-				localPosition.y -= (bounds2.max.y - bounds2.min.y - bounds4.max.y + bounds4.min.y) * 0.5f - padding.y;
-			}
-			num += bounds3.max.x - bounds3.min.x + padding.x * 2f;
-			transform2.localPosition = localPosition;
-			if (++num5 >= columns && columns > 0)
-			{
-				num5 = 0;
-				num6++;
-				num = 0f;
-				num2 += bounds4.size.y + padding.y * 2f;
-			}
-		}
-	}
-
-	[ContextMenu("Execute")]
-	public virtual void Reposition()
-	{
-		if (Application.isPlaying && !mInitDone && NGUITools.GetActive(this))
-		{
-			mReposition = true;
-			return;
-		}
-		if (!mInitDone)
-		{
-			Init();
-		}
-		mReposition = false;
-		Transform target = base.transform;
-		mChildren.Clear();
-		List<Transform> list = children;
-		if (list.Count > 0)
-		{
-			RepositionVariableSize(list);
-		}
-		if (keepWithinPanel && mPanel != null)
-		{
-			mPanel.ConstrainTargetToBounds(target, true);
-			UIScrollView component = mPanel.GetComponent<UIScrollView>();
-			if (component != null)
-			{
-				component.UpdateScrollbars(true);
-			}
-		}
-		if (onReposition != null)
-		{
-			onReposition();
-		}
-	}
-
-	protected virtual void Start()
+	protected virtual void Start ()
 	{
 		Init();
 		Reposition();
-		base.enabled = false;
+		enabled = false;
 	}
 
-	protected virtual void Init()
+	/// <summary>
+	/// Find the necessary components.
+	/// </summary>
+
+	protected virtual void Init ()
 	{
 		mInitDone = true;
-		mPanel = NGUITools.FindInParents<UIPanel>(base.gameObject);
+		mPanel = NGUITools.FindInParents<UIPanel>(gameObject);
 	}
 
-	protected virtual void LateUpdate()
+	/// <summary>
+	/// Is it time to reposition? Do so now.
+	/// </summary>
+
+	protected virtual void LateUpdate ()
 	{
-		if (mReposition)
+		if (mReposition) Reposition();
+		enabled = false;
+	}
+
+	/// <summary>
+	/// Reposition the content on inspector validation.
+	/// </summary>
+
+	void OnValidate () { if (!Application.isPlaying && NGUITools.GetActive(this)) Reposition(); }
+
+	/// <summary>
+	/// Positions the grid items, taking their own size into consideration.
+	/// </summary>
+
+	protected void RepositionVariableSize (List<Transform> children)
+	{
+		float xOffset = 0;
+		float yOffset = 0;
+
+		int cols = columns > 0 ? children.Count / columns + 1 : 1;
+		int rows = columns > 0 ? columns : children.Count;
+
+		Bounds[,] bounds = new Bounds[cols, rows];
+		Bounds[] boundsRows = new Bounds[rows];
+		Bounds[] boundsCols = new Bounds[cols];
+
+		int x = 0;
+		int y = 0;
+
+		for (int i = 0, imax = children.Count; i < imax; ++i)
 		{
-			Reposition();
+			Transform t = children[i];
+			Bounds b = NGUIMath.CalculateRelativeWidgetBounds(t, !hideInactive);
+
+			Vector3 scale = t.localScale;
+			b.min = Vector3.Scale(b.min, scale);
+			b.max = Vector3.Scale(b.max, scale);
+			bounds[y, x] = b;
+
+			boundsRows[x].Encapsulate(b);
+			boundsCols[y].Encapsulate(b);
+
+			if (++x >= columns && columns > 0)
+			{
+				x = 0;
+				++y;
+			}
 		}
-		base.enabled = false;
+
+		x = 0;
+		y = 0;
+
+		Vector2 po = NGUIMath.GetPivotOffset(cellAlignment);
+
+		for (int i = 0, imax = children.Count; i < imax; ++i)
+		{
+			Transform t = children[i];
+			Bounds b = bounds[y, x];
+			Bounds br = boundsRows[x];
+			Bounds bc = boundsCols[y];
+
+			Vector3 pos = t.localPosition;
+			pos.x = xOffset + b.extents.x - b.center.x;
+			pos.x -= Mathf.Lerp(0f, b.max.x - b.min.x - br.max.x + br.min.x, po.x) - padding.x;
+
+			if (direction == Direction.Down)
+			{
+				pos.y = -yOffset - b.extents.y - b.center.y;
+				pos.y += Mathf.Lerp(b.max.y - b.min.y - bc.max.y + bc.min.y, 0f, po.y) - padding.y;
+			}
+			else
+			{
+				pos.y = yOffset + b.extents.y - b.center.y;
+				pos.y -= Mathf.Lerp(0f, b.max.y - b.min.y - bc.max.y + bc.min.y, po.y) - padding.y;
+			}
+
+			xOffset += br.size.x + padding.x * 2f;
+
+			t.localPosition = pos;
+
+			if (++x >= columns && columns > 0)
+			{
+				x = 0;
+				++y;
+
+				xOffset = 0f;
+				yOffset += bc.size.y + padding.y * 2f;
+			}
+		}
+
+		// Apply the origin offset
+		if (pivot != UIWidget.Pivot.TopLeft)
+		{
+			po = NGUIMath.GetPivotOffset(pivot);
+
+			float fx, fy;
+
+			Bounds b = NGUIMath.CalculateRelativeWidgetBounds(transform);
+
+			fx = Mathf.Lerp(0f, b.size.x, po.x);
+			fy = Mathf.Lerp(-b.size.y, 0f, po.y);
+
+			Transform myTrans = transform;
+
+			for (int i = 0; i < myTrans.childCount; ++i)
+			{
+				Transform t = myTrans.GetChild(i);
+				SpringPosition sp = t.GetComponent<SpringPosition>();
+
+				if (sp != null)
+				{
+					sp.enabled = false;
+					sp.target.x -= fx;
+					sp.target.y -= fy;
+					sp.enabled = true;
+				}
+				else
+				{
+					Vector3 pos = t.localPosition;
+					pos.x -= fx;
+					pos.y -= fy;
+					t.localPosition = pos;
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Recalculate the position of all elements within the table, sorting them alphabetically if necessary.
+	/// </summary>
+
+	[ContextMenu("Execute")]
+	public virtual void Reposition ()
+	{
+		if (Application.isPlaying && !mInitDone && NGUITools.GetActive(this)) Init();
+
+		mReposition = false;
+		Transform myTrans = transform;
+		List<Transform> ch = GetChildList();
+		if (ch.Count > 0) RepositionVariableSize(ch);
+
+		if (keepWithinPanel && mPanel != null)
+		{
+			mPanel.ConstrainTargetToBounds(myTrans, true);
+			UIScrollView sv = mPanel.GetComponent<UIScrollView>();
+			if (sv != null) sv.UpdateScrollbars(true);
+		}
+
+		if (onReposition != null)
+			onReposition();
 	}
 }

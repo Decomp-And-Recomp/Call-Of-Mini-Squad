@@ -16,7 +16,7 @@ public class NGUIAndroidUIRoot : MonoBehaviour
 			int manualHeight = uIRoot.manualHeight;
 			if (Screen.height < 768)
 			{
-				uIRoot.scalingStyle = UIRoot.Scaling.FixedSizeOnMobiles;
+				uIRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
 				float num = Mathf.Max(Screen.width, Screen.height);
 				float num2 = Mathf.Min(Screen.width, Screen.height);
 				if (num / num2 > 1.5f)

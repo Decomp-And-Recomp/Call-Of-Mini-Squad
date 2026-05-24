@@ -1,109 +1,77 @@
-using System;
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Tween the object's local scale.
+/// </summary>
 
 [AddComponentMenu("NGUI/Tween/Tween Scale")]
 public class TweenScale : UITweener
 {
 	public Vector3 from = Vector3.one;
-
 	public Vector3 to = Vector3.one;
+	public bool updateTable = false;
 
-	public bool updateTable;
+	Transform mTrans;
+	UITable mTable;
 
-	private Transform mTrans;
+	public Transform cachedTransform { get { if (mTrans == null) mTrans = transform; return mTrans; } }
 
-	private UITable mTable;
+	public Vector3 value { get { return cachedTransform.localScale; } set { cachedTransform.localScale = value; } }
 
-	public Transform cachedTransform
-	{
-		get
-		{
-			if (mTrans == null)
-			{
-				mTrans = base.transform;
-			}
-			return mTrans;
-		}
-	}
+	[System.Obsolete("Use 'value' instead")]
+	public Vector3 scale { get { return this.value; } set { this.value = value; } }
 
-	public Vector3 value
-	{
-		get
-		{
-			return cachedTransform.localScale;
-		}
-		set
-		{
-			cachedTransform.localScale = value;
-		}
-	}
+	/// <summary>
+	/// Tween the value.
+	/// </summary>
 
-	[Obsolete("Use 'value' instead")]
-	public Vector3 scale
-	{
-		get
-		{
-			return value;
-		}
-		set
-		{
-			this.value = value;
-		}
-	}
-
-	protected override void OnUpdate(float factor, bool isFinished)
+	protected override void OnUpdate (float factor, bool isFinished)
 	{
 		value = from * (1f - factor) + to * factor;
-		if (!updateTable)
+
+		if (updateTable)
 		{
-			return;
-		}
-		if (mTable == null)
-		{
-			mTable = NGUITools.FindInParents<UITable>(base.gameObject);
 			if (mTable == null)
 			{
-				updateTable = false;
-				return;
+				mTable = NGUITools.FindInParents<UITable>(gameObject);
+				if (mTable == null) { updateTable = false; return; }
 			}
+			mTable.repositionNow = true;
 		}
-		mTable.repositionNow = true;
 	}
 
-	public static TweenScale Begin(GameObject go, float duration, Vector3 scale)
+	/// <summary>
+	/// Start the tweening operation.
+	/// </summary>
+
+	static public TweenScale Begin (GameObject go, float duration, Vector3 scale)
 	{
-		TweenScale tweenScale = UITweener.Begin<TweenScale>(go, duration);
-		tweenScale.from = tweenScale.value;
-		tweenScale.to = scale;
+		TweenScale comp = UITweener.Begin<TweenScale>(go, duration);
+		comp.from = comp.value;
+		comp.to = scale;
+
 		if (duration <= 0f)
 		{
-			tweenScale.Sample(1f, true);
-			tweenScale.enabled = false;
+			comp.Sample(1f, true);
+			comp.enabled = false;
 		}
-		return tweenScale;
+		return comp;
 	}
 
 	[ContextMenu("Set 'From' to current value")]
-	public override void SetStartToCurrentValue()
-	{
-		from = value;
-	}
+	public override void SetStartToCurrentValue () { from = value; }
 
 	[ContextMenu("Set 'To' to current value")]
-	public override void SetEndToCurrentValue()
-	{
-		to = value;
-	}
+	public override void SetEndToCurrentValue () { to = value; }
 
 	[ContextMenu("Assume value of 'From'")]
-	private void SetCurrentValueToStart()
-	{
-		value = from;
-	}
+	void SetCurrentValueToStart () { value = from; }
 
 	[ContextMenu("Assume value of 'To'")]
-	private void SetCurrentValueToEnd()
-	{
-		value = to;
-	}
+	void SetCurrentValueToEnd () { value = to; }
 }

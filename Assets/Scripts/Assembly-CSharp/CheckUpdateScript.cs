@@ -443,10 +443,10 @@ public class CheckUpdateScript : MonoBehaviour
 		}
 	}
 
-	public string GetNoticeServerInfo(string _url)
+	/*public string GetNoticeServerInfo(string _url)
 	{
 		string empty = string.Empty;
 		WWW wWW = NGUITools.OpenURL(_url);
 		return wWW.text;
-	}
+	}*/
 }

@@ -1,91 +1,97 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Plays the specified sound.
+/// </summary>
 
 [AddComponentMenu("NGUI/Interaction/Play Sound")]
 public class UIPlaySound : MonoBehaviour
 {
 	public enum Trigger
 	{
-		OnClick = 0,
-		OnMouseOver = 1,
-		OnMouseOut = 2,
-		OnPress = 3,
-		OnRelease = 4,
-		Custom = 5
+		OnClick,
+		OnMouseOver,
+		OnMouseOut,
+		OnPress,
+		OnRelease,
+		Custom,
+		OnEnable,
+		OnDisable,
 	}
 
 	public AudioClip audioClip;
+	public Trigger trigger = Trigger.OnClick;
 
-	public Trigger trigger;
+	[Range(0f, 1f)] public float volume = 1f;
+	[Range(0f, 2f)] public float pitch = 1f;
 
-	private bool mIsOver;
+	bool mIsOver = false;
 
-	[Range(0f, 1f)]
-	public float volume = 1f;
-
-	[Range(0f, 2f)]
-	public float pitch = 1f;
-
-	private void OnHover(bool isOver)
+	bool canPlay
 	{
-		if (!DataCenter.Save().PlaySound)
+		get
 		{
-			return;
+			if (!enabled) return false;
+			UIButton btn = GetComponent<UIButton>();
+			return (btn == null || btn.isEnabled);
 		}
+	}
+
+	void OnEnable ()
+	{
+		if (trigger == Trigger.OnEnable)
+			NGUITools.PlaySound(audioClip, volume, pitch);
+	}
+
+	void OnDisable ()
+	{
+		if (trigger == Trigger.OnDisable)
+			NGUITools.PlaySound(audioClip, volume, pitch);
+	}
+
+	void OnHover (bool isOver)
+	{
 		if (trigger == Trigger.OnMouseOver)
 		{
-			if (mIsOver == isOver)
-			{
-				return;
-			}
+			if (mIsOver == isOver) return;
 			mIsOver = isOver;
 		}
-		if (base.enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
-		{
+
+		if (canPlay && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
 			NGUITools.PlaySound(audioClip, volume, pitch);
-		}
 	}
 
-	private void OnPress(bool isPressed)
+	void OnPress (bool isPressed)
 	{
-		if (!DataCenter.Save().PlaySound)
-		{
-			return;
-		}
 		if (trigger == Trigger.OnPress)
 		{
-			if (mIsOver == isPressed)
-			{
-				return;
-			}
+			if (mIsOver == isPressed) return;
 			mIsOver = isPressed;
 		}
-		if (base.enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
-		{
+
+		if (canPlay && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
 			NGUITools.PlaySound(audioClip, volume, pitch);
-		}
 	}
 
-	private void OnClick()
+	void OnClick ()
 	{
-		if (DataCenter.Save().PlaySound && base.enabled && trigger == Trigger.OnClick)
-		{
+		if (canPlay && trigger == Trigger.OnClick)
 			NGUITools.PlaySound(audioClip, volume, pitch);
-		}
 	}
 
-	private void OnSelect(bool isSelected)
+	void OnSelect (bool isSelected)
 	{
-		if (DataCenter.Save().PlaySound && base.enabled && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
-		{
+		if (canPlay && (!isSelected || UICamera.currentScheme == UICamera.ControlScheme.Controller))
 			OnHover(isSelected);
-		}
 	}
 
-	public void Play()
+	public void Play ()
 	{
-		if (DataCenter.Save().PlaySound)
-		{
-			NGUITools.PlaySound(audioClip, volume, pitch);
-		}
+		NGUITools.PlaySound(audioClip, volume, pitch);
 	}
 }

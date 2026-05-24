@@ -1,113 +1,142 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Spring-like motion -- the farther away the object is from the target, the stronger the pull.
+/// </summary>
 
 [AddComponentMenu("NGUI/Tween/Spring Position")]
 public class SpringPosition : MonoBehaviour
 {
-	public delegate void OnFinished();
+	static public SpringPosition current;
 
-	public static SpringPosition current;
+	/// <summary>
+	/// Target position to tween to.
+	/// </summary>
 
 	public Vector3 target = Vector3.zero;
 
+	/// <summary>
+	/// Strength of the spring. The higher the value, the faster the movement.
+	/// </summary>
+
 	public float strength = 10f;
 
-	public bool worldSpace;
+	/// <summary>
+	/// Is the calculation done in world space or local space?
+	/// </summary>
 
-	public bool ignoreTimeScale;
+	public bool worldSpace = false;
 
-	public bool updateScrollView;
+	/// <summary>
+	/// Whether the time scale will be ignored. Generally UI components should set it to 'true'.
+	/// </summary>
+
+	public bool ignoreTimeScale = false;
+
+	/// <summary>
+	/// Whether the parent scroll view will be updated as the object moves.
+	/// </summary>
+
+	public bool updateScrollView = false;
+
+	public delegate void OnFinished ();
+
+	/// <summary>
+	/// Delegate to trigger when the spring finishes.
+	/// </summary>
 
 	public OnFinished onFinished;
 
-	[SerializeField]
-	[HideInInspector]
-	private GameObject eventReceiver;
+	// Deprecated functionality
+	[SerializeField][HideInInspector] GameObject eventReceiver = null;
+	[SerializeField][HideInInspector] public string callWhenFinished;
 
-	[HideInInspector]
-	[SerializeField]
-	public string callWhenFinished;
+	Transform mTrans;
+	float mThreshold = 0f;
+	UIScrollView mSv;
 
-	private Transform mTrans;
+	/// <summary>
+	/// Cache the transform.
+	/// </summary>
 
-	private float mThreshold;
-
-	private UIScrollView mSv;
-
-	private void Start()
+	void Start ()
 	{
-		mTrans = base.transform;
-		if (updateScrollView)
-		{
-			mSv = NGUITools.FindInParents<UIScrollView>(base.gameObject);
-		}
+		mTrans = transform;
+		if (updateScrollView) mSv = NGUITools.FindInParents<UIScrollView>(gameObject);
 	}
 
-	private void Update()
+	void OnEnable () { mThreshold = 0f; }
+
+	/// <summary>
+	/// Advance toward the target position.
+	/// </summary>
+
+	void Update ()
 	{
-		float deltaTime = ((!ignoreTimeScale) ? Time.deltaTime : RealTime.deltaTime);
+		float delta = ignoreTimeScale ? RealTime.deltaTime : Time.deltaTime;
+
 		if (worldSpace)
 		{
-			if (mThreshold == 0f)
-			{
-				mThreshold = (target - mTrans.position).magnitude * 0.001f;
-			}
-			mTrans.position = NGUIMath.SpringLerp(mTrans.position, target, strength, deltaTime);
-			if (mThreshold >= (target - mTrans.position).magnitude)
+			if (mThreshold == 0f) mThreshold = (target - mTrans.position).sqrMagnitude * 0.001f;
+			mTrans.position = NGUIMath.SpringLerp(mTrans.position, target, strength, delta);
+
+			if (mThreshold >= (target - mTrans.position).sqrMagnitude)
 			{
 				mTrans.position = target;
 				NotifyListeners();
-				base.enabled = false;
+				enabled = false;
 			}
 		}
 		else
 		{
-			if (mThreshold == 0f)
-			{
-				mThreshold = (target - mTrans.localPosition).magnitude * 0.001f;
-			}
-			mTrans.localPosition = NGUIMath.SpringLerp(mTrans.localPosition, target, strength, deltaTime);
-			if (mThreshold >= (target - mTrans.localPosition).magnitude)
+			if (mThreshold == 0f) mThreshold = (target - mTrans.localPosition).sqrMagnitude * 0.00001f;
+			mTrans.localPosition = NGUIMath.SpringLerp(mTrans.localPosition, target, strength, delta);
+
+			if (mThreshold >= (target - mTrans.localPosition).sqrMagnitude)
 			{
 				mTrans.localPosition = target;
 				NotifyListeners();
-				base.enabled = false;
+				enabled = false;
 			}
 		}
-		if (mSv != null)
-		{
-			mSv.UpdateScrollbars(true);
-		}
+
+		// Ensure that the scroll bars remain in sync
+		if (mSv != null) mSv.UpdateScrollbars(true);
 	}
 
-	private void NotifyListeners()
+	/// <summary>
+	/// Notify all finished event listeners.
+	/// </summary>
+
+	void NotifyListeners ()
 	{
 		current = this;
-		if (onFinished != null)
-		{
-			onFinished();
-		}
+
+		if (onFinished != null) onFinished();
+
 		if (eventReceiver != null && !string.IsNullOrEmpty(callWhenFinished))
-		{
 			eventReceiver.SendMessage(callWhenFinished, this, SendMessageOptions.DontRequireReceiver);
-		}
+
 		current = null;
 	}
 
-	public static SpringPosition Begin(GameObject go, Vector3 pos, float strength)
+	/// <summary>
+	/// Start the tweening process.
+	/// </summary>
+
+	static public SpringPosition Begin (GameObject go, Vector3 pos, float strength)
 	{
-		SpringPosition springPosition = go.GetComponent<SpringPosition>();
-		if (springPosition == null)
-		{
-			springPosition = go.AddComponent<SpringPosition>();
-		}
-		springPosition.target = pos;
-		springPosition.strength = strength;
-		springPosition.onFinished = null;
-		if (!springPosition.enabled)
-		{
-			springPosition.mThreshold = 0f;
-			springPosition.enabled = true;
-		}
-		return springPosition;
+		SpringPosition sp = go.GetComponent<SpringPosition>();
+		if (sp == null) sp = go.AddComponent<SpringPosition>();
+		sp.target = pos;
+		sp.strength = strength;
+		sp.onFinished = null;
+		if (!sp.enabled) sp.enabled = true;
+		return sp;
 	}
 }

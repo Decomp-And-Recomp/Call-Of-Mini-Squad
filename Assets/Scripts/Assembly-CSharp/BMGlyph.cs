@@ -1,51 +1,52 @@
-using System;
+﻿//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
+using UnityEngine;
 using System.Collections.Generic;
 
-[Serializable]
+/// <summary>
+/// Glyph structure used by BMFont. For more information see http://www.angelcode.com/products/bmfont/
+/// </summary>
+
+[System.Serializable]
 public class BMGlyph
 {
-	public int index;
-
-	public int x;
-
-	public int y;
-
-	public int width;
-
-	public int height;
-
-	public int offsetX;
-
-	public int offsetY;
-
-	public int advance;
-
-	public int channel;
-
+	public int index;	// Index of this glyph (used by BMFont)
+	public int x;		// Offset from the left side of the texture to the left side of the glyph
+	public int y;		// Offset from the top of the texture to the top of the glyph
+	public int width;	// Glyph's width in pixels
+	public int height;	// Glyph's height in pixels
+	public int offsetX;	// Offset to apply to the cursor's left position before drawing this glyph
+	public int offsetY; // Offset to apply to the cursor's top position before drawing this glyph
+	public int advance;	// How much to move the cursor after printing this character
+	public int channel;	// Channel mask (in most cases this will be 15 (RGBA, 1+2+4+8)
 	public List<int> kerning;
 
-	public int GetKerning(int previousChar)
+	/// <summary>
+	/// Retrieves the special amount by which to adjust the cursor position, given the specified previous character.
+	/// </summary>
+
+	public int GetKerning (int previousChar)
 	{
 		if (kerning != null && previousChar != 0)
 		{
-			int i = 0;
-			for (int count = kerning.Count; i < count; i += 2)
-			{
+			for (int i = 0, imax = kerning.Count; i < imax; i += 2)
 				if (kerning[i] == previousChar)
-				{
 					return kerning[i + 1];
-				}
-			}
 		}
 		return 0;
 	}
 
-	public void SetKerning(int previousChar, int amount)
+	/// <summary>
+	/// Add a new kerning entry to the character (or adjust an existing one).
+	/// </summary>
+
+	public void SetKerning (int previousChar, int amount)
 	{
-		if (kerning == null)
-		{
-			kerning = new List<int>();
-		}
+		if (kerning == null) kerning = new List<int>();
+
 		for (int i = 0; i < kerning.Count; i += 2)
 		{
 			if (kerning[i] == previousChar)
@@ -54,35 +55,37 @@ public class BMGlyph
 				return;
 			}
 		}
+
 		kerning.Add(previousChar);
 		kerning.Add(amount);
 	}
 
-	public void Trim(int xMin, int yMin, int xMax, int yMax)
+	/// <summary>
+	/// Trim the glyph, given the specified minimum and maximum dimensions in pixels.
+	/// </summary>
+
+	public void Trim (int xMin, int yMin, int xMax, int yMax)
 	{
-		int num = x + width;
-		int num2 = y + height;
+		int x1 = x + width;
+		int y1 = y + height;
+
 		if (x < xMin)
 		{
-			int num3 = xMin - x;
-			x += num3;
-			width -= num3;
-			offsetX += num3;
+			int offset = xMin - x;
+			x += offset;
+			width -= offset;
+			offsetX += offset;
 		}
+
 		if (y < yMin)
 		{
-			int num4 = yMin - y;
-			y += num4;
-			height -= num4;
-			offsetY += num4;
+			int offset = yMin - y;
+			y += offset;
+			height -= offset;
+			offsetY += offset;
 		}
-		if (num > xMax)
-		{
-			width -= num - xMax;
-		}
-		if (num2 > yMax)
-		{
-			height -= num2 - yMax;
-		}
+
+		if (x1 > xMax) width  -= x1 - xMax;
+		if (y1 > yMax) height -= y1 - yMax;
 	}
 }

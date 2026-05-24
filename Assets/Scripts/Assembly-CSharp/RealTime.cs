@@ -1,49 +1,79 @@
+//-------------------------------------------------
+//            NGUI: Next-Gen UI kit
+// Copyright © 2011-2017 Tasharen Entertainment Inc
+//-------------------------------------------------
+
 using UnityEngine;
+
+/// <summary>
+/// Time class has no timeScale-independent time. This class fixes that.
+/// </summary>
 
 public class RealTime : MonoBehaviour
 {
-	private static RealTime mInst;
+#if UNITY_4_3
+	static RealTime mInst;
 
-	private float mRealTime;
+	float mRealTime = 0f;
+	float mRealDelta = 0f;
 
-	private float mRealDelta;
+	/// <summary>
+	/// Real time since startup.
+	/// </summary>
 
-	public static float time
+	static public float time
 	{
 		get
 		{
-			if (mInst == null)
-			{
-				Spawn();
-			}
+ #if UNITY_EDITOR
+			if (!Application.isPlaying) return Time.realtimeSinceStartup;
+ #endif
+			if (mInst == null) Spawn();
 			return mInst.mRealTime;
 		}
 	}
 
-	public static float deltaTime
+	/// <summary>
+	/// Real delta time.
+	/// </summary>
+
+	static public float deltaTime
 	{
 		get
 		{
-			if (mInst == null)
-			{
-				Spawn();
-			}
+ #if UNITY_EDITOR
+			if (!Application.isPlaying) return 0f;
+ #endif
+			if (mInst == null) Spawn();
 			return mInst.mRealDelta;
 		}
 	}
 
-	private static void Spawn()
+	static void Spawn ()
 	{
-		GameObject gameObject = new GameObject("_RealTime");
-		Object.DontDestroyOnLoad(gameObject);
-		mInst = gameObject.AddComponent<RealTime>();
+		GameObject go = new GameObject("_RealTime");
+		DontDestroyOnLoad(go);
+		mInst = go.AddComponent<RealTime>();
 		mInst.mRealTime = Time.realtimeSinceStartup;
 	}
 
-	private void Update()
+	void Update ()
 	{
-		float realtimeSinceStartup = Time.realtimeSinceStartup;
-		mRealDelta = Mathf.Clamp01(realtimeSinceStartup - mRealTime);
-		mRealTime = realtimeSinceStartup;
+		float rt = Time.realtimeSinceStartup;
+		mRealDelta = Mathf.Clamp01(rt - mRealTime);
+		mRealTime = rt;
 	}
+#else
+	/// <summary>
+	/// Real time since startup.
+	/// </summary>
+
+	static public float time { get { return Time.unscaledTime; } }
+
+	/// <summary>
+	/// Real delta time.
+	/// </summary>
+
+	static public float deltaTime { get { return Time.unscaledDeltaTime; } }
+#endif
 }

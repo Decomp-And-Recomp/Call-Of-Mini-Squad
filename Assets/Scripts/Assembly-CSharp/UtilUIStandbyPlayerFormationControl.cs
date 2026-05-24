@@ -46,7 +46,7 @@ public class UtilUIStandbyPlayerFormationControl : UIDragDropItem
 		}
 	}
 
-	protected override void OnDragDropMove(Vector3 delta)
+	protected override void OnDragDropMove(Vector2 delta)
 	{
 		GameObject hoveredObject = UICamera.hoveredObject;
 		if (hoveredObject != null)
