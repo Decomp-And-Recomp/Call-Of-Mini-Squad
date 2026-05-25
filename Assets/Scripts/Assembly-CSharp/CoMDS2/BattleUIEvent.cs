@@ -2451,9 +2451,9 @@ namespace CoMDS2
 			BackgroundMusicManager.Instance().PlayBackgroundMusic(BackgroundMusicManager.MusicType.UI_BG);
 			if (DataCenter.Save().bNewUser)
 			{
-				//DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
-				//DataCenter.Save().BattleTutorialFinished = true;
-				Debug.LogError("eh??");
+				DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
+				DataCenter.Save().BattleTutorialFinished = true;
+				DataCenter.Save().bNewUser = false;
 				DataCenter.Save().CleanTeamSitePlayerData();
 			}
 			if (DataCenter.State().isEncounterLevel)

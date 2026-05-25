@@ -154,6 +154,10 @@ public class SaveData
 	public List<GameProgressData> worldNodes;
 
 	public AchievementSave achievements;
+
+	public bool battleTutorialFinished;
+
+	public bool bNewUser;
 }
 
 public class Currency

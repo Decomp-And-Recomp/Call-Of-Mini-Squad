@@ -37,6 +37,8 @@ namespace Zweronz.SavingSystem
 			TypeLoader.Load<CurrencyLoader>(loadObject.currency);
 			TypeLoader.Load<WorldNodeLoader>(loadObject.worldNodes);
 			TypeLoader.Load<AchievementLoader>(loadObject.achievements);
+			DataCenter.Save().BattleTutorialFinished = loadObject.battleTutorialFinished;
+			DataCenter.Save().bNewUser = loadObject.bNewUser;
 		}
 
 		public SaveLoader() {}

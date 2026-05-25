@@ -73,13 +73,7 @@ public class DataSave
 
 	private string m_sGameVersion = "1.0";
 
-	public bool bNewUser
-	{
-		get
-		{
-			return false;
-		}
-	}
+	public bool bNewUser { get; set; }
 
 	private int m_optionMusic;
 
@@ -107,13 +101,7 @@ public class DataSave
 
 	private int m_superRefreshMaker;
 
-	public bool BattleTutorialFinished
-	{
-		get
-		{
-			return true;
-		}
-	}
+	public bool BattleTutorialFinished { get; set; }
 
 	public bool tutorialChangeMode;
 
@@ -897,7 +885,7 @@ public class DataSave
 
 	public void ResetTutorial()
 	{
-		//BattleTutorialFinished = false;
+		BattleTutorialFinished = false;
 		tutorialChangeMode = false;
 	}
 
@@ -973,7 +961,7 @@ public class DataSave
 		xmlElement = (XmlElement)documentElement.GetElementsByTagName("Tutorail").Item(0);
 		if (xmlElement != null)
 		{
-			//BattleTutorialFinished = int.Parse(xmlElement.GetAttribute("BattleTutorial")) == 1;
+			BattleTutorialFinished = int.Parse(xmlElement.GetAttribute("BattleTutorial")) == 1;
 			tutorialChangeMode = int.Parse(xmlElement.GetAttribute("tutorialChangeMode")) == 1;
 		}
 		xmlElement = (XmlElement)documentElement.GetElementsByTagName("LastLoginTime").Item(0);

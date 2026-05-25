@@ -272,7 +272,7 @@ public class CheckUpdateScript : MonoBehaviour
 			if (!m_bKeyDown)
 			{
 				m_bKeyDown = true;
-				//DataCenter.Save().BattleTutorialFinished = !DataCenter.Save().bNewUser;
+				DataCenter.Save().BattleTutorialFinished = !DataCenter.Save().bNewUser;
 				if (DataCenter.Save().BattleTutorialFinished)
 				{
 					HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Get_WorldNodeList, null);

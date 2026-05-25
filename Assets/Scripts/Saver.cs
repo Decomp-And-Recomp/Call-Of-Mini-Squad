@@ -37,7 +37,9 @@ namespace Zweronz.SavingSystem
 	            teamSave = TypeSaver.Save<TeamSaver>() as TeamSave,
 	            currency = TypeSaver.Save<CurrencySaver>() as Currency,
 	            worldNodes = TypeSaver.Save<WorldNodeSaver>() as List<GameProgressData>,
-	            achievements = TypeSaver.Save<AchievementSaver>() as AchievementSave
+	            achievements = TypeSaver.Save<AchievementSaver>() as AchievementSave,
+	            battleTutorialFinished = DataCenter.Save().BattleTutorialFinished,
+	            bNewUser = DataCenter.Save().bNewUser
 	        };
 	    }
 	}

@@ -38,7 +38,9 @@ namespace Zweronz.SavingSystem
 					teamSave = DefaultCreator.Create<TeamDefaultCreator>().teamSave,
 					heroes = DefaultCreator.Create<HeroDefaultCreator>().playerData,
 					worldNodes = DefaultCreator.Create<WorldNodeDefaultCreator>().gameProgressData,
-					achievements = DefaultCreator.Create<AchievementDefaultCreator>().achievements
+					achievements = DefaultCreator.Create<AchievementDefaultCreator>().achievements,
+					battleTutorialFinished = false,
+					bNewUser = true
 				}
 			};
 		}
