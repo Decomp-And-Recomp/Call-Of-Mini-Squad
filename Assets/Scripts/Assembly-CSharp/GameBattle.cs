@@ -301,19 +301,19 @@ public class GameBattle : MonoBehaviour
 					{
 						if (GameState != State.DialogEnd)
 						{
-							DataCenter.State().battleTime = Time.realtimeSinceStartup - DataCenter.State().battleTime;
+							DataCenter.State().battleTime = Time.time - DataCenter.State().battleTime;
 							GameState = State.DialogEnd;
 							return;
 						}
 					}
 					else
 					{
-						DataCenter.State().battleTime = Time.realtimeSinceStartup - DataCenter.State().battleTime;
+						DataCenter.State().battleTime = Time.time - DataCenter.State().battleTime;
 					}
 				}
 				else
 				{
-					DataCenter.State().battleTime = Time.realtimeSinceStartup - DataCenter.State().battleTime;
+					DataCenter.State().battleTime = Time.time - DataCenter.State().battleTime;
 				}
 			}
 			m_gameState = value;
@@ -700,6 +700,34 @@ public class GameBattle : MonoBehaviour
 	public void OnDestroy()
 	{
 		Dispose();
+	}
+
+	private void OnApplicationFocus(bool hasFocus)
+	{
+		if (!hasFocus)
+		{
+			PauseWhenLeavingGame();
+		}
+	}
+
+	private void OnApplicationPause(bool paused)
+	{
+		if (paused)
+		{
+			PauseWhenLeavingGame();
+		}
+	}
+
+	private void PauseWhenLeavingGame()
+	{
+		if (Application.isEditor)
+		{
+			return;
+		}
+		if (GameState == State.Game)
+		{
+			GameState = State.Pause;
+		}
 	}
 
 	public void Initialze()

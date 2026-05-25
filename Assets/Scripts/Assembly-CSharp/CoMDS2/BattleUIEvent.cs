@@ -1219,7 +1219,7 @@ namespace CoMDS2
 						{
 							GameBattle.m_instance.IsPause = true;
 						}
-						DataCenter.State().battleTime = Time.realtimeSinceStartup;
+					DataCenter.State().battleTime = Time.time;
 					}
 					else
 					{
