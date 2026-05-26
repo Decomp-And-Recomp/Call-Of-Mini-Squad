@@ -45,17 +45,48 @@ public class DS2UIBattle : MonoBehaviour
 
 	public void Start()
 	{
+		if (!Application.isMobilePlatform)
+		{
+			TUIButtonJoystick[] leftSticks = UnityEngine.Object.FindObjectsOfType<TUIButtonJoystick>();
+			for (int i = 0; i < leftSticks.Length; i++)
+			{
+				if (leftSticks[i] != null)
+				{
+					leftSticks[i].gameObject.SetActive(false);
+				}
+			}
+			TUIButtonJoystickEx[] rightSticks = UnityEngine.Object.FindObjectsOfType<TUIButtonJoystickEx>();
+			for (int i = 0; i < rightSticks.Length; i++)
+			{
+				if (rightSticks[i] != null)
+				{
+					rightSticks[i].gameObject.SetActive(false);
+				}
+			}
+			if (gameObject.GetComponent<PCInputController>() == null)
+			{
+				gameObject.AddComponent<PCInputController>();
+			}
+			UICamera[] uiCameras = UnityEngine.Object.FindObjectsOfType<UICamera>();
+			for (int i = 0; i < uiCameras.Length; i++)
+			{
+				if (uiCameras[i] != null)
+				{
+					uiCameras[i].autoHideCursor = false;
+				}
+			}
+		}
 	}
 
 	public void Update()
 	{
-		if (GameBattle.s_bInputLocked || BattleUIEvent.s_anyButtonDown)
+		if (!Application.isMobilePlatform)
 		{
 			return;
 		}
-		if (!Application.isMobilePlatform)
+		if (GameBattle.s_bInputLocked || BattleUIEvent.s_anyButtonDown)
 		{
-			//right_lparam = Mathf.Atan2(Input.GetAxisRaw("StickY"), Input.GetAxisRaw("StickX"));
+			return;
 		}
 		if (DataCenter.Save().squadMode)
 		{

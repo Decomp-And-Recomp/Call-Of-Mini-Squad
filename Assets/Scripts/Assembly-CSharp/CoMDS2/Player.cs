@@ -740,73 +740,7 @@ namespace CoMDS2
 			{
 				return;
 			}
-			if (Application.platform != RuntimePlatform.IPhonePlayer)
-			{
-				DataCenter.State().lastLeftKeyDownTime = Time.realtimeSinceStartup;
-				Vector3 vector = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-				if (vector.x != 0f || vector.z != 0f)
-				{
-					if (!base.isFrozen && !base.isStuck)
-					{
-						SetMove(true, vector);
-						if (!MoveKeyDown)
-						{
-							MoveKeyDown = true;
-						}
-						if (!m_fire && FaceToMoveDirection && Vector3.Angle(FaceDirection, vector) < 10f)
-						{
-							FaceDirection = vector;
-							GetTransform().forward = FaceDirection;
-						}
-					}
-				}
-				else if (left_lparam != 0f || left_wparam != 0f)
-				{
-					if (!base.isFrozen && !base.isStuck)
-					{
-						if (m_left_lparam < 1f)
-						{
-							m_left_lparam += 0.1f;
-							if (m_left_lparam > 1f)
-							{
-								m_left_lparam = 1f;
-							}
-						}
-						else if (left_wparam < 1f && m_left_last_lparam != left_wparam)
-						{
-							m_left_lparam = left_wparam;
-						}
-						vector = new Vector3(Mathf.Cos(left_lparam), 0f, Mathf.Sin(left_lparam)) * m_left_lparam;
-						SetMove(true, vector);
-						m_left_last_lparam = left_wparam;
-						if (!MoveKeyDown)
-						{
-							MoveKeyDown = true;
-						}
-						if (!m_fire && FaceToMoveDirection && Vector3.Angle(FaceDirection, vector) < 10f)
-						{
-							FaceDirection = vector;
-							GetTransform().forward = FaceDirection;
-						}
-					}
-				}
-				else
-				{
-					m_left_lparam = 0f;
-					if (DataCenter.State().isPVPMode)
-					{
-						if (MoveKeyDown)
-						{
-							MoveKeyDown = false;
-						}
-					}
-					else
-					{
-						SetMove(false, FaceDirection);
-					}
-				}
-			}
-			else if (left_lparam != 0f)
+			if (left_lparam != 0f || left_wparam != 0f)
 			{
 				DataCenter.State().lastLeftKeyDownTime = Time.realtimeSinceStartup;
 				if (!base.isFrozen && !base.isStuck)
@@ -830,18 +764,27 @@ namespace CoMDS2
 					{
 						MoveKeyDown = true;
 					}
-				}
-			}
-			else if (DataCenter.State().isPVPMode)
-			{
-				if (MoveKeyDown)
-				{
-					MoveKeyDown = false;
+					if (!m_fire && FaceToMoveDirection && Vector3.Angle(FaceDirection, moveDirection) < 10f)
+					{
+						FaceDirection = moveDirection;
+						GetTransform().forward = FaceDirection;
+					}
 				}
 			}
 			else
 			{
-				SetMove(false, FaceDirection);
+				m_left_lparam = 0f;
+				if (DataCenter.State().isPVPMode)
+				{
+					if (MoveKeyDown)
+					{
+						MoveKeyDown = false;
+					}
+				}
+				else
+				{
+					SetMove(false, FaceDirection);
+				}
 			}
 			if (right_lparam != 0f)
 			{
@@ -1069,6 +1012,30 @@ namespace CoMDS2
 			GetModelTransform().rotation = Character.s_spawnTransform.rotation;
 			FaceDirection = GetModelTransform().forward;
 			SwitchFSM(GetAIState("Idle"));
+		}
+
+		public bool ManualReload()
+		{
+			if (!Alive() || base.isStuck || base.isFrozen || GameBattle.s_bInputLocked)
+			{
+				return false;
+			}
+			if (m_weapon == null || !m_weapon.NeedReload())
+			{
+				return false;
+			}
+			AIState currentAIState = GetCurrentAIState();
+			if (currentAIState.name == "Reload" || currentAIState.name == "Shift" || currentAIState.name == "SkillReady" || currentAIState.name == "Skill" || currentAIState.name == "Hurt")
+			{
+				return false;
+			}
+			m_checkReloadTime = 0f;
+			if (CurrentController)
+			{
+				m_weapon.PlayAudioReload();
+			}
+			SwitchFSM(GetAIState("Reload"));
+			return true;
 		}
 
 		public void Move(Vector3 move_dir)
