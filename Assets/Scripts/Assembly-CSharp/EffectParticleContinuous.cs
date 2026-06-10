@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EffectParticleContinuous : EffectControl
 {
-	private ParticleEmitter[] m_emitter;
+	// private ParticleEmitter[] m_emitter;
 
 	private ParticleSystem[] m_particleSystem;
 
@@ -24,6 +24,7 @@ public class EffectParticleContinuous : EffectControl
 
 	public void Awake()
 	{
+		/*
 		ParticleAnimator[] componentsInChildren = base.gameObject.GetComponentsInChildren<ParticleAnimator>(true);
 		for (int i = 0; i < componentsInChildren.Length; i++)
 		{
@@ -34,13 +35,19 @@ public class EffectParticleContinuous : EffectControl
 		{
 			m_emitter[j].emit = enableEmission;
 		}
+		*/
+
 		m_particleSystem = base.gameObject.GetComponentsInChildren<ParticleSystem>(true);
 		for (int k = 0; k < m_particleSystem.Length; k++)
 		{
-			m_particleSystem[k].playOnAwake = enableEmission;
-			m_particleSystem[k].loop = loop;
-			m_particleSystem[k].enableEmission = enableEmission;
+			var mainModule = m_particleSystem[k].main;
+			mainModule.playOnAwake = enableEmission;
+			mainModule.loop = loop;
+			// m_particleSystem[k].enableEmission = enableEmission;
+			var emissionModule = m_particleSystem[k].emission;
+			emissionModule.enabled = enableEmission;
 		}
+
 		m_animations = base.gameObject.GetComponentsInChildren<Animation>(true);
 		for (int l = 0; l < m_animations.Length; l++)
 		{
@@ -53,13 +60,19 @@ public class EffectParticleContinuous : EffectControl
 	public override void StartEmit(bool playAudio = true)
 	{
 		base.StartEmit();
+		/*
 		for (int i = 0; i < m_emitter.Length; i++)
 		{
 			m_emitter[i].emit = true;
 		}
+		*/
+
 		for (int j = 0; j < m_particleSystem.Length; j++)
 		{
-			m_particleSystem[j].enableEmission = true;
+			// m_particleSystem[j].enableEmission = true;
+			var emissionModule = m_particleSystem[j].emission;
+			emissionModule.enabled = true;
+
 			m_particleSystem[j].Play();
 		}
 		for (int k = 0; k < m_animations.Length; k++)
@@ -76,6 +89,7 @@ public class EffectParticleContinuous : EffectControl
 	{
 		if (!(GetComponent<TimerDestroy>() != null))
 		{
+			/*
 			if (m_emitter == null)
 			{
 				Awake();
@@ -84,9 +98,14 @@ public class EffectParticleContinuous : EffectControl
 			{
 				m_emitter[i].emit = enableEmission;
 			}
+			*/
+
 			for (int j = 0; j < m_particleSystem.Length; j++)
 			{
-				m_particleSystem[j].enableEmission = enableEmission;
+				// m_particleSystem[j].enableEmission = enableEmission;
+				var emissionModule = m_particleSystem[j].emission;
+				emissionModule.enabled = enableEmission;
+
 				m_particleSystem[j].Stop();
 				m_particleSystem[j].Clear();
 			}
@@ -166,7 +185,8 @@ public class EffectParticleContinuous : EffectControl
 				ParticleSystem[] array = m_particleSystem;
 				foreach (ParticleSystem particleSystem in array)
 				{
-					num2 = ((!(particleSystem.duration > num2)) ? num2 : particleSystem.duration);
+					var mainModule = particleSystem.main;
+					num2 = ((!(mainModule.duration > num2)) ? num2 : mainModule.duration);
 				}
 				m_maxTime = num2;
 			}
@@ -189,7 +209,10 @@ public class EffectParticleContinuous : EffectControl
 		ParticleSystem[] array2 = m_particleSystem;
 		foreach (ParticleSystem particleSystem2 in array2)
 		{
-			particleSystem2.enableEmission = true;
+			// particleSystem2.enableEmission = true;
+			var emissionModule = particleSystem2.emission;
+			emissionModule.enabled = true;
+
 			particleSystem2.Play();
 		}
 		EffectAudioBehaviour component = base.gameObject.GetComponent<EffectAudioBehaviour>();

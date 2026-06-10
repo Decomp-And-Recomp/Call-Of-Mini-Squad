@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using UnityEngine;
 
 internal class PlayParticleEffect : MonoBehaviour
@@ -37,3 +37,4 @@ internal class PlayParticleEffect : MonoBehaviour
 		m_play_time = 0f;
 	}
 }
+*/

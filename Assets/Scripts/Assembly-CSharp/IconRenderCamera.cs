@@ -166,7 +166,7 @@ public class IconRenderCamera : MonoBehaviour
 	private GameObject GetObj(Transform trans)
 	{
 		GameObject result = null;
-		if (trans.GetChildCount() > 0)
+		if (trans.childCount > 0)
 		{
 			result = trans.GetChild(0).gameObject;
 		}

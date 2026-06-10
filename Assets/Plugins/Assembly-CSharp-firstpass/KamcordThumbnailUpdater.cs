@@ -13,7 +13,7 @@ public class KamcordThumbnailUpdater : MonoBehaviour
 
 	public float thumbnailToScreenRatio = 0.4f;
 
-	private GUITexture theGuiTexture;
+	//private GUITexture theGuiTexture;
 
 	private float playButtonToThumbnailRatio = 0.5f;
 
@@ -21,22 +21,22 @@ public class KamcordThumbnailUpdater : MonoBehaviour
 
 	public void EnableThumbnail(bool enable)
 	{
-		if (theGuiTexture != null)
+		//if (theGuiTexture != null)
 		{
-			theGuiTexture.enabled = enable;
+			//theGuiTexture.enabled = enable;
 		}
 	}
 
 	private void Start()
 	{
-		base.gameObject.AddComponent<GUITexture>();
+        /*base.gameObject.AddComponent<GUITexture>();
 		GUITexture[] components = base.gameObject.GetComponents<GUITexture>();
 		if (components.Length == 0)
 		{
 			throw new Exception("Kamcord script " + base.name + " needs to have at least one GUITexture component on the attached game object named: " + base.gameObject.name);
 		}
-		theGuiTexture = components[0];
-		Kamcord.videoThumbnailReadyAtFilePath += VideoThumbnailReadyAtFilePath;
+		theGuiTexture = components[0];*/
+        Kamcord.videoThumbnailReadyAtFilePath += VideoThumbnailReadyAtFilePath;
 		EnableThumbnail(false);
 	}
 
@@ -47,15 +47,15 @@ public class KamcordThumbnailUpdater : MonoBehaviour
 
 	private void Update()
 	{
-		if (!(theGuiTexture != null))
-		{
-			return;
-		}
+		//if (!(theGuiTexture != null))
+		//{
+		//	return;
+		//}
 		Touch[] touches = Input2.touches;
 		for (int i = 0; i < touches.Length; i++)
 		{
 			Touch touch = touches[i];
-			if (touch.phase == TouchPhase.Began && theGuiTexture.HitTest(touch.position))
+			//if (touch.phase == TouchPhase.Began && theGuiTexture.HitTest(touch.position))
 			{
 				Kamcord.ShowView();
 				break;
@@ -65,7 +65,7 @@ public class KamcordThumbnailUpdater : MonoBehaviour
 
 	private void OnGUI()
 	{
-		if (theGuiTexture != null && theGuiTexture.enabled)
+		//if (theGuiTexture != null && theGuiTexture.enabled)
 		{
 			GUI.Label(playButtonLocationAndSize, playButtonTexture);
 		}
@@ -99,8 +99,8 @@ public class KamcordThumbnailUpdater : MonoBehaviour
 			playButtonLocationAndSize = new Rect(playButtonAbsoluteX, playButtonAbsoluteY, playButtonWidth, playButtonHeight);
 			base.transform.position = Vector3.zero;
 			base.transform.localScale = Vector3.zero;
-			theGuiTexture.pixelInset = new Rect(absoluteX, absoluteY, absoluteWidth, absoluteHeight);
-			theGuiTexture.texture = loader.texture;
+			//theGuiTexture.pixelInset = new Rect(absoluteX, absoluteY, absoluteWidth, absoluteHeight);
+			//theGuiTexture.texture = loader.texture;
 			EnableThumbnail(true);
 		}
 	}
