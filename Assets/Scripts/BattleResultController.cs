@@ -12,17 +12,22 @@ public static class BattleResultController
 			return;
 		}
 
-		DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelStars[DataCenter.State().selectLevelMode][DataCenter.State().selectAreaNode] = (ushort)DataCenter.State().battleStars;
+		GameProgressData wpd = DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode);
+		Defined.LevelMode mode = DataCenter.State().selectLevelMode;
+		int areaNode = DataCenter.State().selectAreaNode;
+		ushort oldStars = wpd.levelStars[mode][areaNode];
+		ushort newStars = (ushort)DataCenter.State().battleStars;
+		if (newStars > oldStars)
+		{
+			wpd.levelStars[mode][areaNode] = newStars;
+		}
 
 		AchievementTracker.OnStageCleared();
 
-		if (DataCenter.State().selectAreaNode + 1 <= DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelProgress[(int)DataCenter.State().selectLevelMode])
+		if (newStars == 3 && oldStars < 3)
 		{
-			if (DataCenter.State().battleStars == 3)
-			{
-				DataCenter.Save().selectLevelDropData.extraCrystal = 5;
-				DataCenter.Save().Crystal += 5;
-			}
+			DataCenter.Save().selectLevelDropData.extraCrystal = 5;
+			DataCenter.Save().Crystal += 5;
 		}
 		else
 		{
@@ -52,11 +57,8 @@ public static class BattleResultController
 
 	public static int GetExtraCrystals()
 	{
-		if (DataCenter.State().selectAreaNode + 1 <= DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelProgress[(int)DataCenter.State().selectLevelMode])
-		{
-			return 5;
-		}
-
-		return 0;
+		return 5;
+		//LevelDropData drop = DataCenter.Save().selectLevelDropData;
+		//return (drop != null) ? drop.extraCrystal : 0;
 	}
 }

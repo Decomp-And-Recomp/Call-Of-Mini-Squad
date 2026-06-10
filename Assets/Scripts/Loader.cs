@@ -77,6 +77,7 @@ namespace Zweronz.SavingSystem
 
 			DataCenter.Save().SetTeamData(loadObject.teamData);
 			DataCenter.Save().teamAttributeSaveData = loadObject.teamAttributeSaveData;
+			TalentController.SyncDictionaries();
 		}
 
 		public TeamLoader() {}

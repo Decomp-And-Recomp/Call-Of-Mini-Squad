@@ -1,8 +1,4 @@
-using UnityEngine;
-using System;
 using System.Collections;
-using System.IO;
-using Newtonsoft.Json;
 using LitJson;
 
 public class ProtocolTeamGetGeniusListsInfo : Protocol
@@ -17,6 +13,11 @@ public class ProtocolTeamGetGeniusListsInfo : Protocol
 
 	public override int GetResponse(string response)
 	{
+		return 0;
+	}
+
+    /*public override int GetResponse(string response)
+	{
 		if (!Directory.Exists(Application.persistentDataPath + "/saves"))
 		{
 			Directory.CreateDirectory(Application.persistentDataPath + "/saves");
@@ -24,7 +25,7 @@ public class ProtocolTeamGetGeniusListsInfo : Protocol
 
 		string path = Application.persistentDataPath + "/saves/teamGeniusList.json";
 		string playerDataPath = Application.persistentDataPath + "/saves/playerData.json";
-			
+
 		//if (!File.Exists(path))
 		//{
 			File.WriteAllText(path, JsonConvert.SerializeObject(new DummyProtocol(), Formatting.Indented));
@@ -38,7 +39,7 @@ public class ProtocolTeamGetGeniusListsInfo : Protocol
 		}
 
 		ProtocolPlayerData.DummyProtocol playerDummyProtocol = JsonConvert.DeserializeObject<ProtocolPlayerData.DummyProtocol>(File.ReadAllText(playerDataPath));
-			
+
 		DataCenter.Save().teamAttributeSaveData = dummyProtocol.teamAttributeSaveData;
 
 		DataCenter.Save().Money = playerDummyProtocol.money;
@@ -65,5 +66,5 @@ public class ProtocolTeamGetGeniusListsInfo : Protocol
 		}
 
 		public TeamAttributeData[] geniusList, evolutionList;
-	}
+	}*/
 }

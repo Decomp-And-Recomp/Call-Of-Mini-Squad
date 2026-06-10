@@ -3,7 +3,21 @@ using LitJson;
 
 public class ProtocolTeamUnlockGenius : Protocol
 {
-	private int _index = -1;
+	public override string GetRequest()
+	{
+		Hashtable hashtable = new Hashtable();
+		hashtable["userId"] = DataCenter.Save().uuid;
+		hashtable["index"] = DataCenter.State().selectTalentIndex.ToString();
+		hashtable["loginCode"] = DataCenter.Save().loginCode;
+		return JsonMapper.ToJson(hashtable);
+	}
+
+	public override int GetResponse(string response)
+	{
+		return TalentController.TryUnlock(DataCenter.State().selectTalentIndex);
+	}
+
+    /*private int _index = -1;
 
 	public override string GetRequest()
 	{
@@ -35,5 +49,5 @@ public class ProtocolTeamUnlockGenius : Protocol
 		{
 			return -1;
 		}
-	}
+	}*/
 }

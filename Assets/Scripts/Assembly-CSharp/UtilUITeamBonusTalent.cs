@@ -142,13 +142,13 @@ public class UtilUITeamBonusTalent : MonoBehaviour
 		else if (info.teamAttributeData.state == Defined.ItemState.Purchase)
 		{
 			info.ui.UpdateBackground("pic_decal10");
-			info.ui.UpdateIconColorfulStyle(true, new Color(16f / 51f, 14f / 51f, 0.23529412f));
+			info.ui.UpdateIconGrayStyle(true);
 			info.ui.SetLVPartVisable(false);
 		}
 		else if (info.teamAttributeData.state == Defined.ItemState.Locked)
 		{
 			info.ui.UpdateBackground("pic_decal10");
-			info.ui.UpdateIconColorfulStyle(true, new Color(16f / 51f, 14f / 51f, 0.23529412f));
+			info.ui.UpdateIconGrayStyle(true);
 			info.ui.SetLVPartVisable(false);
 		}
 	}

@@ -97,7 +97,18 @@ namespace Zweronz.SavingSystem
 
 			for (int i = 0; i < 25; i++)
 			{
-				geniusList[i] = new TeamAttributeData() { index = i, level = 0, maxLevel = 5, state = Defined.ItemState.Locked, unlockPoint = i >= 5 ? i >= 10 ? i >= 15 ? i >= 20 ? 30 : 25 : 20 : 15 : 10 };
+				int tier = i / 5;
+				int unlockPoint = tier * 5;
+				Defined.ItemState startState = (tier == 0) ? Defined.ItemState.Purchase : Defined.ItemState.Locked;
+
+				geniusList[i] = new TeamAttributeData()
+				{
+					index = i,
+					level = 0,
+					maxLevel = 5,
+					state = startState,
+					unlockPoint = unlockPoint
+				};
 			}
 
 			for (int i = 0; i < 10; i++)
@@ -112,6 +123,7 @@ namespace Zweronz.SavingSystem
 
 				teamGeniusResetCostCrystalPerTimes = 20,
 				teamAttributeExtraPointCost = 10,
+				teamAttributeExtraPointMax = 50,
 
 				teamGeniusUnlockCondition = "Team Level 10 Required",
 				teamEvolutionUnlockCondition = "Team Level 15 Required"

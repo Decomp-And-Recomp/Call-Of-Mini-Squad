@@ -3,6 +3,21 @@ using LitJson;
 
 public class ProtocolTeamLevelUpGenius : Protocol
 {
+	public override string GetRequest()
+	{
+		Hashtable hashtable = new Hashtable();
+		hashtable["userId"] = DataCenter.Save().uuid;
+		hashtable["index"] = DataCenter.State().selectTalentIndex.ToString();
+		hashtable["loginCode"] = DataCenter.Save().loginCode;
+		return JsonMapper.ToJson(hashtable);
+	}
+
+	public override int GetResponse(string response)
+	{
+		return TalentController.TryLevelUp(DataCenter.State().selectTalentIndex);
+	}
+
+	/*
 	private int _index = -1;
 
 	public override string GetRequest()
@@ -63,4 +78,5 @@ public class ProtocolTeamLevelUpGenius : Protocol
 			return -1;
 		}
 	}
+	*/
 }

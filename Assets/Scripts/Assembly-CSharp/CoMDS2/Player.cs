@@ -644,7 +644,9 @@ namespace CoMDS2
 		public override void Update(float deltaTime)
 		{
 			AIState currentAIState = GetCurrentAIState();
-			if (Alive() && m_move)
+			string sn = (currentAIState != null) ? currentAIState.name : null;
+			bool inSkillState = sn == "Skill" || sn == "SkillReady" || sn == "SkillFindTarget";
+			if (Alive() && m_move && !inSkillState)
 			{
 				UpdateLowerBodyMoveDir4();
 				if (!AnimationPlaying(base.animLowerBody))

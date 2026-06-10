@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using LitJson;
 
@@ -13,6 +12,11 @@ public class ProtocolTeamResetGenius : Protocol
 	}
 
 	public override int GetResponse(string response)
+	{
+		return TalentController.TryReset();
+	}
+
+	/*public override int GetResponse(string response)
 	{
 		try
 		{
@@ -59,5 +63,5 @@ public class ProtocolTeamResetGenius : Protocol
 		{
 			return -1;
 		}
-	}
+	}*/
 }

@@ -1905,9 +1905,22 @@ public class GameBattle : MonoBehaviour
 		return m_playerBetrayList.ToArray();
 	}
 
+	private static bool IsBusyState(Player player)
+	{
+		if (player == null) return false;
+		AIState state = player.GetCurrentAIState();
+		if (state == null) return false;
+		string n = state.name;
+		return n == "Reload" || n == "Shift" || n == "Skill" || n == "SkillReady" || n == "SkillFindTarget" || n == "ChangeWeapon";
+	}
+
 	public void ChangeCurrentContorlPlayer(Player player)
 	{
 		if (player == m_player || player == null || !player.Alive())
+		{
+			return;
+		}
+		if (IsBusyState(player))
 		{
 			return;
 		}

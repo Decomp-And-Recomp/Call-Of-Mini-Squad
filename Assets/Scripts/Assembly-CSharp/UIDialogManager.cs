@@ -492,8 +492,8 @@ public class UIDialogManager : MonoBehaviour
 			Instance.ShowHttpFeedBackMsg(code);
 			return;
 		}
-		shopControlScript.InitIAPShop(UIConstant.gLSIAPItemsData, buyIAPfinishEvent);
-		shopControlScript.SetVisable(true);
+		//shopControlScript.InitIAPShop(UIConstant.gLSIAPItemsData, buyIAPfinishEvent);
+		//shopControlScript.SetVisable(true);
 	}
 
 	public static void UIRootAutoSet()

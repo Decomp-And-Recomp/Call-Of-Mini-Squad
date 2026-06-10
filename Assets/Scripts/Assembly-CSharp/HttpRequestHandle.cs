@@ -307,6 +307,15 @@ public class HttpRequestHandle : MonoBehaviour
 		RequestType.Team_UseEquipment
 	};
 
+	private static List<RequestType> locallyImplementedRequestTypes = new List<RequestType>
+	{
+		RequestType.Team_GetListGeniusInfos,
+		RequestType.Team_LevelUpGenius,
+		RequestType.Team_UnlockGenius,
+		RequestType.Team_BuyGeniusPoint,
+		RequestType.Team_ResetGenius
+	};
+
 	public void SendRequest(RequestType requestType, OnRequestFinish callBack)
 	{
 		if (finishedRequestTypes.Contains(requestType))
@@ -317,10 +326,14 @@ public class HttpRequestHandle : MonoBehaviour
 		{
 			Debug.LogError("UNCHECKED REQUEST!! " + requestType.ToString());
 		}
-		//m_requestMap[requestType].GetResponse("");
+		int code = 0;
+		if (locallyImplementedRequestTypes.Contains(requestType) && m_requestMap.ContainsKey(requestType))
+		{
+			code = m_requestMap[requestType].GetResponse(string.Empty);
+		}
 		if (callBack != null)
 		{
-			callBack(0);
+			callBack(code);
 		}
 		return;
 		if (!Util.IsNetworkConnected())

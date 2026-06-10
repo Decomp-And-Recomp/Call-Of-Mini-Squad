@@ -13,7 +13,7 @@ public static class GameProgressController
 	{
 		GameProgressData gameProgressData = DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode);
 
-		if (DataCenter.State().selectAreaNode + 1 > gameProgressData.levelProgress[(int)DataCenter.State().selectLevelMode])
+		if (DataCenter.State().selectAreaNode + 1 < gameProgressData.levelProgress[(int)DataCenter.State().selectLevelMode])
 		{
 			return;
 		}

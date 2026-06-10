@@ -55,7 +55,7 @@ public class UtilUITeamBonusItem : MonoBehaviour
 	{
 		if (bGray)
 		{
-			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI (AlphaClip)");
+			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI");
 		}
 		else
 		{
@@ -67,7 +67,7 @@ public class UtilUITeamBonusItem : MonoBehaviour
 	{
 		if (bColorful)
 		{
-			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI (AlphaClip)");
+			m_iconTexture.shader = Shader.Find("Triniti/Extra/GrayStyleUI");
 			m_iconTexture.color = col;
 		}
 		else
