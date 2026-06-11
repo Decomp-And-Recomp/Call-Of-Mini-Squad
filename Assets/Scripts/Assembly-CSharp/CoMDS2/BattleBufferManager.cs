@@ -78,6 +78,8 @@ namespace CoMDS2
 		{
 			m_effectBuffer = new Dictionary<Defined.EFFECT_TYPE, DS2ObjectBuffer>();
 			m_effectBuffer.Clear();
+			m_enemyBuffer = new Dictionary<Enemy.EnemyType, DS2ObjectBuffer>();
+			m_specialEffectBuffer = new Dictionary<SpecialAttribute.SpecialAttributeEffectType, DS2ObjectBuffer>();
 			m_interactObjectListForUIExhibition = new List<DS2Object>();
 			m_interactObjectListForUIExhibition.Clear();
 			m_interactObjectNeedDeleteListForUIExhibition = new List<DS2Object>();
@@ -519,7 +521,7 @@ namespace CoMDS2
 
 		public DS2Object GetSpecialEffectByType(SpecialAttribute.SpecialAttributeEffectType type)
 		{
-			if (m_specialEffectBuffer.ContainsKey(type))
+			if (m_specialEffectBuffer != null && m_specialEffectBuffer.ContainsKey(type))
 			{
 				return m_specialEffectBuffer[type].GetObject();
 			}
@@ -528,6 +530,18 @@ namespace CoMDS2
 
 		public Enemy GetEnemyFromBuffer(Enemy.EnemyType type)
 		{
+			if (m_enemyBuffer == null)
+			{
+				m_enemyBuffer = new Dictionary<Enemy.EnemyType, DS2ObjectBuffer>();
+			}
+			if (!m_enemyBuffer.ContainsKey(type))
+			{
+				CreateEnemyBufferByType(type, 30);
+			}
+			if (!m_enemyBuffer.ContainsKey(type))
+			{
+				return null;
+			}
 			return m_enemyBuffer[type].GetObject() as Enemy;
 		}
 

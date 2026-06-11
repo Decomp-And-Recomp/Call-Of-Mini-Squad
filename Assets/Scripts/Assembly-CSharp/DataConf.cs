@@ -2133,7 +2133,11 @@ public class DataConf
 			type = Enemy.EnemyType.PestilenceJar;
 			break;
 		}
-		if (m_enemyData.ContainsKey(type))
+		if (m_enemyData == null)
+		{
+			LoadEnemyDataFromDisk();
+		}
+		if (m_enemyData != null && m_enemyData.ContainsKey(type))
 		{
 			return m_enemyData[type];
 		}

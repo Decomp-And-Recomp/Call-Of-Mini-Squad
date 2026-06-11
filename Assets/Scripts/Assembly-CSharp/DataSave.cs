@@ -519,6 +519,45 @@ public class DataSave
 		}
 	}
 
+	public void MigrateTutorialDummyTeamSites()
+	{
+		if (bNewUser && BattleTutorialFinished)
+		{
+			bNewUser = false;
+		}
+
+		for (int i = 0; i < m_teamData.teamSitesData.Length; i++)
+		{
+			PlayerData siteEntry = m_teamData.teamSitesData[i].playerData;
+			if (siteEntry != null && siteEntry.upgradeData == null)
+			{
+				m_teamData.teamSitesData[i].playerData = null;
+			}
+		}
+
+		for (int h = 0; h < m_heroes.Count; h++)
+		{
+			PlayerData hero = m_heroes[h];
+			if (hero == null) continue;
+			if (hero.upgradeData == null) continue;
+			if (hero.siteNum < 0 || hero.siteNum >= m_teamData.teamSitesData.Length) continue;
+			if (m_teamData.teamSitesData[hero.siteNum].playerData != null) continue;
+
+			bool alreadyOnAnotherSite = false;
+			for (int s = 0; s < m_teamData.teamSitesData.Length; s++)
+			{
+				if (m_teamData.teamSitesData[s].playerData == hero)
+				{
+					alreadyOnAnotherSite = true;
+					break;
+				}
+			}
+			if (alreadyOnAnotherSite) continue;
+
+			m_teamData.teamSitesData[hero.siteNum].playerData = hero;
+		}
+	}
+
 	public void SetEquipOnTeamSite(UserEquipData data, Defined.TEAM_SITE teamSite, Defined.EQUIP_SITE equipSite)
 	{
 	}

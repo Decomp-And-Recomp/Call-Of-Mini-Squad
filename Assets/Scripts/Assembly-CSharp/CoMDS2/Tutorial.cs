@@ -62,6 +62,105 @@ namespace CoMDS2
 
 		private float m_timer;
 
+		private Font m_cachedTtfFont;
+
+		private UIFont m_cachedBitmapFont;
+
+		private bool m_fontCacheReady;
+
+		private static bool IsPC
+		{
+			get { return !Application.isMobilePlatform; }
+		}
+
+		private void EnsureFontCache()
+		{
+			if (m_fontCacheReady) return;
+			UILabel[] all = UnityEngine.Object.FindObjectsOfType<UILabel>();
+			for (int i = 0; i < all.Length; i++)
+			{
+				if (all[i] == null) continue;
+				if (m_cachedTtfFont == null && all[i].trueTypeFont != null)
+				{
+					m_cachedTtfFont = all[i].trueTypeFont;
+				}
+				if (m_cachedBitmapFont == null && all[i].bitmapFont != null)
+				{
+					m_cachedBitmapFont = all[i].bitmapFont;
+				}
+				if (m_cachedTtfFont != null || m_cachedBitmapFont != null) break;
+			}
+			m_fontCacheReady = true;
+		}
+
+		private UILabel m_pcOverlayLabel;
+
+		private UILabel EnsurePCOverlayLabel()
+		{
+			if (m_pcOverlayLabel != null) return m_pcOverlayLabel;
+			EnsureFontCache();
+
+			Transform parent = (covePanel != null) ? covePanel.transform : base.transform;
+			GameObject go = new GameObject("PCOverlay");
+			go.layer = parent.gameObject.layer;
+			go.transform.SetParent(parent, false);
+			go.transform.localPosition = new Vector3(0f, 260f, 0f);
+			go.transform.localScale = Vector3.one;
+			UILabel label = go.AddComponent<UILabel>();
+			if (m_cachedBitmapFont != null)
+			{
+				label.bitmapFont = m_cachedBitmapFont;
+			}
+			else if (m_cachedTtfFont != null)
+			{
+				label.trueTypeFont = m_cachedTtfFont;
+				label.fontSize = 36;
+			}
+			label.color = Color.white;
+			label.alignment = NGUIText.Alignment.Center;
+			label.pivot = UIWidget.Pivot.Center;
+			label.width = 900;
+			label.height = 120;
+			label.overflowMethod = UILabel.Overflow.ResizeHeight;
+			label.depth = 500;
+			label.effectStyle = UILabel.Effect.Outline;
+			label.effectColor = Color.black;
+			m_pcOverlayLabel = label;
+			return label;
+		}
+
+		private void ApplyPCMode(GameObject explain, string pcText)
+		{
+			if (!IsPC) return;
+			if (indicatePanel != null) indicatePanel.gameObject.SetActive(false);
+
+			if (explain != null)
+			{
+				for (int i = 0; i < explain.transform.childCount; i++)
+				{
+					Transform child = explain.transform.GetChild(i);
+					if (child.name == "PCOverlay") continue;
+					child.gameObject.SetActive(false);
+				}
+			}
+
+			UILabel label = EnsurePCOverlayLabel();
+			if (label != null)
+			{
+				label.text = pcText;
+				label.gameObject.SetActive(true);
+			}
+		}
+
+		private void ClearPCMode(GameObject explain)
+		{
+			if (!IsPC) return;
+			if (m_pcOverlayLabel != null)
+			{
+				m_pcOverlayLabel.gameObject.SetActive(false);
+			}
+		}
+
 		public static Tutorial Instance
 		{
 			get
@@ -98,9 +197,11 @@ namespace CoMDS2
 					base.gameObject.SetActive(true);
 					moveExplain.SetActive(true);
 					TutorialInProgress = true;
+					ApplyPCMode(moveExplain, "Press WASD or arrow keys to move around.");
 				}
 				else if (m_tutorialPahseMove == TutorialPhaseState.Done)
 				{
+					ClearPCMode(moveExplain);
 					movePanel.depth = covePanel.depth - 1;
 					moveExplain.SetActive(false);
 					base.gameObject.SetActive(false);
@@ -137,9 +238,11 @@ namespace CoMDS2
 					input.inputType = TUIInputType.Ended;
 					component.HandleInput(input);
 					GameBattle.m_instance.IsPause = true;
+					ApplyPCMode(fireExplain, "Aim with your mouse, hold left click to fire.");
 				}
 				else if (m_tutorialPahseFire == TutorialPhaseState.Done)
 				{
+					ClearPCMode(fireExplain);
 					firePanel.depth = covePanel.depth - 1;
 					fireExplain.SetActive(false);
 					TutorialInProgress = false;
@@ -180,16 +283,17 @@ namespace CoMDS2
 					TUIButtonJoystick component2 = firePanel.GetComponent<TUIButtonJoystick>();
 					component2.HandleInput(input);
 					GameBattle.m_instance.IsPause = true;
+					ApplyPCMode(skillExplain, "Press 1 or Space to use your main character's skill. Press 2, 3, 4 and 5 to use your other characters skills.");
 				}
 				else if (m_tutorialPahseSkill == TutorialPhaseState.Done)
 				{
+					ClearPCMode(skillExplain);
 					skillPanel.depth = covePanel.depth - 1;
 					skillExplain.SetActive(false);
 					base.gameObject.SetActive(false);
 					TutorialInProgress = false;
 					indicatePanel.gameObject.SetActive(false);
 					GameBattle.m_instance.IsPause = false;
-					HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
 				}
 			}
 		}
@@ -223,9 +327,11 @@ namespace CoMDS2
 					component2.HandleInput(input);
 					GameBattle.m_instance.m_UIChangeMode.gameObject.SetActive(true);
 					GameBattle.m_instance.IsPause = true;
+					ApplyPCMode(changeModeExplain, "Press F to switch between Squad and Single modes.");
 				}
 				else if (m_tutorialPahseChangeMode == TutorialPhaseState.Done)
 				{
+					ClearPCMode(changeModeExplain);
 					changeModePanel.depth = covePanel.depth - 1;
 					changeModeExplain.SetActive(false);
 					TutorialInProgress = false;
@@ -266,9 +372,11 @@ namespace CoMDS2
 					TUIButtonJoystick component2 = firePanel.GetComponent<TUIButtonJoystick>();
 					component2.HandleInput(input);
 					GameBattle.m_instance.IsPause = true;
+					ApplyPCMode(changePlayerExplain, "Press Q, E, or Tab to switch teammates.");
 				}
 				else if (m_tutorialPahseChangePlayer == TutorialPhaseState.Done)
 				{
+					ClearPCMode(changePlayerExplain);
 					changePlayerPanel.depth = covePanel.depth - 1;
 					changePlayerExplain.SetActive(false);
 					base.gameObject.SetActive(false);
@@ -359,7 +467,14 @@ namespace CoMDS2
 		{
 			if (m_tutorialPahseMove == TutorialPhaseState.InProgress && GameBattle.m_instance.GameState == GameBattle.State.Game)
 			{
-				indicatePanel.gameObject.SetActive(true);
+				if (IsPC)
+				{
+					ApplyPCMode(moveExplain, "Press WASD or arrow keys to move around.");
+				}
+				else
+				{
+					indicatePanel.gameObject.SetActive(true);
+				}
 			}
 		}
 
@@ -368,6 +483,50 @@ namespace CoMDS2
 			if (m_timer > 0f)
 			{
 				m_timer -= Time.deltaTime;
+			}
+
+			if (!IsPC) return;
+			if (GameBattle.m_instance == null || GameBattle.m_instance.GameState != GameBattle.State.Game) return;
+
+			if (m_tutorialPahseMove == TutorialPhaseState.InProgress)
+			{
+				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
+				{
+					TutorialPahseMove = TutorialPhaseState.Done;
+					return;
+				}
+			}
+			if (m_tutorialPahseFire == TutorialPhaseState.InProgress)
+			{
+				if (Input.GetMouseButton(0))
+				{
+					TutorialPahseFire = TutorialPhaseState.Done;
+					return;
+				}
+			}
+			if (m_tutorialPahseSkill == TutorialPhaseState.InProgress)
+			{
+				if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Space))
+				{
+					TutorialPahseSkill = TutorialPhaseState.Done;
+					return;
+				}
+			}
+			if (m_tutorialPahseChangeMode == TutorialPhaseState.InProgress)
+			{
+				if (Input.GetKeyDown(KeyCode.F))
+				{
+					TutorialPahseChangeMode = TutorialPhaseState.Done;
+					return;
+				}
+			}
+			if (m_tutorialPahseChangePlayer == TutorialPhaseState.InProgress)
+			{
+				if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Tab))
+				{
+					TutorialPahseChangePlayer = TutorialPhaseState.Done;
+					return;
+				}
 			}
 		}
 	}

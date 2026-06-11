@@ -447,6 +447,14 @@ public class GameBattle : MonoBehaviour
 						UIUtil.ShowReviewMessageBox();
 					}
 				}
+				if (!DataCenter.Save().BattleTutorialFinished && DataCenter.Save().selectLevelDropData != null)
+				{
+					DataCenter.Save().selectLevelDropData.money = 0;
+					DataCenter.Save().selectLevelDropData.exp = 0;
+					DataCenter.Save().selectLevelDropData.extraMoney = 0;
+					DataCenter.Save().selectLevelDropData.extraCrystal = 0;
+					DataCenter.Save().selectLevelDropData.extraHonor = 0;
+				}
 				if (DataCenter.Save().BattleTutorialFinished)
 				{
 					DataCenter.Save().SetGameProgress();

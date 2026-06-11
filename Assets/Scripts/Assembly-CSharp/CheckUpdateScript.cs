@@ -210,6 +210,7 @@ public class CheckUpdateScript : MonoBehaviour
 				break;
 			case 7:
 				//HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Get_PlayerData, GetPlayerDataCallBack);
+				HeroListController.Refresh();
 				m_labelTextPlayIndex++;
 				m_labelTextPlayIndex++;
 				break;

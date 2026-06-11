@@ -60,6 +60,10 @@ public class EffectParticleContinuous : EffectControl
 	public override void StartEmit(bool playAudio = true)
 	{
 		base.StartEmit();
+		if (m_particleSystem == null)
+		{
+			Awake();
+		}
 		/*
 		for (int i = 0; i < m_emitter.Length; i++)
 		{
@@ -89,11 +93,11 @@ public class EffectParticleContinuous : EffectControl
 	{
 		if (!(GetComponent<TimerDestroy>() != null))
 		{
-			/*
-			if (m_emitter == null)
+			if (m_particleSystem == null)
 			{
 				Awake();
 			}
+			/*
 			for (int i = 0; i < m_emitter.Length; i++)
 			{
 				m_emitter[i].emit = enableEmission;
@@ -123,6 +127,10 @@ public class EffectParticleContinuous : EffectControl
 
 	public void Update()
 	{
+		if (m_particleSystem == null)
+		{
+			return;
+		}
 		if (!loop && (m_animator.Length > 0 || m_animations.Length > 0))
 		{
 			bool flag = true;

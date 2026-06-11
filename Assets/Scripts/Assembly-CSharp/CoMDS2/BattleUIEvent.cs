@@ -2454,7 +2454,8 @@ namespace CoMDS2
 				DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
 				DataCenter.Save().BattleTutorialFinished = true;
 				DataCenter.Save().bNewUser = false;
-				DataCenter.Save().CleanTeamSitePlayerData();
+				DataCenter.Save().MigrateTutorialDummyTeamSites();
+				DataCenter.Save().SaveGameData();
 			}
 			if (DataCenter.State().isEncounterLevel)
 			{

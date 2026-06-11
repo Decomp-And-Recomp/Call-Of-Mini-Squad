@@ -39,6 +39,7 @@ namespace Zweronz.SavingSystem
 			TypeLoader.Load<AchievementLoader>(loadObject.achievements);
 			DataCenter.Save().BattleTutorialFinished = loadObject.battleTutorialFinished;
 			DataCenter.Save().bNewUser = loadObject.bNewUser;
+			DataCenter.Save().MigrateTutorialDummyTeamSites();
 		}
 
 		public SaveLoader() {}

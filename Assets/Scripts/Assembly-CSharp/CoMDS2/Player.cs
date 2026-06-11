@@ -1016,30 +1016,6 @@ namespace CoMDS2
 			SwitchFSM(GetAIState("Idle"));
 		}
 
-		public bool ManualReload()
-		{
-			if (!Alive() || base.isStuck || base.isFrozen || GameBattle.s_bInputLocked)
-			{
-				return false;
-			}
-			if (m_weapon == null || !m_weapon.NeedReload())
-			{
-				return false;
-			}
-			AIState currentAIState = GetCurrentAIState();
-			if (currentAIState.name == "Reload" || currentAIState.name == "Shift" || currentAIState.name == "SkillReady" || currentAIState.name == "Skill" || currentAIState.name == "Hurt")
-			{
-				return false;
-			}
-			m_checkReloadTime = 0f;
-			if (CurrentController)
-			{
-				m_weapon.PlayAudioReload();
-			}
-			SwitchFSM(GetAIState("Reload"));
-			return true;
-		}
-
 		public void Move(Vector3 move_dir)
 		{
 			CharacterController component = GetGameObject().GetComponent<CharacterController>();

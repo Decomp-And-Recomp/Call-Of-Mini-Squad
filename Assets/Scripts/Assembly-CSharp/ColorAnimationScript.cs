@@ -139,6 +139,12 @@ public class ColorAnimationScript : MonoBehaviour
 			AnimationCurve curve3 = new AnimationCurve(new Keyframe(0f, m_defaultColor.b, 0f, 0f), new Keyframe(m_AnimPeriodChange, m_changeColor.b, 0f, 0f));
 			AnimationCurve curve4 = new AnimationCurve(new Keyframe(0f, m_defaultColor.a, 0f, 0f), new Keyframe(m_AnimPeriodChange, m_changeColor.a, 0f, 0f));
 			AnimationClip clip = base.GetComponent<Animation>().GetClip("ChangeColorAnimation");
+			if (clip == null)
+			{
+				clip = new AnimationClip();
+				clip.legacy = true;
+				base.GetComponent<Animation>().AddClip(clip, "ChangeColorAnimation");
+			}
 			clip.ClearCurves();
 			clip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".r", curve);
 			clip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".g", curve2);
@@ -175,6 +181,12 @@ public class ColorAnimationScript : MonoBehaviour
 			AnimationCurve curve3 = new AnimationCurve(new Keyframe(0f, m_changeColor.b, 0f, 0f), new Keyframe(m_AnimPeriodChange, m_StartColor.b, 0f, 0f));
 			AnimationCurve curve4 = new AnimationCurve(new Keyframe(0f, m_changeColor.a, 0f, 0f), new Keyframe(m_AnimPeriodChange, m_StartColor.a, 0f, 0f));
 			AnimationClip clip = base.GetComponent<Animation>().GetClip("ResetColorAnimation");
+			if (clip == null)
+			{
+				clip = new AnimationClip();
+				clip.legacy = true;
+				base.GetComponent<Animation>().AddClip(clip, "ResetColorAnimation");
+			}
 			clip.ClearCurves();
 			clip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".r", curve);
 			clip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".g", curve2);

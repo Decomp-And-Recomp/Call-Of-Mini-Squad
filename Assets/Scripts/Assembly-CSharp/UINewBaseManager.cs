@@ -302,20 +302,20 @@ public class UINewBaseManager : MonoBehaviour
 
 	private void CheckNewUnlockFromBattle(int iNewWorldLevelUnlocked, int iNewAreaLevelUnlocked, int iNewLevelModeUnlocked)
 	{
-		string gameLevelID = DataCenter.Conf().GetGameLevelNodeList()[DataCenter.State().selectWorldNode].gameLevelID;
+		int worldNode = DataCenter.State().selectWorldNode;
+		DataConf.GameLevelNodeData[] nodeList = DataCenter.Conf().GetGameLevelNodeList();
+		if (nodeList == null || worldNode < 0 || worldNode >= nodeList.Length)
+		{
+			return;
+		}
+		string gameLevelID = nodeList[worldNode].gameLevelID;
 		DataCenter.Conf().LoadSelectGameLevelDataFromDisk(gameLevelID);
-		Defined.LevelMode selectLevelMode = DataCenter.State().selectLevelMode;
-		DataConf.GameLevelData gameLevelData = DataCenter.Conf().GetCurrentGameLevelList(DataCenter.State().selectLevelMode)[DataCenter.State().selectAreaNode];
-		Vector3 localPosition = SolidMapCameraControl.mInstance.levelPointsInfo[DataCenter.State().selectWorldNode].wavePartStageCameraTrans.localPosition;
-		if (iNewWorldLevelUnlocked > 0)
+		if (SolidMapCameraControl.mInstance == null || SolidMapCameraControl.mInstance.levelPointsInfo == null
+			|| worldNode >= SolidMapCameraControl.mInstance.levelPointsInfo.Count)
 		{
-			if (iNewLevelModeUnlocked <= 0)
-			{
-			}
+			return;
 		}
-		else if (iNewLevelModeUnlocked <= 0 && iNewAreaLevelUnlocked <= 0)
-		{
-		}
+		Vector3 localPosition = SolidMapCameraControl.mInstance.levelPointsInfo[worldNode].wavePartStageCameraTrans.localPosition;
 		EnterAreaMapImmediately(localPosition);
 	}
 
@@ -590,15 +590,11 @@ public class UINewBaseManager : MonoBehaviour
 		if (UIBASECOURSEINFO.TutorialInProgress && UIBASECOURSEINFO.GetCourse(10).STATE == UtilUICourseInfo.CoursePhaseState.InProgress)
 		{
 			UIBASECOURSEINFO.GetCourse(10).STATE = UtilUICourseInfo.CoursePhaseState.Done;
-			//DataCenter.Save().tutorialStep = Defined.TutorialStep.EnterBattle;
-			Debug.LogError("eh??");
-			HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
+			DataCenter.Save().tutorialStep = Defined.TutorialStep.EnterBattle;
 		}
 		if (gameLevelData.index == 0 && DataCenter.State().selectWorldNode == 0 && DataCenter.Save().tutorialStep != Defined.TutorialStep.Finish)
 		{
-			//DataCenter.Save().tutorialStep = Defined.TutorialStep.FinishStageOneWaveOne;
-			Debug.LogError("eh??");
-			HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
+			DataCenter.Save().tutorialStep = Defined.TutorialStep.FinishStageOneWaveOne;
 		}
 		UIBASECONFIRMBATTLEINFO.SetBattleBtnEnable(false);
 		DataCenter.Save().SaveGameData();

@@ -99,10 +99,22 @@ public class PCInputController : MonoBehaviour
 		m_lastRightLparam = lparam;
 	}
 
+	private bool IsTutorialActive()
+	{
+		if (!DataCenter.Save().BattleTutorialFinished) return true;
+		if (!DataCenter.Save().tutorialChangeMode) return true;
+		if (Tutorial.Instance != null && Tutorial.Instance.TutorialInProgress) return true;
+		return false;
+	}
+
 	private void HandleDiscreteKeys(Player player)
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
+			if (IsTutorialActive())
+			{
+				return;
+			}
 			GameBattle.State state = GameBattle.m_instance.GameState;
 			if (state == GameBattle.State.Game)
 			{
@@ -145,10 +157,6 @@ public class PCInputController : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.Alpha5)) 
 		{ 
 			TryUseSkill(3); 
-		}
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			player.ManualReload();
 		}
 		if (Input.GetKeyDown(KeyCode.F))
 		{
@@ -270,21 +278,26 @@ public class PCInputController : MonoBehaviour
 		{
 			return;
 		}
-		if (Tutorial.Instance.TutorialInProgress)
-		{
-			return;
-		}
 		Player player = GameBattle.m_instance.GetPlayer();
 		if (player == null)
 		{
 			return;
 		}
 
-		HandleDiscreteKeys(player);
+		bool tutorialActive = Tutorial.Instance != null && Tutorial.Instance.TutorialInProgress;
 
-		float leftW, leftL, rightW, rightL;
-		ComputeLeftStick(out leftW, out leftL);
-		ComputeRightStick(player, out rightW, out rightL);
+		float leftW = 0f, leftL = 0f, rightW = 0f, rightL = 0f;
+
+		if (tutorialActive)
+		{
+			HandleTutorialPhaseInput(player, out leftW, out leftL, out rightW, out rightL);
+		}
+		else
+		{
+			HandleDiscreteKeys(player);
+			ComputeLeftStick(out leftW, out leftL);
+			ComputeRightStick(player, out rightW, out rightL);
+		}
 
 		if (DataCenter.Save().squadMode)
 		{
@@ -297,6 +310,48 @@ public class PCInputController : MonoBehaviour
 		else
 		{
 			player.UpdateInput(leftW, leftL, rightW, rightL);
+		}
+	}
+
+	private void HandleTutorialPhaseInput(Player player, out float leftW, out float leftL, out float rightW, out float rightL)
+	{
+		leftW = 0f;
+		leftL = 0f;
+		rightW = 0f;
+		rightL = 0f;
+
+		if (Tutorial.Instance.TutorialPahseMove == Tutorial.TutorialPhaseState.InProgress)
+		{
+			ComputeLeftStick(out leftW, out leftL);
+		}
+		else if (Tutorial.Instance.TutorialPahseFire == Tutorial.TutorialPhaseState.InProgress)
+		{
+			ComputeRightStick(player, out rightW, out rightL);
+		}
+		else if (Tutorial.Instance.TutorialPahseSkill == Tutorial.TutorialPhaseState.InProgress)
+		{
+			if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Space))
+			{
+				TryUseSkill(-1);
+			}
+		}
+		else if (Tutorial.Instance.TutorialPahseChangeMode == Tutorial.TutorialPhaseState.InProgress)
+		{
+			if (Input.GetKeyDown(KeyCode.F))
+			{
+				ToggleSquadMode();
+			}
+		}
+		else if (Tutorial.Instance.TutorialPahseChangePlayer == Tutorial.TutorialPhaseState.InProgress)
+		{
+			if (Input.GetKeyDown(KeyCode.Q))
+			{
+				CycleSquad(-1);
+			}
+			else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Tab))
+			{
+				CycleSquad(1);
+			}
 		}
 	}
 }

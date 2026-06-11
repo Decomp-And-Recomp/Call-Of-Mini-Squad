@@ -306,9 +306,7 @@ public class UINewTeamManager : MonoBehaviour
 		if (UIBASECOURSEINFO.TutorialInProgress && UIBASECOURSEINFO.GetCourse(1050).STATE == UtilUICourseInfo.CoursePhaseState.InProgress)
 		{
 			UIBASECOURSEINFO.GetCourse(1050).STATE = UtilUICourseInfo.CoursePhaseState.Done;
-			Debug.LogError("eh??");
-			//DataCenter.Save().tutorialStep = Defined.TutorialStep.UnlockedTeamSite;
-			HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
+			DataCenter.Save().tutorialStep = Defined.TutorialStep.UnlockedTeamSite;
 			UtilUIStandbyPlayersInfo.PLAYERINFO playerInfoById = UISTANDBYPLAYERSINFOSCRIPT.GetPlayerInfoById(UIConstant.gCouseHeroId);
 			Object.Destroy(playerInfoById.formationControl.gameObject.GetComponent<UIDragScrollView>());
 			UIBASECOURSEINFO.AddCursor(1051, playerInfoById.go, playerInfoById.go.transform.position);
@@ -358,9 +356,7 @@ public class UINewTeamManager : MonoBehaviour
 		{
 			UIBASECOURSEINFO.GetCourse(1052).STATE = UtilUICourseInfo.CoursePhaseState.Done;
 			UIBASECOURSEINFO.GetCourse(1053).STATE = UtilUICourseInfo.CoursePhaseState.Done;
-			Debug.LogError("eh??");
-			//DataCenter.Save().tutorialStep = Defined.TutorialStep.SetTeam;
-			HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
+			DataCenter.Save().tutorialStep = Defined.TutorialStep.SetTeam;
 			UIBASECOURSEINFO.AddCursor(1064, backGO, backGO.transform.position);
 			UIBASECOURSEINFO.GetCourse(1064).STATE = UtilUICourseInfo.CoursePhaseState.InProgress;
 		}
@@ -1016,9 +1012,7 @@ public class UINewTeamManager : MonoBehaviour
 			if (UIBASECOURSEINFO.TutorialInProgress && UIBASECOURSEINFO.GetCourse(1058).STATE == UtilUICourseInfo.CoursePhaseState.InProgress)
 			{
 				UIBASECOURSEINFO.GetCourse(1058).STATE = UtilUICourseInfo.CoursePhaseState.Done;
-				Debug.LogError("eh??");
-				//DataCenter.Save().tutorialStep = Defined.TutorialStep.Finish;
-				HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Lesson, null);
+				DataCenter.Save().tutorialStep = Defined.TutorialStep.Finish;
 				DataCenter.Save().SaveGameData();
 			}
 			break;

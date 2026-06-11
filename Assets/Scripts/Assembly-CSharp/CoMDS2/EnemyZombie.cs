@@ -52,7 +52,7 @@ namespace CoMDS2
 		{
 			HitResultInfo result = new HitResultInfo();
 			AIState currentAIState = GetCurrentAIState();
-			if (currentAIState.name == "Born")
+			if (currentAIState != null && currentAIState.name == "Born")
 			{
 				return result;
 			}
