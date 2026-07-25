@@ -1084,7 +1084,9 @@ public class GameBattle : MonoBehaviour
 	{
 		if (m_cameraQuakeControl.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
 		{
-			ChangeCameraState(CameraState.AdjustWideAngle);
+			m_cameraQuakeControl.enabled = false;
+			mainCameraModel.transform.localPosition = Vector3.zero;
+			ChangeCameraState(CameraState.AdjustWideAngle, true);
 		}
 	}
 
