@@ -176,19 +176,18 @@ public class UIUtil
 
 	public static string GetCurrencyNameByCurrencyType(Defined.COST_TYPE type)
 	{
-		string empty = string.Empty;
 		switch (type)
 		{
 		case Defined.COST_TYPE.Crystal:
-			return "Crystal";
+			return "icon_crystal";
 		case Defined.COST_TYPE.Money:
-			return "Gold";
+			return "icon_coin";
+		case Defined.COST_TYPE.Honor:
+			return "icon_honor";
+		case Defined.COST_TYPE.Exp:
+			return "icon_exp";
 		case Defined.COST_TYPE.Element:
 			return "Elementium";
-		case Defined.COST_TYPE.Honor:
-			return "Honor";
-		case Defined.COST_TYPE.Exp:
-			return "Exp";
 		default:
 			return string.Empty;
 		}
