@@ -259,10 +259,6 @@ public class PCInputController : MonoBehaviour
 		{
 			Cursor.lockState = wantedLock;
 		}
-		if (Cursor.visible != wantedVisible)
-		{
-			Cursor.visible = wantedVisible;
-		}
 	}
 
 	private void Update()
