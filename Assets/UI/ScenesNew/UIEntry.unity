@@ -1283,7 +1283,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 325}
-  - component: {fileID: 737}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -4723,7 +4722,7 @@ Transform:
   m_GameObject: {fileID: 13}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0012886284, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0012902912, y: 0.0012903214, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -121678,18 +121677,6 @@ MonoBehaviour:
   callWhenFinished: 
   from: 0
   to: 1
---- !u!114 &737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 72}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131441,7 +131428,7 @@ GameObject:
   - component: {fileID: 776298200}
   - component: {fileID: 776298199}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: '[ Load Manager ]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
