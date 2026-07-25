@@ -412,6 +412,7 @@ public class GameBattle : MonoBehaviour
 					if (m_cliquePlayerList[i].Alive())
 					{
 						m_cliquePlayerList[i].SwitchFSM(m_cliquePlayerList[i].GetAIState("Idle"));
+						m_cliquePlayerList[i].ResetColor();
 						if (m_cliquePlayerList[i].objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER || m_cliquePlayerList[i].objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY)
 						{
 							Character character = (Character)m_cliquePlayerList[i];
