@@ -1,6 +1,6 @@
 //-------------------------------------------------
-//            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+//			  NGUI: Next-Gen UI kit
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -154,7 +154,7 @@ public abstract class UIRect : MonoBehaviour
 
 	public AnchorPoint topAnchor = new AnchorPoint(1f);
 
-	public enum AnchorUpdate
+	[DoNotObfuscateNGUI] public enum AnchorUpdate
 	{
 		OnEnable,
 		OnUpdate,
@@ -205,7 +205,7 @@ public abstract class UIRect : MonoBehaviour
 	/// Camera used by anchors.
 	/// </summary>
 
-	public Camera anchorCamera { get { if (!mAnchorsCached) ResetAnchors(); return mCam; } }
+	public Camera anchorCamera { get { if (!mCam || !mAnchorsCached) ResetAnchors(); return mCam; } }
 
 	/// <summary>
 	/// Whether the rectangle is currently anchored fully on all sides.
@@ -406,6 +406,7 @@ public abstract class UIRect : MonoBehaviour
 			mAnchorsCached = false;
 			mUpdateAnchors = true;
 		}
+
 		if (mStarted) OnInit();
 		mUpdateFrame = -1;
 	}
@@ -445,6 +446,10 @@ public abstract class UIRect : MonoBehaviour
 
 	protected virtual void Awake ()
 	{
+#if UNITY_2018_3_OR_NEWER
+		NGUITools.CheckForPrefabStage (gameObject); 
+#endif
+
 		mStarted = false;
 		mGo = gameObject;
 		mTrans = transform;
@@ -454,83 +459,89 @@ public abstract class UIRect : MonoBehaviour
 	/// Set anchor rect references on start.
 	/// </summary>
 
-	protected void Start ()
+	public void Start ()
 	{
-		mStarted = true;
-		OnInit();
-		OnStart();
+		if (!mStarted)
+		{
+			mStarted = true;
+			OnInit();
+			OnStart();
+		}
 	}
 
 	/// <summary>
-	/// Rectangles need to update in a specific order -- parents before children.
-	/// When deriving from this class, override its OnUpdate() function instead.
+	/// Rectangles need to update in a specific order -- parents before children. Inherited classes should override its OnUpdate() function instead.
 	/// </summary>
 
 	public void Update ()
 	{
-		if (!mAnchorsCached) ResetAnchors();
-
-		int frame = Time.frameCount;
-
-#if UNITY_EDITOR
-		if (mUpdateFrame != frame || !Application.isPlaying)
-#else
-		if (mUpdateFrame != frame)
-#endif
+		if (!mCam)
 		{
-#if UNITY_EDITOR
-			if (updateAnchors == AnchorUpdate.OnUpdate || mUpdateAnchors || !Application.isPlaying)
-#else
-			if (updateAnchors == AnchorUpdate.OnUpdate || mUpdateAnchors)
-#endif
-				UpdateAnchorsInternal(frame);
+			ResetAndUpdateAnchors();
+			mUpdateFrame = -1;
+		}
+		else if (!mAnchorsCached) ResetAnchors();
 
-			// Continue with the update
+		var frame = Time.frameCount;
+#if UNITY_EDITOR
+		var isPlaying = Application.isPlaying;
+
+		if (mUpdateFrame != frame || !isPlaying)
+		{
+			if (mUpdateAnchors || !isPlaying) UpdateAnchorsInternal(frame);
+			else if (updateAnchors == AnchorUpdate.OnUpdate && !UpdateAnchorsInternal(frame)) updateAnchors = AnchorUpdate.OnEnable;
+
 			OnUpdate();
 		}
+#else
+		if (mUpdateFrame != frame)
+		{
+			if (mUpdateAnchors) UpdateAnchorsInternal(frame);
+			else if (updateAnchors == AnchorUpdate.OnUpdate && !UpdateAnchorsInternal(frame)) updateAnchors = AnchorUpdate.OnEnable;
+
+			OnUpdate();
+		}
+#endif
 	}
 
 	/// <summary>
 	/// Update anchors.
 	/// </summary>
 
-	protected void UpdateAnchorsInternal (int frame)
+	protected bool UpdateAnchorsInternal (int frame)
 	{
 		mUpdateFrame = frame;
 		mUpdateAnchors = false;
 
-		bool anchored = false;
+		var anchored = false;
 
 		if (leftAnchor.target)
 		{
 			anchored = true;
-			if (leftAnchor.rect != null && leftAnchor.rect.mUpdateFrame != frame)
-				leftAnchor.rect.Update();
+			if (leftAnchor.rect != null && leftAnchor.rect.mUpdateFrame != frame) leftAnchor.rect.Update();
 		}
 
 		if (bottomAnchor.target)
 		{
 			anchored = true;
-			if (bottomAnchor.rect != null && bottomAnchor.rect.mUpdateFrame != frame)
-				bottomAnchor.rect.Update();
+			if (bottomAnchor.rect != null && bottomAnchor.rect.mUpdateFrame != frame) bottomAnchor.rect.Update();
 		}
 
 		if (rightAnchor.target)
 		{
 			anchored = true;
-			if (rightAnchor.rect != null && rightAnchor.rect.mUpdateFrame != frame)
-				rightAnchor.rect.Update();
+			if (rightAnchor.rect != null && rightAnchor.rect.mUpdateFrame != frame) rightAnchor.rect.Update();
 		}
 
 		if (topAnchor.target)
 		{
 			anchored = true;
-			if (topAnchor.rect != null && topAnchor.rect.mUpdateFrame != frame)
-				topAnchor.rect.Update();
+			if (topAnchor.rect != null && topAnchor.rect.mUpdateFrame != frame) topAnchor.rect.Update();
 		}
 
 		// Update the dimensions using anchors
 		if (anchored) OnAnchor();
+		return anchored;
 	}
 
 	/// <summary>

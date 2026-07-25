@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -40,37 +40,23 @@ public class UIToggleInspector : UIWidgetContainerEditor
 
 		if (NGUIEditorTools.DrawMinimalisticHeader("State Transition"))
 		{
-			NGUIEditorTools.BeginContents(true);
+			NGUIEditorTools.BeginContents();
 
-			SerializedProperty sprite = serializedObject.FindProperty("activeSprite");
-			SerializedProperty animator = serializedObject.FindProperty("animator");
-			SerializedProperty animation = serializedObject.FindProperty("activeAnimation");
-			SerializedProperty tween = serializedObject.FindProperty("tween");
+			var animator = serializedObject.FindProperty("animator");
+			var animation = serializedObject.FindProperty("activeAnimation");
+			var tween = serializedObject.FindProperty("tween");
 
-			if (sprite.objectReferenceValue != null)
+			var sprite = NGUIEditorTools.DrawProperty("Active Sprite", serializedObject, "activeSprite");
+			var inac = NGUIEditorTools.DrawProperty("Inactive Sprite", serializedObject, "inactiveSprite");
+
+			if (sprite.objectReferenceValue != null && inac.objectReferenceValue == null)
 			{
-				NGUIEditorTools.DrawProperty("Sprite", sprite, false);
-				serializedObject.DrawProperty("invertSpriteState");
+				serializedObject.DrawProperty("invertSpriteState", "Invert State");
 			}
-			else if (animator.objectReferenceValue != null)
-			{
-				NGUIEditorTools.DrawProperty("Animator", animator, false);
-			}
-			else if (animation.objectReferenceValue != null)
-			{
-				NGUIEditorTools.DrawProperty("Animation", animation, false);
-			}
-			else if (tween.objectReferenceValue != null)
-			{
-				NGUIEditorTools.DrawProperty("Tween", tween, false);
-			}
-			else
-			{
-				NGUIEditorTools.DrawProperty("Sprite", serializedObject, "activeSprite");
-				NGUIEditorTools.DrawProperty("Animator", animator, false);
-				NGUIEditorTools.DrawProperty("Animation", animation, false);
-				NGUIEditorTools.DrawProperty("Tween", tween, false);
-			}
+
+			NGUIEditorTools.DrawProperty("Animator", animator, false);
+			NGUIEditorTools.DrawProperty("Animation", animation, false);
+			NGUIEditorTools.DrawProperty("Tween", tween, false);
 
 			if (serializedObject.isEditingMultipleObjects)
 			{

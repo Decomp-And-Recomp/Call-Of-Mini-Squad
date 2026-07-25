@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public abstract class UIBasicSprite : UIWidget
 {
-	public enum Type
+	[DoNotObfuscateNGUI] public enum Type
 	{
 		Simple,
 		Sliced,
@@ -17,7 +17,7 @@ public abstract class UIBasicSprite : UIWidget
 		Advanced,
 	}
 
-	public enum FillDirection
+	[DoNotObfuscateNGUI] public enum FillDirection
 	{
 		Horizontal,
 		Vertical,
@@ -26,14 +26,14 @@ public abstract class UIBasicSprite : UIWidget
 		Radial360,
 	}
 
-	public enum AdvancedType
+	[DoNotObfuscateNGUI] public enum AdvancedType
 	{
 		Invisible,
 		Sliced,
 		Tiled,
 	}
 
-	public enum Flip
+	[DoNotObfuscateNGUI] public enum Flip
 	{
 		Nothing,
 		Horizontally,
@@ -52,8 +52,8 @@ public abstract class UIBasicSprite : UIWidget
 	[HideInInspector][SerializeField] protected Color mGradientBottom = new Color(0.7f, 0.7f, 0.7f);
 
 	// Cached to avoid allocations
-	[System.NonSerialized] Rect mInnerUV = new Rect();
-	[System.NonSerialized] Rect mOuterUV = new Rect();
+	[System.NonSerialized] protected Rect mInnerUV = new Rect();
+	[System.NonSerialized] protected Rect mOuterUV = new Rect();
 
 	/// <summary>
 	/// When the sprite type is advanced, this determines whether the center is tiled or sliced.
@@ -248,6 +248,71 @@ public abstract class UIBasicSprite : UIWidget
 
 	public virtual float pixelSize { get { return 1f; } }
 
+	/// <summary>
+	/// Trimmed space in the atlas around the sprite. X = left, Y = bottom, Z = right, W = top. Overridden in UISprite.
+	/// </summary>
+	protected virtual Vector4 padding { get { return new Vector4(0, 0, 0, 0); } }
+
+	/// <summary>
+	/// Whether a gradient will be applied.
+	/// </summary>
+
+	public bool applyGradient
+	{
+		get
+		{
+			return mApplyGradient;
+		}
+		set
+		{
+			if (mApplyGradient != value)
+			{
+				mApplyGradient = value;
+				MarkAsChanged();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Top gradient color.
+	/// </summary>
+
+	public Color gradientTop
+	{
+		get
+		{
+			return mGradientTop;
+		}
+		set
+		{
+			if (mGradientTop != value)
+			{
+				mGradientTop = value;
+				if (mApplyGradient) MarkAsChanged();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Bottom gradient color.
+	/// </summary>
+
+	public Color gradientBottom
+	{
+		get
+		{
+			return mGradientBottom;
+		}
+		set
+		{
+			if (mGradientBottom != value)
+			{
+				mGradientBottom = value;
+				if (mApplyGradient) MarkAsChanged();
+			}
+		}
+	}
+
 #if UNITY_EDITOR
 	/// <summary>
 	/// Keep sane values.
@@ -262,15 +327,15 @@ public abstract class UIBasicSprite : UIWidget
 
 #region Fill Functions
 	// Static variables to reduce garbage collection
-	static protected Vector2[] mTempPos = new Vector2[4];
-	static protected Vector2[] mTempUVs = new Vector2[4];
+	[System.NonSerialized] static protected Vector2[] mTempPos = new Vector2[4];
+	[System.NonSerialized] static protected Vector2[] mTempUVs = new Vector2[4];
 
 	/// <summary>
 	/// Convenience function that returns the drawn UVs after flipping gets considered.
 	/// X = left, Y = bottom, Z = right, W = top.
 	/// </summary>
 
-	Vector4 drawingUVs
+	protected Vector4 drawingUVs
 	{
 		get
 		{
@@ -308,26 +373,30 @@ public abstract class UIBasicSprite : UIWidget
 		mOuterUV = outer;
 		mInnerUV = inner;
 
+		var v = drawingDimensions;
+		var u = drawingUVs;
+		var c = drawingColor;
+
 		switch (type)
 		{
 			case Type.Simple:
-			SimpleFill(verts, uvs, cols);
+			SimpleFill(verts, uvs, cols, ref v, ref u, ref c);
 			break;
 
 			case Type.Sliced:
-			SlicedFill(verts, uvs, cols);
+			SlicedFill(verts, uvs, cols, ref v, ref u, ref c);
 			break;
 
 			case Type.Filled:
-			FilledFill(verts, uvs, cols);
+			FilledFill(verts, uvs, cols, ref v, ref u, ref c);
 			break;
 
 			case Type.Tiled:
-			TiledFill(verts, uvs, cols);
+			TiledFill(verts, uvs, cols, ref v, ref c);
 			break;
 
 			case Type.Advanced:
-			AdvancedFill(verts, uvs, cols);
+			AdvancedFill(verts, uvs, cols, ref v, ref u, ref c);
 			break;
 		}
 	}
@@ -336,12 +405,8 @@ public abstract class UIBasicSprite : UIWidget
 	/// Regular sprite fill function is quite simple.
 	/// </summary>
 
-	void SimpleFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols)
+	protected void SimpleFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols, ref Vector4 v, ref Vector4 u, ref Color c)
 	{
-		Vector4 v = drawingDimensions;
-		Vector4 u = drawingUVs;
-		Color gc = drawingColor;
-
 		verts.Add(new Vector3(v.x, v.y));
 		verts.Add(new Vector3(v.x, v.w));
 		verts.Add(new Vector3(v.z, v.w));
@@ -354,17 +419,17 @@ public abstract class UIBasicSprite : UIWidget
 
 		if (!mApplyGradient)
 		{
-			cols.Add(gc);
-			cols.Add(gc);
-			cols.Add(gc);
-			cols.Add(gc);
+			cols.Add(c);
+			cols.Add(c);
+			cols.Add(c);
+			cols.Add(c);
 		}
 		else
 		{
-			AddVertexColours(cols, ref gc, 1, 1);
-			AddVertexColours(cols, ref gc, 1, 2);
-			AddVertexColours(cols, ref gc, 2, 2);
-			AddVertexColours(cols, ref gc, 2, 1);
+			AddVertexColours(cols, ref c, 1, 1);
+			AddVertexColours(cols, ref c, 1, 2);
+			AddVertexColours(cols, ref c, 2, 2);
+			AddVertexColours(cols, ref c, 2, 1);
 		}
 	}
 
@@ -372,18 +437,15 @@ public abstract class UIBasicSprite : UIWidget
 	/// Sliced sprite fill function is more complicated as it generates 9 quads instead of 1.
 	/// </summary>
 
-	void SlicedFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols)
+	protected void SlicedFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols, ref Vector4 v, ref Vector4 u, ref Color gc)
 	{
-		Vector4 br = border * pixelSize;
+		var br = border * pixelSize;
 		
 		if (br.x == 0f && br.y == 0f && br.z == 0f && br.w == 0f)
 		{
-			SimpleFill(verts, uvs, cols);
+			SimpleFill(verts, uvs, cols, ref v, ref u, ref gc);
 			return;
 		}
-
-		Color gc = drawingColor;
-		Vector4 v = drawingDimensions;
 
 		mTempPos[0].x = v.x;
 		mTempPos[0].y = v.y;
@@ -476,15 +538,38 @@ public abstract class UIBasicSprite : UIWidget
 
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	void AddVertexColours (List<Color> cols, ref Color color, int x, int y)
+	protected void AddVertexColours (List<Color> cols, ref Color color, int x, int y)
 	{
-		if (y == 0 || y == 1)
+		var br = border * pixelSize;
+
+		if (type == Type.Simple || (br.x == 0f && br.y == 0f && br.z == 0f && br.w == 0f))
 		{
-			cols.Add(color * mGradientBottom);
+			if (y == 0 || y == 1)
+			{
+				cols.Add(color * mGradientBottom);
+			}
+			else if (y == 2 || y == 3)
+			{
+				cols.Add(color * mGradientTop);
+			}
 		}
-		else if (y == 2 || y == 3)
+		else
 		{
-			cols.Add(color * mGradientTop);
+			if (y == 0) cols.Add(color * mGradientBottom);
+
+			if (y == 1)
+			{
+				var gradient = Color.Lerp(mGradientBottom, mGradientTop, br.y / mHeight);
+				cols.Add(color * gradient);
+			}
+			
+			if (y == 2)
+			{
+				var gradient = Color.Lerp(mGradientTop, mGradientBottom, br.w / mHeight);
+				cols.Add(color * gradient);
+			}
+
+			if (y == 3) cols.Add(color * mGradientTop);
 		}
 	}
 
@@ -492,49 +577,61 @@ public abstract class UIBasicSprite : UIWidget
 	/// Tiled sprite fill function.
 	/// </summary>
 
-	void TiledFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols)
+	protected void TiledFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols, ref Vector4 v, ref Color c)
 	{
-		Texture tex = mainTexture;
+		var tex = mainTexture;
 		if (tex == null) return;
 
-		Vector2 size = new Vector2(mInnerUV.width * tex.width, mInnerUV.height * tex.height);
+		var size = new Vector2(mInnerUV.width * tex.width, mInnerUV.height * tex.height);
 		size *= pixelSize;
-		if (tex == null || size.x < 2f || size.y < 2f) return;
+		if (size.x < 2f || size.y < 2f) return;
 
-		Color c = drawingColor;
-		Vector4 v = drawingDimensions;
 		Vector4 u;
+		Vector4 p;
+		var padding = this.padding;
 
 		if (mFlip == Flip.Horizontally || mFlip == Flip.Both)
 		{
 			u.x = mInnerUV.xMax;
 			u.z = mInnerUV.xMin;
+			
+			p.x = padding.z * pixelSize;
+			p.z = padding.x * pixelSize;
 		}
 		else
 		{
 			u.x = mInnerUV.xMin;
 			u.z = mInnerUV.xMax;
+
+			p.x = padding.x * pixelSize;
+			p.z = padding.z * pixelSize;
 		}
 
 		if (mFlip == Flip.Vertically || mFlip == Flip.Both)
 		{
 			u.y = mInnerUV.yMax;
 			u.w = mInnerUV.yMin;
+
+			p.y = padding.w * pixelSize;
+			p.w = padding.y * pixelSize;
 		}
 		else
 		{
 			u.y = mInnerUV.yMin;
 			u.w = mInnerUV.yMax;
+
+			p.y = padding.y * pixelSize;
+			p.w = padding.w * pixelSize;
 		}
 
 		float x0 = v.x;
 		float y0 = v.y;
-
 		float u0 = u.x;
 		float v0 = u.y;
 
 		while (y0 < v.w)
 		{
+			y0 += p.y;
 			x0 = v.x;
 			float y1 = y0 + size.y;
 			float v1 = u.w;
@@ -547,6 +644,7 @@ public abstract class UIBasicSprite : UIWidget
 
 			while (x0 < v.z)
 			{
+				x0 += p.x;
 				float x1 = x0 + size.x;
 				float u1 = u.z;
 
@@ -571,9 +669,10 @@ public abstract class UIBasicSprite : UIWidget
 				cols.Add(c);
 				cols.Add(c);
 
-				x0 += size.x;
+				x0 += size.x + p.z;
 			}
-			y0 += size.y;
+
+			y0 += size.y + p.w;
 		}
 	}
 
@@ -581,13 +680,9 @@ public abstract class UIBasicSprite : UIWidget
 	/// Filled sprite fill function.
 	/// </summary>
 
-	void FilledFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols)
+	protected void FilledFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols, ref Vector4 v, ref Vector4 u, ref Color c)
 	{
 		if (mFillAmount < 0.001f) return;
-
-		Vector4 v = drawingDimensions;
-		Vector4 u = drawingUVs;
-		Color c = drawingColor;
 
 		// Horizontal and vertical filled sprites are simple -- just end the sprite prematurely
 		if (mFillDirection == FillDirection.Horizontal || mFillDirection == FillDirection.Vertical)
@@ -752,6 +847,21 @@ public abstract class UIBasicSprite : UIWidget
 		{
 			verts.Add(mTempPos[i]);
 			uvs.Add(mTempUVs[i]);
+		}
+
+		// Only adding filled color support for a basic horizontal fill. The sprite fill is hidden in inspector for filled sprites anyway.
+		if (mApplyGradient && mFillDirection == FillDirection.Horizontal)
+		{
+			AddVertexColours(cols, ref c, 1, 1);
+			AddVertexColours(cols, ref c, 1, 2);
+			AddVertexColours(cols, ref c, 2, 2);
+			AddVertexColours(cols, ref c, 2, 1);
+		}
+		else
+		{
+			cols.Add(c);
+			cols.Add(c);
+			cols.Add(c);
 			cols.Add(c);
 		}
 	}
@@ -760,22 +870,20 @@ public abstract class UIBasicSprite : UIWidget
 	/// Advanced sprite fill function. Contributed by Nicki Hansen.
 	/// </summary>
 
-	void AdvancedFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols)
+	protected void AdvancedFill (List<Vector3> verts, List<Vector2> uvs, List<Color> cols, ref Vector4 v, ref Vector4 u, ref Color c)
 	{
-		Texture tex = mainTexture;
+		var tex = mainTexture;
 		if (tex == null) return;
 
-		Vector4 br = border * pixelSize;
+		var br = border * pixelSize;
 
 		if (br.x == 0f && br.y == 0f && br.z == 0f && br.w == 0f)
 		{
-			SimpleFill(verts, uvs, cols);
+			SimpleFill(verts, uvs, cols, ref v, ref u, ref c);
 			return;
 		}
 
-		Color c = drawingColor;
-		Vector4 v = drawingDimensions;
-		Vector2 tileSize = new Vector2(mInnerUV.width * tex.width, mInnerUV.height * tex.height);
+		var tileSize = new Vector2(mInnerUV.width * tex.width, mInnerUV.height * tex.height);
 		tileSize *= pixelSize;
 
 		if (tileSize.x < 1f) tileSize.x = 1f;

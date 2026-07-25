@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -34,10 +34,16 @@ public class UIToggle : UIWidgetContainer
 	public int group = 0;
 
 	/// <summary>
-	/// Sprite that's visible when the 'isActive' status is 'true'.
+	/// Sprite that's visible when the 'value' is 'true'.
 	/// </summary>
 
 	public UIWidget activeSprite;
+
+	/// <summary>
+	/// Sprite that's visible when 'value' is 'false'.
+	/// </summary>
+
+	public UIWidget inactiveSprite;
 
 	/// <summary>
 	/// If 'true', when checked the sprite will be hidden when the toggle is checked instead of when it's not.
@@ -105,6 +111,8 @@ public class UIToggle : UIWidgetContainer
 	[HideInInspector][SerializeField] string functionName = "OnActivate";
 	[HideInInspector][SerializeField] bool startsChecked = false; // Use 'startsActive' instead
 
+	[System.NonSerialized] int mIgnoreFrame = 0;
+
 	bool mIsActive = true;
 	bool mStarted = false;
 
@@ -133,9 +141,9 @@ public class UIToggle : UIWidgetContainer
 	{
 		get
 		{
-			Collider c = GetComponent<Collider>();
+			var c = GetComponent<Collider>();
 			if (c != null) return c.enabled;
-			Collider2D b = GetComponent<Collider2D>();
+			var b = GetComponent<Collider2D>();
 			return (b != null && b.enabled);
 		}
 	}
@@ -151,14 +159,14 @@ public class UIToggle : UIWidgetContainer
 	{
 		for (int i = 0; i < list.size; ++i)
 		{
-			UIToggle toggle = list[i];
+			var toggle = list.buffer[i];
 			if (toggle != null && toggle.group == group && toggle.mIsActive)
 				return toggle;
 		}
 		return null;
 	}
 
-	void OnEnable () { list.Add(this); }
+	void OnEnable () { mIgnoreFrame = Time.frameCount; list.Add(this); }
 	void OnDisable () { list.Remove(this); }
 
 	/// <summary>
@@ -193,8 +201,11 @@ public class UIToggle : UIWidgetContainer
 				checkAnimation = null;
 			}
 
-			if (Application.isPlaying && activeSprite != null)
-				activeSprite.alpha = invertSpriteState ? (startsActive ? 0f : 1f) : (startsActive ? 1f : 0f);
+			if (Application.isPlaying)
+			{
+				if (activeSprite != null) activeSprite.alpha = invertSpriteState ? (startsActive ? 0f : 1f) : (startsActive ? 1f : 0f);
+				if (inactiveSprite != null) inactiveSprite.alpha = invertSpriteState ? (startsActive ? 1f : 0f) : (startsActive ? 0f : 1f);
+			}
 
 			if (EventDelegate.IsValid(onChange))
 			{
@@ -217,7 +228,20 @@ public class UIToggle : UIWidgetContainer
 	/// Check or uncheck on click.
 	/// </summary>
 
-	void OnClick () { if (enabled && isColliderEnabled && UICamera.currentTouchID != -2) value = !value; }
+	[DoNotObfuscateNGUI]
+	public void OnClick ()
+	{
+		if (mIgnoreFrame == Time.frameCount) return;
+
+		if (enabled && isColliderEnabled && UICamera.currentTouchID != -2)
+		{
+			mIgnoreFrame = Time.frameCount;
+			value = !value;
+		}
+	}
+
+	[DoNotObfuscateNGUI] public void SetToTrue () { if (!value) value = true; }
+	[DoNotObfuscateNGUI] public void SetToFalse () { if (value) value = false; }
 
 	/// <summary>
 	/// Fade out or fade in the active sprite and notify the OnChange event listener.
@@ -232,8 +256,8 @@ public class UIToggle : UIWidgetContainer
 		{
 			mIsActive = state;
 			startsActive = state;
-			if (activeSprite != null)
-				activeSprite.alpha = invertSpriteState ? (state ? 0f : 1f) : (state ? 1f : 0f);
+			if (activeSprite != null) activeSprite.alpha = invertSpriteState ? (state ? 0f : 1f) : (state ? 1f : 0f);
+			if (inactiveSprite != null) inactiveSprite.alpha = invertSpriteState ? (state ? 1f : 0f) : (state ? 0f : 1f);
 		}
 		else if (mIsActive != state)
 		{
@@ -242,9 +266,9 @@ public class UIToggle : UIWidgetContainer
 			{
 				for (int i = 0, imax = list.size; i < imax; )
 				{
-					UIToggle cb = list[i];
+					var cb = list.buffer[i];
 					if (cb != this && cb.group == group) cb.Set(false);
-					
+
 					if (list.size != imax)
 					{
 						imax = list.size;
@@ -270,9 +294,22 @@ public class UIToggle : UIWidgetContainer
 				}
 			}
 
+			// Tween the color of the inactive sprite
+			if (inactiveSprite != null)
+			{
+				if (instantTween || !NGUITools.GetActive(this))
+				{
+					inactiveSprite.alpha = invertSpriteState ? (mIsActive ? 1f : 0f) : (mIsActive ? 0f : 1f);
+				}
+				else
+				{
+					TweenAlpha.Begin(inactiveSprite.gameObject, 0.15f, invertSpriteState ? (mIsActive ? 1f : 0f) : (mIsActive ? 0f : 1f));
+				}
+			}
+
 			if (notify && current == null)
 			{
-				UIToggle tog = current;
+				var tog = current;
 				current = this;
 
 				if (EventDelegate.IsValid(onChange))
@@ -290,43 +327,43 @@ public class UIToggle : UIWidgetContainer
 			// Play the checkmark animation
 			if (animator != null)
 			{
-				ActiveAnimation aa = ActiveAnimation.Play(animator, null,
+				var aa = ActiveAnimation.Play(animator, null,
 					state ? Direction.Forward : Direction.Reverse,
 					EnableCondition.IgnoreDisabledState,
 					DisableCondition.DoNotDisable);
 				if (aa != null && (instantTween || !NGUITools.GetActive(this))) aa.Finish();
 			}
-			else if (activeAnimation != null)
+
+			if (activeAnimation != null)
 			{
-				ActiveAnimation aa = ActiveAnimation.Play(activeAnimation, null,
+				var aa = ActiveAnimation.Play(activeAnimation, null,
 					state ? Direction.Forward : Direction.Reverse,
 					EnableCondition.IgnoreDisabledState,
 					DisableCondition.DoNotDisable);
 				if (aa != null && (instantTween || !NGUITools.GetActive(this))) aa.Finish();
 			}
-			else if (tween != null)
+
+			if (tween != null)
 			{
-				bool isActive = NGUITools.GetActive(this);
+				var isActive = NGUITools.GetActive(this);
+
+				tween.Play(state);
+				if (instantTween || !isActive) tween.tweenFactor = state ? 1f : 0f;
 
 				if (tween.tweenGroup != 0)
 				{
-					UITweener[] tws = tween.GetComponentsInChildren<UITweener>(true);
+					var tws = gameObject.GetComponentsInChildren<UITweener>(true);
 
 					for (int i = 0, imax = tws.Length; i < imax; ++i)
 					{
-						UITweener t = tws[i];
+						var t = tws[i];
 
-						if (t.tweenGroup == tween.tweenGroup)
+						if (t != tween && t.tweenGroup == tween.tweenGroup)
 						{
 							t.Play(state);
 							if (instantTween || !isActive) t.tweenFactor = state ? 1f : 0f;
 						}
 					}
-				}
-				else
-				{
-					tween.Play(state);
-					if (instantTween || !isActive) tween.tweenFactor = state ? 1f : 0f;
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -17,9 +17,8 @@ static public class EventDelegateEditor
 
 	static public List<Entry> GetMethods (GameObject target)
 	{
-		MonoBehaviour[] comps = target.GetComponents<MonoBehaviour>();
-
-		List<Entry> list = new List<Entry>();
+		var comps = target.GetComponents<MonoBehaviour>();
+		var list = new List<Entry>();
 
 		for (int i = 0, imax = comps.Length; i < imax; ++i)
 		{
@@ -106,13 +105,13 @@ static public class EventDelegateEditor
 		{
 			NGUIEditorTools.RegisterUndo("Delegate Selection", undoObject);
 			del.Clear();
-			EditorUtility.SetDirty(undoObject);
+			NGUITools.SetDirty(undoObject);
 		}
 		else if (del.target != target)
 		{
 			NGUIEditorTools.RegisterUndo("Delegate Selection", undoObject);
 			del.target = target;
-			EditorUtility.SetDirty(undoObject);
+			NGUITools.SetDirty(undoObject);
 		}
 
 		if (del.target != null && del.target.gameObject != null)
@@ -135,7 +134,7 @@ static public class EventDelegateEditor
 				NGUIEditorTools.RegisterUndo("Delegate Selection", undoObject);
 				del.target = entry.target as MonoBehaviour;
 				del.methodName = entry.name;
-				EditorUtility.SetDirty(undoObject);
+				NGUITools.SetDirty(undoObject);
 				retVal = true;
 			}
 
@@ -153,7 +152,7 @@ static public class EventDelegateEditor
 					{
 						GUI.changed = false;
 						param.obj = obj;
-						EditorUtility.SetDirty(undoObject);
+						NGUITools.SetDirty(undoObject);
 					}
 
 					if (obj == null) continue;
@@ -192,13 +191,13 @@ static public class EventDelegateEditor
 								param.obj = ents[newSel - 1].target;
 								param.field = ents[newSel - 1].name;
 							}
-							EditorUtility.SetDirty(undoObject);
+							NGUITools.SetDirty(undoObject);
 						}
 					}
 					else if (!string.IsNullOrEmpty(param.field))
 					{
 						param.field = null;
-						EditorUtility.SetDirty(undoObject);
+						NGUITools.SetDirty(undoObject);
 					}
 
 					PropertyReferenceDrawer.filter = typeof(void);
@@ -258,13 +257,13 @@ static public class EventDelegateEditor
 	{
 		if (list == null) return;
 
-		bool targetPresent = false;
-		bool isValid = false;
+		var targetPresent = false;
+		var isValid = false;
 
 		// Draw existing delegates
 		for (int i = 0; i < list.Count; )
 		{
-			EventDelegate del = list[i];
+			var del = list[i];
 
 			if (del == null || (del.target == null && !del.isValid))
 			{
@@ -289,7 +288,7 @@ static public class EventDelegateEditor
 		}
 
 		// Draw a new delegate
-		EventDelegate newDel = new EventDelegate();
+		var newDel = new EventDelegate();
 		Field(undoObject, newDel, true, minimalistic);
 
 		if (newDel.target != null)

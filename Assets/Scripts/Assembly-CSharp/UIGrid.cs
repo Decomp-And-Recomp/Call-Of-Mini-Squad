@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -16,14 +16,14 @@ public class UIGrid : UIWidgetContainer
 {
 	public delegate void OnReposition ();
 
-	public enum Arrangement
+	[DoNotObfuscateNGUI] public enum Arrangement
 	{
 		Horizontal,
 		Vertical,
 		CellSnap,
 	}
 
-	public enum Sorting
+	[DoNotObfuscateNGUI] public enum Sorting
 	{
 		None,
 		Alphabetic,
@@ -44,11 +44,21 @@ public class UIGrid : UIWidgetContainer
 
 	public Sorting sorting = Sorting.None;
 
-	/// <summary>
-	/// Final pivot point for the grid's content.
-	/// </summary>
+	[Tooltip("Whether the sort order will be inverted")]
+	public bool inverted = false;
 
+	[Tooltip("Final pivot point for the grid's content.")]
 	public UIWidget.Pivot pivot = UIWidget.Pivot.TopLeft;
+
+	[DoNotObfuscateNGUI]
+	public enum Expansion
+	{
+		Legacy,
+		BasedOnPivot,
+	}
+
+	[Tooltip("Legacy style expansion positions children to the right and down from the first one. Pivot-based expansion positions children moving away from the pivot instead, and centered if necessary.")]
+	public Expansion expansionStyle = Expansion.Legacy;
 
 	/// <summary>
 	/// Maximum children per line.
@@ -70,11 +80,11 @@ public class UIGrid : UIWidgetContainer
 
 	public float cellHeight = 200f;
 
-	/// <summary>
-	/// Whether the grid will smoothly animate its children into the correct place.
-	/// </summary>
-
+	[Tooltip("Whether the grid will smoothly animate its children into the correct place.")]
 	public bool animateSmoothly = false;
+
+	[Tooltip("If 'true' and Animate Smoothly is also 'true', will check to see if elements have a TweenAlpha on them. If so, elements will appear in their target position instead of animating from the current position.")]
+	public bool animateFadeIn = false;
 
 	/// <summary>
 	/// Whether to ignore the disabled children or to treat them as being present.
@@ -103,7 +113,6 @@ public class UIGrid : UIWidgetContainer
 	// Use the 'sorting' property instead
 	[HideInInspector][SerializeField] bool sorted = false;
 
-	protected bool mReposition = false;
 	protected UIPanel mPanel;
 	protected bool mInitDone = false;
 
@@ -111,7 +120,7 @@ public class UIGrid : UIWidgetContainer
 	/// Reposition the children on the next Update().
 	/// </summary>
 
-	public bool repositionNow { set { if (value) { mReposition = true; enabled = true; } } }
+	public bool repositionNow { set { if (value) { mSprings = null; enabled = true; } } }
 
 	/// <summary>
 	/// Get the current list of the grid's children.
@@ -119,22 +128,26 @@ public class UIGrid : UIWidgetContainer
 
 	public List<Transform> GetChildList ()
 	{
-		Transform myTrans = transform;
-		List<Transform> list = new List<Transform>();
+		var myTrans = transform;
+		var list = new List<Transform>();
 
 		for (int i = 0; i < myTrans.childCount; ++i)
 		{
-			Transform t = myTrans.GetChild(i);
-			if (!hideInactive || (t && t.gameObject.activeSelf))
-				list.Add(t);
+			var t = myTrans.GetChild(i);
+			var go = t.gameObject;
+
+			if (go && (!hideInactive || go.activeSelf))
+			{
+				if (!UIDragDropItem.IsDragged(go)) list.Add(t);
+			}
 		}
 
 		// Sort the list using the desired sorting logic
 		if (sorting != Sorting.None && arrangement != Arrangement.CellSnap)
 		{
-			if (sorting == Sorting.Alphabetic) list.Sort(SortByName);
-			else if (sorting == Sorting.Horizontal) list.Sort(SortHorizontal);
-			else if (sorting == Sorting.Vertical) list.Sort(SortVertical);
+			if (sorting == Sorting.Alphabetic) { if (inverted) list.Sort(SortByNameInv); else list.Sort(SortByName); }
+			else if (sorting == Sorting.Horizontal) { if (inverted) list.Sort(SortHorizontalInv); else list.Sort(SortHorizontal); }
+			else if (sorting == Sorting.Vertical) { if (inverted) list.Sort(SortVerticalInv); else list.Sort(SortVertical); }
 			else if (onCustomSort != null) list.Sort(onCustomSort);
 			else Sort(list);
 		}
@@ -187,44 +200,6 @@ public class UIGrid : UIWidgetContainer
 		}
 	}
 
-	// NOTE: This functionality is effectively removed until Unity 4.6.
-	/*/// <summary>
-	/// Convenience method -- add a new child at the specified index.
-	/// Note that if you plan on adding multiple objects, it's faster to GetChildList() and modify that instead.
-	/// </summary>
-
-	public void AddChild (Transform trans, int index)
-	{
-		if (trans != null)
-		{
-			if (sorting != Sorting.None)
-				Debug.LogWarning("The Grid has sorting enabled, so AddChild at index may not work as expected.", this);
-
-			BetterList<Transform> list = GetChildList();
-			list.Insert(index, trans);
-			ResetPosition(list);
-		}
-	}
-
-	/// <summary>
-	/// Convenience method -- remove a child at the specified index.
-	/// Note that if you plan on removing multiple objects, it's faster to GetChildList() and modify that instead.
-	/// </summary>
-
-	public Transform RemoveChild (int index)
-	{
-		BetterList<Transform> list = GetChildList();
-
-		if (index < list.Count)
-		{
-			Transform t = list[index];
-			list.RemoveAt(index);
-			ResetPosition(list);
-			return t;
-		}
-		return null;
-	}*/
-
 	/// <summary>
 	/// Remove the specified child from the list.
 	/// Note that if you plan on removing multiple objects, it's faster to GetChildList() and modify that instead.
@@ -272,8 +247,36 @@ public class UIGrid : UIWidgetContainer
 
 	protected virtual void Update ()
 	{
-		Reposition();
-		enabled = false;
+		if (mSprings != null && mSprings.Count != 0)
+		{
+			var springing = false;
+
+			foreach (var sp in mSprings)
+			{
+				if (sp && sp.enabled)
+				{
+					springing = true;
+					break;
+				}
+			}
+
+			if (!springing)
+			{
+				mSprings.Clear();
+				enabled = false;
+			}
+
+			// Constrain everything to be within the panel's bounds
+			if (keepWithinPanel) ConstrainWithinPanel();
+
+			// Notify the listener
+			if (onReposition != null) onReposition();
+		}
+		else
+		{
+			Reposition();
+			if (mSprings == null || mSprings.Count == 0) enabled = false;
+		}
 	}
 
 	/// <summary>
@@ -284,14 +287,19 @@ public class UIGrid : UIWidgetContainer
 
 	// Various generic sorting functions
 	static public int SortByName (Transform a, Transform b) { return string.Compare(a.name, b.name); }
+	static public int SortByNameInv (Transform a, Transform b) { return string.Compare(b.name, a.name); }
 	static public int SortHorizontal (Transform a, Transform b) { return a.localPosition.x.CompareTo(b.localPosition.x); }
+	static public int SortHorizontalInv (Transform a, Transform b) { return b.localPosition.x.CompareTo(a.localPosition.x); }
 	static public int SortVertical (Transform a, Transform b) { return b.localPosition.y.CompareTo(a.localPosition.y); }
+	static public int SortVerticalInv (Transform a, Transform b) { return a.localPosition.y.CompareTo(b.localPosition.y); }
 
 	/// <summary>
 	/// You can override this function, but in most cases it's easier to just set the onCustomSort delegate instead.
 	/// </summary>
 
 	protected virtual void Sort (List<Transform> list) { }
+
+	[System.NonSerialized] List<SpringPosition> mSprings = null;
 
 	/// <summary>
 	/// Recalculate the position of all elements within the grid, sorting them alphabetically if necessary.
@@ -301,18 +309,18 @@ public class UIGrid : UIWidgetContainer
 	public virtual void Reposition ()
 	{
 		if (Application.isPlaying && !mInitDone && NGUITools.GetActive(gameObject)) Init();
+		else if (mPanel == null) mPanel = NGUITools.FindInParents<UIPanel>(gameObject);
 
 		// Legacy functionality
 		if (sorted)
 		{
 			sorted = false;
-			if (sorting == Sorting.None)
-				sorting = Sorting.Alphabetic;
+			if (sorting == Sorting.None) sorting = Sorting.Alphabetic;
 			NGUITools.SetDirty(this);
 		}
 
 		// Get the list of children in their current order
-		List<Transform> list = GetChildList();
+		var list = GetChildList();
 
 		// Reset the position and order of all objects in the list
 		ResetPosition(list);
@@ -320,9 +328,11 @@ public class UIGrid : UIWidgetContainer
 		// Constrain everything to be within the panel's bounds
 		if (keepWithinPanel) ConstrainWithinPanel();
 
+		// Stay enabled until springs finish
+		if (mSprings != null && mSprings.Count != 0) enabled = true;
+
 		// Notify the listener
-		if (onReposition != null)
-			onReposition();
+		if (onReposition != null) onReposition();
 	}
 
 	/// <summary>
@@ -334,7 +344,7 @@ public class UIGrid : UIWidgetContainer
 		if (mPanel != null)
 		{
 			mPanel.ConstrainTargetToBounds(transform, true);
-			UIScrollView sv = mPanel.GetComponent<UIScrollView>();
+			var sv = mPanel.GetComponent<UIScrollView>();
 			if (sv != null) sv.UpdateScrollbars(true);
 		}
 	}
@@ -345,43 +355,73 @@ public class UIGrid : UIWidgetContainer
 
 	protected virtual void ResetPosition (List<Transform> list)
 	{
-		mReposition = false;
-
-		// Epic hack: Unparent all children so that we get to control the order in which they are re-added back in
-		// EDIT: Turns out this does nothing.
-		//for (int i = 0, imax = list.Count; i < imax; ++i)
-		//	list[i].parent = null;
+		if (mSprings != null) mSprings.Clear();
 
 		int x = 0;
 		int y = 0;
 		int maxX = 0;
 		int maxY = 0;
-		Transform myTrans = transform;
+		var smoothAnim = animateSmoothly && gameObject.activeInHierarchy && Application.isPlaying;
+		var offset = 0f;
 
 		// Re-add the children in the same order we have them in and position them accordingly
 		for (int i = 0, imax = list.Count; i < imax; ++i)
 		{
-			Transform t = list[i];
-			// See above
-			//t.parent = myTrans;
-
-			Vector3 pos = t.localPosition;
-			float depth = pos.z;
+			var t = list[i];
+			var pos = t.localPosition;
+			var depth = pos.z;
 
 			if (arrangement == Arrangement.CellSnap)
 			{
 				if (cellWidth > 0) pos.x = Mathf.Round(pos.x / cellWidth) * cellWidth;
 				if (cellHeight > 0) pos.y = Mathf.Round(pos.y / cellHeight) * cellHeight;
 			}
-			else pos = (arrangement == Arrangement.Horizontal) ?
-				new Vector3(cellWidth * x, -cellHeight * y, depth) :
-				new Vector3(cellWidth * y, -cellHeight * x, depth);
-
-			if (animateSmoothly && Application.isPlaying && (pivot != UIWidget.Pivot.TopLeft || Vector3.SqrMagnitude(t.localPosition - pos) >= 0.0001f))
+			else
 			{
-				SpringPosition sp = SpringPosition.Begin(t.gameObject, pos, 15f);
-				sp.updateScrollView = true;
-				sp.ignoreTimeScale = true;
+				pos = (arrangement == Arrangement.Horizontal) ? new Vector3(cellWidth * x, -cellHeight * y, depth) : new Vector3(cellWidth * y, -cellHeight * x, depth);
+
+				// Pivot-based expansion flips which way the new rows/columns go, keeping them moving away from the pivot
+				if (expansionStyle == Expansion.BasedOnPivot)
+				{
+					if (pivot == UIWidget.Pivot.Bottom || pivot == UIWidget.Pivot.BottomLeft || pivot == UIWidget.Pivot.BottomRight) pos.y = -pos.y;
+					if (pivot == UIWidget.Pivot.Right || pivot == UIWidget.Pivot.BottomRight || pivot == UIWidget.Pivot.TopRight) pos.x = -pos.x;
+
+					if (offset != 0f)
+					{
+						if (arrangement == Arrangement.Horizontal)
+						{
+							if (pivot == UIWidget.Pivot.Top || pivot == UIWidget.Pivot.Bottom) pos.x += offset;
+						}
+						else if (arrangement == Arrangement.Vertical)
+						{
+							if (pivot == UIWidget.Pivot.Left || pivot == UIWidget.Pivot.Right) pos.y -= offset;
+						}
+					}
+				}
+			}
+
+			// Special case: if the element is currently invisible and is fading in, we want to position it in the right place right away
+			if (smoothAnim && animateFadeIn)
+			{
+				var tw = t.GetComponent<TweenAlpha>();
+				if (tw != null && tw.enabled && tw.value == 0f && tw.to == 1f) smoothAnim = false;
+			}
+
+			if (smoothAnim)
+			{
+				var sp = t.gameObject.GetComponent<SpringPosition>();
+				if (sp != null && sp.enabled) sp.Finish();
+			}
+
+			if (smoothAnim)
+			{
+				if (t.localPosition != pos)
+				{
+					var sp = SpringPosition.Begin(t.gameObject, pos, 15f);
+					sp.ignoreTimeScale = true;
+					if (mSprings == null) mSprings = new List<SpringPosition>();
+					mSprings.Add(sp);
+				}
 			}
 			else t.localPosition = pos;
 
@@ -392,13 +432,16 @@ public class UIGrid : UIWidgetContainer
 			{
 				x = 0;
 				++y;
+
+				var expected = list.Count - i;
+				if (expected < maxPerLine) offset = Mathf.Round((maxPerLine - expected + 1) * 0.5f * (arrangement == Arrangement.Horizontal ? cellWidth : cellHeight));
 			}
 		}
 
 		// Apply the origin offset
 		if (pivot != UIWidget.Pivot.TopLeft)
 		{
-			Vector2 po = NGUIMath.GetPivotOffset(pivot);
+			var po = NGUIMath.GetPivotOffset(pivot);
 
 			float fx, fy;
 
@@ -413,17 +456,20 @@ public class UIGrid : UIWidgetContainer
 				fy = Mathf.Lerp(-maxX * cellHeight, 0f, po.y);
 			}
 
-			for (int i = 0; i < myTrans.childCount; ++i)
+			if (expansionStyle == Expansion.BasedOnPivot && arrangement != Arrangement.CellSnap)
 			{
-				Transform t = myTrans.GetChild(i);
-				SpringPosition sp = t.GetComponent<SpringPosition>();
+				if (pivot == UIWidget.Pivot.Bottom || pivot == UIWidget.Pivot.BottomLeft || pivot == UIWidget.Pivot.BottomRight) fy = 0f;
+				if (pivot == UIWidget.Pivot.Right || pivot == UIWidget.Pivot.BottomRight || pivot == UIWidget.Pivot.TopRight) fx = 0f;
+			}
 
-				if (sp != null)
+			foreach (var t in list)
+			{
+				var sp = smoothAnim ? t.GetComponent<SpringPosition>() : null;
+
+				if (sp != null && sp.enabled)
 				{
-					sp.enabled = false;
 					sp.target.x -= fx;
 					sp.target.y -= fy;
-					sp.enabled = true;
 				}
 				else
 				{

@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -91,13 +91,13 @@ public class UILocalize : MonoBehaviour
 	/// This function is called by the Localization manager via a broadcast SendMessage.
 	/// </summary>
 
-	void OnLocalize ()
+	public virtual void OnLocalize ()
 	{
 		// If no localization key has been specified, use the label's text as the key
 		if (string.IsNullOrEmpty(key))
 		{
-			UILabel lbl = GetComponent<UILabel>();
-			if (lbl != null) key = lbl.text;
+			UILabel lbl;
+			if (TryGetComponent(out lbl)) key = lbl.text;
 		}
 
 		// If we still don't have a key, leave the value as blank

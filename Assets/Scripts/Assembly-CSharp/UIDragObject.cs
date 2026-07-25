@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -14,7 +14,7 @@ using System.Collections;
 [AddComponentMenu("NGUI/Interaction/Drag Object")]
 public class UIDragObject : MonoBehaviour
 {
-	public enum DragEffect
+	[DoNotObfuscateNGUI] public enum DragEffect
 	{
 		None,
 		Momentum,
@@ -126,17 +126,14 @@ public class UIDragObject : MonoBehaviour
 	{
 		if (contentRect)
 		{
-			Transform t = panelRegion.cachedTransform;
-			Matrix4x4 toLocal = t.worldToLocalMatrix;
-			Vector3[] corners = contentRect.worldCorners;
+			var t = panelRegion.cachedTransform;
+			var toLocal = t.worldToLocalMatrix;
+			var corners = contentRect.worldCorners;
 			for (int i = 0; i < 4; ++i) corners[i] = toLocal.MultiplyPoint3x4(corners[i]);
 			mBounds = new Bounds(corners[0], Vector3.zero);
 			for (int i = 1; i < 4; ++i) mBounds.Encapsulate(corners[i]);
 		}
-		else
-		{
-			mBounds = NGUIMath.CalculateRelativeWidgetBounds(panelRegion.cachedTransform, target);
-		}
+		else mBounds = NGUIMath.CalculateRelativeWidgetBounds(panelRegion.cachedTransform, target);
 	}
 
 	/// <summary>
@@ -170,7 +167,7 @@ public class UIDragObject : MonoBehaviour
 					CancelSpring();
 
 					// Create the plane to drag along
-					Transform trans = UICamera.currentCamera.transform;
+					var trans = UICamera.currentCamera.transform;
 					mPlane = new Plane((panelRegion != null ? panelRegion.cachedTransform.rotation : trans.rotation) * Vector3.back, UICamera.lastWorldPosition);
 				}
 			}
@@ -197,13 +194,13 @@ public class UIDragObject : MonoBehaviour
 		{
 			UICamera.currentTouch.clickNotification = UICamera.ClickNotification.BasedOnDelta;
 
-			Ray ray = UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos);
-			float dist = 0f;
+			var ray = UICamera.currentCamera.ScreenPointToRay(UICamera.currentTouch.pos);
+			float dist;
 
 			if (mPlane.Raycast(ray, out dist))
 			{
-				Vector3 currentPos = ray.GetPoint(dist);
-				Vector3 offset = currentPos - mLastPos;
+				var currentPos = ray.GetPoint(dist);
+				var offset = currentPos - mLastPos;
 				mLastPos = currentPos;
 
 				if (!mStarted)
@@ -224,7 +221,7 @@ public class UIDragObject : MonoBehaviour
 					mMomentum = Vector3.Lerp(mMomentum, mMomentum + offset * (0.01f * momentumAmount), 0.67f);
 
 				// Adjust the position and bounds
-				Vector3 before = target.localPosition;
+				var before = target.localPosition;
 				Move(offset);
 
 				// We want to constrain the UI to be within bounds
@@ -233,8 +230,7 @@ public class UIDragObject : MonoBehaviour
 					mBounds.center = mBounds.center + (target.localPosition - before);
 
 					// Constrain the UI to the bounds, and if done so, immediately eliminate the momentum
-					if (dragEffect != DragEffect.MomentumAndSpring && panelRegion.ConstrainTargetToBounds(target, ref mBounds, true))
-						CancelMovement();
+					if (dragEffect != DragEffect.MomentumAndSpring && panelRegion.ConstrainTargetToBounds(target, ref mBounds, true)) CancelMovement();
 				}
 			}
 		}
@@ -249,12 +245,12 @@ public class UIDragObject : MonoBehaviour
 		if (panelRegion != null)
 		{
 			mTargetPos += worldDelta;
-			Transform parent = target.parent;
-			Rigidbody rb = target.GetComponent<Rigidbody>();
+			var parent = target.parent;
+			var rb = target.GetComponent<Rigidbody>();
 
 			if (parent != null)
 			{
-				Vector3 after = parent.worldToLocalMatrix.MultiplyPoint3x4(mTargetPos);
+				var after = parent.worldToLocalMatrix.MultiplyPoint3x4(mTargetPos);
 				after.x = Mathf.Round(after.x);
 				after.y = Mathf.Round(after.y);
 
@@ -264,8 +260,15 @@ public class UIDragObject : MonoBehaviour
 					// Moving the rigidbody is much cheaper, but it does seem to have a side effect of causing
 					// widgets to detect movement relative to the panel, when in fact they should not be moving.
 					// This is why it's best to keep the panel as 'static' if at all possible.
+					// NOTE: Immediate constraints will also fail with a rigidbody because transform doesn't get updated.
+					// It is strongly not advisable to have a rigidbody in this case.
 					after = parent.localToWorldMatrix.MultiplyPoint3x4(after);
 					rb.position = after;
+#if UNITY_EDITOR
+					if (restrictWithinPanel && dragEffect != DragEffect.MomentumAndSpring)
+						Debug.LogWarning("Constraining doesn't work properly when there is a rigidbody present because rigidbodies move in FixedUpdate, not Update.\n" +
+							"Please remove it, or use the MomentumAndSpring type drag effect.", rb);
+#endif
 				}
 				else target.localPosition = after;
 			}
@@ -275,7 +278,7 @@ public class UIDragObject : MonoBehaviour
 			}
 			else target.position = mTargetPos;
 
-			UIScrollView ds = panelRegion.GetComponent<UIScrollView>();
+			var ds = panelRegion.GetComponent<UIScrollView>();
 			if (ds != null) ds.UpdateScrollbars(true);
 		}
 		else target.position += worldDelta;

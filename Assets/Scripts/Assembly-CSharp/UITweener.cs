@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -19,7 +19,7 @@ public abstract class UITweener : MonoBehaviour
 
 	static public UITweener current;
 
-	public enum Method
+	[DoNotObfuscateNGUI] public enum Method
 	{
 		Linear,
 		EaseIn,
@@ -29,11 +29,12 @@ public abstract class UITweener : MonoBehaviour
 		BounceOut,
 	}
 
-	public enum Style
+	[DoNotObfuscateNGUI] public enum Style
 	{
 		Once,
 		Loop,
 		PingPong,
+		PersistentLoop,		// Persistent style is like normal Loop, except it uses Time.time/duration rather than elapsed time
 	}
 
 	/// <summary>
@@ -71,6 +72,16 @@ public abstract class UITweener : MonoBehaviour
 	[HideInInspector]
 	public float delay = 0f;
 
+	public enum DelayAffects
+	{
+		Forward,
+		Reverse,
+		Both,
+	}
+
+	[HideInInspector]
+	public DelayAffects delayAffects = DelayAffects.Both;
+
 	/// <summary>
 	/// How long is the duration of the tween?
 	/// </summary>
@@ -105,6 +116,12 @@ public abstract class UITweener : MonoBehaviour
 	// Deprecated functionality, kept for backwards compatibility
 	[HideInInspector] public GameObject eventReceiver;
 	[HideInInspector] public string callWhenFinished;
+
+	/// <summary>
+	/// Custom time scale for this tween, if desired. Can be used to slow down or speed up the animation.
+	/// </summary>
+
+	[System.NonSerialized] public float timeScale = 1f;
 
 	bool mStarted = false;
 	float mStartTime = 0f;
@@ -164,48 +181,67 @@ public abstract class UITweener : MonoBehaviour
 	protected void Update () { if (!useFixedUpdate) DoUpdate(); }
 	protected void FixedUpdate () { if (useFixedUpdate) DoUpdate(); }
 
+	static double Fract (double val) { return val - System.Math.Floor(val); }
+
 	/// <summary>
 	/// Update the tweening factor and call the virtual update function.
 	/// </summary>
 
 	protected void DoUpdate ()
 	{
-		float delta = ignoreTimeScale && !useFixedUpdate ? Time.unscaledDeltaTime : Time.deltaTime;
-		float time = ignoreTimeScale && !useFixedUpdate ? Time.unscaledTime : Time.time;
-
-		if (!mStarted)
+		if (style == Style.PersistentLoop)
 		{
-			delta = 0;
-			mStarted = true;
-			mStartTime = time + delay;
-		}
+			var time = useFixedUpdate ? Time.unscaledTimeAsDouble : Time.timeAsDouble;
 
-		if (time < mStartTime) return;
-
-		// Advance the sampling factor
-		mFactor += (duration == 0f) ? 1f : amountPerDelta * delta;
-
-		// Loop style simply resets the play factor after it exceeds 1.
-		if (style == Style.Loop)
-		{
-			if (mFactor > 1f)
+			if (!mStarted)
 			{
-				mFactor -= Mathf.Floor(mFactor);
+				mStarted = true;
+				mStartTime = (float)time;
 			}
+
+			mFactor = (duration > 0f) ? (float)Fract((time + delay) / duration) : 0f;
 		}
-		else if (style == Style.PingPong)
+		else
 		{
-			// Ping-pong style reverses the direction
-			if (mFactor > 1f)
+			float delta = ignoreTimeScale && !useFixedUpdate ? Time.unscaledDeltaTime : Time.deltaTime;
+			float time = ignoreTimeScale && !useFixedUpdate ? Time.unscaledTime : Time.time;
+
+			if (!mStarted)
 			{
-				mFactor = 1f - (mFactor - Mathf.Floor(mFactor));
-				mAmountPerDelta = -mAmountPerDelta;
+				delta = 0;
+				mStarted = true;
+				mStartTime = time;
+				if (amountPerDelta > 0f && (delayAffects == DelayAffects.Both || delayAffects == DelayAffects.Forward)) mStartTime += delay;
+				else if (amountPerDelta < 0f && (delayAffects == DelayAffects.Both || delayAffects == DelayAffects.Reverse)) mStartTime += delay;
 			}
-			else if (mFactor < 0f)
+
+			if (time < mStartTime) return;
+
+			// Advance the sampling factor
+			mFactor += (duration == 0f) ? 1f : amountPerDelta * delta * timeScale;
+
+			// Loop style simply resets the play factor after it exceeds 1.
+			if (style == Style.Loop)
 			{
-				mFactor = -mFactor;
-				mFactor -= Mathf.Floor(mFactor);
-				mAmountPerDelta = -mAmountPerDelta;
+				if (mFactor > 1f)
+				{
+					mFactor -= Mathf.Floor(mFactor);
+				}
+			}
+			else if (style == Style.PingPong)
+			{
+				// Ping-pong style reverses the direction
+				if (mFactor > 1f)
+				{
+					mFactor = 1f - (mFactor - Mathf.Floor(mFactor));
+					mAmountPerDelta = -mAmountPerDelta;
+				}
+				else if (mFactor < 0f)
+				{
+					mFactor = -mFactor;
+					mFactor -= Mathf.Floor(mFactor);
+					mAmountPerDelta = -mAmountPerDelta;
+				}
 			}
 		}
 
@@ -288,7 +324,20 @@ public abstract class UITweener : MonoBehaviour
 	/// Mark as not started when finished to enable delay on next play.
 	/// </summary>
 
-	void OnDisable () { mStarted = false; }
+	protected virtual void OnDisable () { mStarted = false; }
+
+	/// <summary>
+	/// Immediately finish the tween animation, if it's active.
+	/// </summary>
+
+	public void Finish ()
+	{
+		if (enabled)
+		{
+			Sample(mAmountPerDelta > 0f ? 1f : 0f, true);
+			enabled = false;
+		}
+	}
 
 	/// <summary>
 	/// Sample the tween at the specified factor.
@@ -377,12 +426,14 @@ public abstract class UITweener : MonoBehaviour
 	/// Play the tween forward.
 	/// </summary>
 
+	[ContextMenu("Play forward")]
 	public void PlayForward () { Play(true); }
 
 	/// <summary>
 	/// Play the tween in reverse.
 	/// </summary>
 	
+	[ContextMenu("Play in reverse")]
 	public void PlayReverse () { Play(false); }
 
 	/// <summary>

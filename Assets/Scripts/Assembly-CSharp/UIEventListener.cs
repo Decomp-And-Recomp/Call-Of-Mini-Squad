@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -37,11 +37,13 @@ public class UIEventListener : MonoBehaviour
 	public ObjectDelegate onDrop;
 	public KeyCodeDelegate onKey;
 	public BoolDelegate onTooltip;
+	public bool needsActiveCollider = true;
 
 	bool isColliderEnabled
 	{
 		get
 		{
+			if (!needsActiveCollider) return true;
 			Collider c = GetComponent<Collider>();
 			if (c != null) return c.enabled;
 			Collider2D b = GetComponent<Collider2D>();

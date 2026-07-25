@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEditor;
@@ -201,7 +201,7 @@ public class UICameraTool : EditorWindow
 			if (enabled != EditorGUILayout.Toggle(enabled, GUILayout.Width(20f)))
 			{
 				cam.enabled = !enabled;
-				EditorUtility.SetDirty(cam.gameObject);
+				NGUITools.SetDirty(cam.gameObject);
 			}
 		}
 		else
@@ -234,7 +234,7 @@ public class UICameraTool : EditorWindow
 		if (GUILayout.Button(camName, EditorStyles.label, GUILayout.MinWidth(100f)) && cam != null)
 		{
 			Selection.activeGameObject = cam.gameObject;
-			EditorUtility.SetDirty(cam.gameObject);
+			NGUITools.SetDirty(cam.gameObject);
 		}
 		GUILayout.Label(camLayer, GUILayout.Width(70f));
 

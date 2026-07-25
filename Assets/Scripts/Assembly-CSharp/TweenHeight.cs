@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -15,6 +15,14 @@ public class TweenHeight : UITweener
 {
 	public int from = 100;
 	public int to = 100;
+
+	[Tooltip("If set, 'from' value will be set to match the specified rectangle")]
+	public UIWidget fromTarget;
+
+	[Tooltip("If set, 'to' value will be set to match the specified rectangle")]
+	public UIWidget toTarget;
+
+	[Tooltip("Whether there is a table that should be updated")]
 	public bool updateTable = false;
 
 	UIWidget mWidget;
@@ -37,6 +45,9 @@ public class TweenHeight : UITweener
 
 	protected override void OnUpdate (float factor, bool isFinished)
 	{
+		if (fromTarget) from = fromTarget.height;
+		if (toTarget) to = toTarget.height;
+
 		value = Mathf.RoundToInt(from * (1f - factor) + to * factor);
 
 		if (updateTable)

@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -71,7 +71,7 @@ static public class NGUIMath
 
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	static public int HexToDecimal (char ch)
+	static public int HexToDecimal (char ch, int defVal = 0xF)
 	{
 		switch (ch)
 		{
@@ -98,7 +98,7 @@ static public class NGUIMath
 			case 'f':
 			case 'F': return 0xF;
 		}
-		return 0xF;
+		return defVal;
 	}
 
 	/// <summary>
@@ -219,6 +219,23 @@ static public class NGUIMath
 	}
 
 	/// <summary>
+	/// Convert the specified RGBA32 integer to Color.
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public Color UIntToColor (uint val)
+	{
+		float inv = 1f / 255f;
+		Color c = Color.black;
+		c.r = inv * ((val >> 24) & 0xFF);
+		c.g = inv * ((val >> 16) & 0xFF);
+		c.b = inv * ((val >> 8) & 0xFF);
+		c.a = inv * (val & 0xFF);
+		return c;
+	}
+
+	/// <summary>
 	/// Convert the specified integer to a human-readable string representing the binary value. Useful for debugging bytes.
 	/// </summary>
 
@@ -242,10 +259,15 @@ static public class NGUIMath
 
 	[System.Diagnostics.DebuggerHidden]
 	[System.Diagnostics.DebuggerStepThrough]
-	static public Color HexToColor (uint val)
-	{
-		return IntToColor((int)val);
-	}
+	static public Color HexToColor (int val) { return IntToColor(val); }
+
+	/// <summary>
+	/// Convenience conversion function, allowing hex format (0xRrGgBbAa).
+	/// </summary>
+
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
+	static public Color HexToColor (uint val) { return UIntToColor(val); }
 
 	/// <summary>
 	/// Convert from top-left based pixel coordinates to bottom-left based UV coordinates.
@@ -354,6 +376,8 @@ static public class NGUIMath
 		return offset;
 	}
 
+	[System.NonSerialized] static System.Collections.Generic.List<UIWidget> s_widgets = new List<UIWidget>();
+
 	/// <summary>
 	/// Calculate the combined bounds of all widgets attached to the specified game object or its children (in world space).
 	/// </summary>
@@ -362,19 +386,30 @@ static public class NGUIMath
 	{
 		if (trans != null)
 		{
-			UIWidget[] widgets = trans.GetComponentsInChildren<UIWidget>() as UIWidget[];
-			if (widgets.Length == 0) return new Bounds(trans.position, Vector3.zero);
+			s_widgets.Clear();
+			trans.GetComponentsInChildren(s_widgets);
+
+			for (int i = 0, imax = s_widgets.Count; i < imax; ++i)
+			{
+				var w = s_widgets[i];
+
+				if (!w.isSelectable || !w.enabled)
+				{
+					s_widgets.RemoveAt(i--);
+					--imax;
+				}
+			}
+
+			if (s_widgets.Count == 0) return new Bounds(trans.position, Vector3.zero);
 
 			Vector3 vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
 			Vector3 vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 			Vector3 v;
 
-			for (int i = 0, imax = widgets.Length; i < imax; ++i)
+			for (int i = 0, imax = s_widgets.Count; i < imax; ++i)
 			{
-				UIWidget w = widgets[i];
-				if (!w.enabled) continue;
-
-				Vector3[] corners = w.worldCorners;
+				var w = s_widgets[i];
+				var corners = w.worldCorners;
 
 				for (int j = 0; j < 4; ++j)
 				{
@@ -432,18 +467,19 @@ static public class NGUIMath
 	{
 		if (content != null && relativeTo != null)
 		{
-			bool isSet = false;
-			Matrix4x4 toLocal = relativeTo.worldToLocalMatrix;
-			Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-			Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+			var isSet = false;
+			var toLocal = relativeTo.worldToLocalMatrix;
+			var min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+			var max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 			CalculateRelativeWidgetBounds(content, considerInactive, true, ref toLocal, ref min, ref max, ref isSet, considerChildren);
 
 			if (isSet)
 			{
-				Bounds b = new Bounds(min, Vector3.zero);
+				var b = new Bounds(min, Vector3.zero);
 				b.Encapsulate(max);
 				return b;
 			}
+			return new Bounds(toLocal.MultiplyPoint3x4(content.position), Vector3.zero);
 		}
 		return new Bounds(Vector3.zero, Vector3.zero);
 	}
@@ -461,7 +497,7 @@ static public class NGUIMath
 		if (!considerInactive && !NGUITools.GetActive(content.gameObject)) return;
 
 		// If this isn't a root node, check to see if there is a panel present
-		UIPanel p = isRoot ? null : content.GetComponent<UIPanel>();
+		var p = isRoot ? null : content.GetComponent<UIPanel>();
 
 		// Ignore disabled panels as a disabled panel means invisible children
 		if (p != null && !p.enabled) return;
@@ -469,7 +505,7 @@ static public class NGUIMath
 		// If there is a clipped panel present simply include its dimensions
 		if (p != null && p.clipping != UIDrawCall.Clipping.None)
 		{
-			Vector3[] corners = p.worldCorners;
+			var corners = p.worldCorners;
 
 			for (int j = 0; j < 4; ++j)
 			{
@@ -489,15 +525,15 @@ static public class NGUIMath
 		else // No panel present
 		{
 			// If there is a widget present, include its bounds
-			UIWidget w = content.GetComponent<UIWidget>();
+			var w = content.GetComponent<UIWidget>();
 
-			if (w != null && w.enabled)
+			if (w != null && w.enabled && w.isSelectable && !w.boundless)
 			{
-				Vector3[] corners = w.worldCorners;
+				var corners = w.worldCorners;
 
 				for (int j = 0; j < 4; ++j)
 				{
-					Vector3 v = toLocal.MultiplyPoint3x4(corners[j]);
+					var v = toLocal.MultiplyPoint3x4(corners[j]);
 
 					if (v.x > vMax.x) vMax.x = v.x;
 					if (v.y > vMax.y) vMax.y = v.y;
@@ -1097,10 +1133,15 @@ static public class NGUIMath
 	/// You can then assign the widget's localPosition to the returned value.
 	/// </summary>
 
-	static public Vector3 WorldToLocalPoint (Vector3 worldPos, Camera worldCam, Camera uiCam, Transform relativeTo)
+	static public Vector3 WorldToLocalPoint (Vector3 worldPos, Camera worldCam, Camera uiCam, Transform relativeTo = null)
 	{
-		worldPos = worldCam.WorldToViewportPoint(worldPos);
-		worldPos = uiCam.ViewportToWorldPoint(worldPos);
+		if (worldCam != uiCam)
+		{
+			worldPos = worldCam.WorldToViewportPoint(worldPos);
+			if (uiCam.orthographic) worldPos.z = worldPos.z < 0f ? -0.001f : 0.001f;
+			worldPos = uiCam.ViewportToWorldPoint(worldPos);
+		}
+
 		if (relativeTo == null) return worldPos;
 		relativeTo = relativeTo.parent;
 		if (relativeTo == null) return worldPos;
@@ -1117,10 +1158,36 @@ static public class NGUIMath
 
 	static public void OverlayPosition (this Transform trans, Vector3 worldPos, Camera worldCam, Camera myCam)
 	{
-		worldPos = worldCam.WorldToViewportPoint(worldPos);
-		worldPos = myCam.ViewportToWorldPoint(worldPos);
+		if (worldCam != myCam)
+		{
+			worldPos = worldCam.WorldToViewportPoint(worldPos);
+			if (myCam.orthographic) worldPos.z = worldPos.z < 0f ? -0.001f : 0.001f;
+			worldPos = myCam.ViewportToWorldPoint(worldPos);
+		}
+
 		Transform parent = trans.parent;
 		trans.localPosition = (parent != null) ? parent.InverseTransformPoint(worldPos) : worldPos;
+	}
+
+	/// <summary>
+	/// Helper function that can set the transform's position to be at the specified world position.
+	/// Ideal usage: positioning a UI element to be directly over a 3D point in space.
+	/// </summary>
+	/// <param name="worldPos">World position, visible by the worldCam</param>
+	/// <param name="worldCam">Camera that is able to see the worldPos</param>
+	/// <param name="myCam">Camera that is able to see the transform this function is called on</param>
+
+	static public void OverlayPosition (this Transform trans, Vector3 worldPos, Camera worldCam, Camera myCam, Vector3 offset)
+	{
+		if (worldCam != myCam)
+		{
+			worldPos = worldCam.WorldToViewportPoint(worldPos);
+			if (myCam.orthographic) worldPos.z = worldPos.z < 0f ? -0.001f : 0.001f;
+			worldPos = myCam.ViewportToWorldPoint(worldPos);
+		}
+
+		Transform parent = trans.parent;
+		trans.localPosition = (parent != null) ? parent.InverseTransformPoint(worldPos) + offset : worldPos + offset;
 	}
 
 	/// <summary>

@@ -117831,6 +117831,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 0
+  delayAffects: 2
   duration: 0.2
   steeperCurves: 0
   tweenGroup: 0
@@ -117881,6 +117882,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 0
+  delayAffects: 2
   duration: 0.2
   steeperCurves: 0
   tweenGroup: 0
@@ -117931,6 +117933,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 0
   delay: 0
+  delayAffects: 2
   duration: 1
   steeperCurves: 0
   tweenGroup: 0
@@ -117981,6 +117984,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 0
+  delayAffects: 2
   duration: 0.2
   steeperCurves: 0
   tweenGroup: 0
@@ -118016,8 +118020,9 @@ MonoBehaviour:
   useKeyboard: 1
   useController: 1
   stickyTooltip: 1
-  tooltipDelay: 1
+  longPressDelay: 0.5
   longPressTooltip: 0
+  tooltipDelay: 1
   mouseDragThreshold: 4
   mouseClickThreshold: 10
   touchDragThreshold: 40
@@ -118106,6 +118111,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: -1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118126,6 +118132,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &640
 MonoBehaviour:
@@ -118161,6 +118168,7 @@ MonoBehaviour:
   mWidth: 392
   mHeight: 140
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118200,6 +118208,7 @@ MonoBehaviour:
   mWidth: 340
   mHeight: 100
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118220,6 +118229,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame033__L0R0T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &642
 MonoBehaviour:
@@ -118255,6 +118265,7 @@ MonoBehaviour:
   mWidth: 700
   mHeight: 60
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118283,8 +118294,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -118324,6 +118338,7 @@ MonoBehaviour:
   mWidth: 590
   mHeight: 52
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118344,6 +118359,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame089__L80R60T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &644
 MonoBehaviour:
@@ -118429,6 +118445,7 @@ MonoBehaviour:
   mWidth: 920
   mHeight: 480
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118468,6 +118485,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 315
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118547,6 +118565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   group: 13
   activeSprite: {fileID: 837}
+  inactiveSprite: {fileID: 0}
   invertSpriteState: 0
   activeAnimation: {fileID: 0}
   animator: {fileID: 0}
@@ -118594,6 +118613,7 @@ MonoBehaviour:
   mWidth: 392
   mHeight: 250
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118633,6 +118653,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118653,6 +118674,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &655
 MonoBehaviour:
@@ -118688,6 +118710,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -118826,6 +118849,7 @@ MonoBehaviour:
   mWidth: 18
   mHeight: 10
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118846,6 +118870,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: pic_decal029
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &663
 MonoBehaviour:
@@ -118881,6 +118906,7 @@ MonoBehaviour:
   mWidth: 234
   mHeight: 50
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -118901,6 +118927,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: dw_pinfo
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &664
 MonoBehaviour:
@@ -118936,6 +118963,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 100
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119025,6 +119053,7 @@ MonoBehaviour:
   mWidth: 78
   mHeight: 22
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119053,8 +119082,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119094,6 +119126,7 @@ MonoBehaviour:
   mWidth: 500
   mHeight: 20
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119122,8 +119155,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119163,6 +119199,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 16
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119183,6 +119220,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &671
 MonoBehaviour:
@@ -119218,6 +119256,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 20
   mDepth: 9
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119246,8 +119285,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119287,6 +119329,7 @@ MonoBehaviour:
   mWidth: 36
   mHeight: 36
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119307,6 +119350,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: T-logo-36
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &673
 MonoBehaviour:
@@ -119384,6 +119428,7 @@ MonoBehaviour:
   mWidth: 176
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119412,8 +119457,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119453,6 +119501,7 @@ MonoBehaviour:
   mWidth: 190
   mHeight: 44
   mDepth: 105
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119473,6 +119522,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &677
 MonoBehaviour:
@@ -119558,6 +119608,7 @@ MonoBehaviour:
   mWidth: 548
   mHeight: 40
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119586,8 +119637,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119627,6 +119681,7 @@ MonoBehaviour:
   mWidth: 630
   mHeight: 80
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119655,8 +119710,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119774,6 +119832,7 @@ MonoBehaviour:
   mWidth: 98
   mHeight: 16
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119802,8 +119861,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -119893,6 +119955,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119913,6 +119976,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_crystal
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &692
 MonoBehaviour:
@@ -119948,6 +120012,7 @@ MonoBehaviour:
   mWidth: 320
   mHeight: 26
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -119976,8 +120041,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -120017,6 +120085,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 250
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120071,6 +120140,7 @@ MonoBehaviour:
   mWidth: 366
   mHeight: 30
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120099,8 +120169,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -120140,6 +120213,7 @@ MonoBehaviour:
   mWidth: 630
   mHeight: 60
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120168,8 +120242,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -120209,6 +120286,7 @@ MonoBehaviour:
   mWidth: 66
   mHeight: 18
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120237,8 +120315,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -120312,6 +120393,7 @@ MonoBehaviour:
   mWidth: 960
   mHeight: 480
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120348,11 +120430,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrangement: 0
   sorting: 0
+  inverted: 0
   pivot: 0
+  expansionStyle: 0
   maxPerLine: 0
   cellWidth: 230
   cellHeight: 348
   animateSmoothly: 0
+  animateFadeIn: 0
   hideInactive: 1
   keepWithinPanel: 1
   sorted: 1
@@ -120390,6 +120475,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 40
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120410,6 +120496,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &704
 MonoBehaviour:
@@ -120445,6 +120532,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 250
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120465,6 +120553,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &705
 MonoBehaviour:
@@ -120500,6 +120589,7 @@ MonoBehaviour:
   mWidth: 76
   mHeight: 18
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120528,8 +120618,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -120654,6 +120747,7 @@ MonoBehaviour:
   mWidth: 960
   mHeight: 640
   mDepth: 100
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -120743,6 +120837,7 @@ MonoBehaviour:
   mWidth: 200
   mHeight: 8
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120763,6 +120858,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: 4x4
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &715
 MonoBehaviour:
@@ -120798,6 +120894,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 50
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120869,6 +120966,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 60
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -120889,6 +120987,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &718
 MonoBehaviour:
@@ -120908,6 +121007,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -120948,6 +121049,7 @@ MonoBehaviour:
   mWidth: 700
   mHeight: 60
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -120976,8 +121078,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121017,6 +121122,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 315
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121068,6 +121174,7 @@ MonoBehaviour:
   mWidth: 590
   mHeight: 52
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121088,6 +121195,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame089__L80R60T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &723
 MonoBehaviour:
@@ -121139,6 +121247,7 @@ MonoBehaviour:
   mWidth: 92
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121167,8 +121276,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121208,6 +121320,7 @@ MonoBehaviour:
   mWidth: 630
   mHeight: 80
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121236,8 +121349,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121295,6 +121411,7 @@ MonoBehaviour:
   mWidth: 144
   mHeight: 22
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121323,8 +121440,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121364,6 +121484,7 @@ MonoBehaviour:
   mWidth: 258
   mHeight: 26
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121392,8 +121513,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121499,6 +121623,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 60
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -121519,6 +121644,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &733
 MonoBehaviour:
@@ -121538,6 +121664,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -121578,6 +121706,7 @@ MonoBehaviour:
   mWidth: 136
   mHeight: 22
   mDepth: 106
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121606,8 +121735,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121668,6 +121800,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 0
   delay: 0
+  delayAffects: 2
   duration: 1
   steeperCurves: 0
   tweenGroup: 0
@@ -121677,6 +121810,8 @@ MonoBehaviour:
   callWhenFinished: 
   from: 0
   to: 1
+  autoCleanup: 0
+  colorProperty: 
 --- !u!114 &738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121761,6 +121896,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 60
   mDepth: 17
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121789,8 +121925,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -121880,6 +122019,7 @@ MonoBehaviour:
   mWidth: 960
   mHeight: 480
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121900,6 +122040,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame002__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &746
 MonoBehaviour:
@@ -121935,6 +122076,7 @@ MonoBehaviour:
   mWidth: 48
   mHeight: 20
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -121963,8 +122105,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -122032,6 +122177,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 60
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -122052,6 +122198,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &749
 MonoBehaviour:
@@ -122071,6 +122218,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -122111,6 +122260,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122131,6 +122281,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &751
 MonoBehaviour:
@@ -122166,6 +122317,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122186,6 +122338,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &752
 MonoBehaviour:
@@ -122271,6 +122424,7 @@ MonoBehaviour:
   mWidth: 162
   mHeight: 56
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122291,6 +122445,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_yeqian07_on_161x44_s__L40R60T0B0_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &756
 MonoBehaviour:
@@ -122326,6 +122481,7 @@ MonoBehaviour:
   mWidth: 54
   mHeight: 32
   mDepth: 12
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122346,6 +122502,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: pic_decal207
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &757
 MonoBehaviour:
@@ -122410,6 +122567,7 @@ MonoBehaviour:
   mWidth: 657
   mHeight: 305
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -122430,6 +122588,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame016__L22R22T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &760
 MonoBehaviour:
@@ -122465,6 +122624,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 150
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122554,6 +122714,7 @@ MonoBehaviour:
   mWidth: 162
   mHeight: 56
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122574,6 +122735,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_yeqian07_on_161x44_b__L40R60T0B0_s
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &765
 MonoBehaviour:
@@ -122609,6 +122771,7 @@ MonoBehaviour:
   mWidth: 216
   mHeight: 60
   mDepth: 15
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122629,6 +122792,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu05_215x59_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &766
 MonoBehaviour:
@@ -122664,6 +122828,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122684,6 +122849,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &767
 MonoBehaviour:
@@ -122719,6 +122885,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 313
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122739,6 +122906,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &768
 MonoBehaviour:
@@ -122774,6 +122942,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 105
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122794,6 +122963,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &769
 MonoBehaviour:
@@ -122829,6 +122999,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122849,6 +123020,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &770
 MonoBehaviour:
@@ -122884,6 +123056,7 @@ MonoBehaviour:
   mWidth: 260
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -122904,6 +123077,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &771
 MonoBehaviour:
@@ -122960,6 +123134,7 @@ MonoBehaviour:
   iOSDragEmulation: 1
   scrollWheelFactor: 0.25
   momentumAmount: 35
+  springStrength: 8
   dampenStrength: 9
   horizontalScrollBar: {fileID: 0}
   verticalScrollBar: {fileID: 0}
@@ -123003,6 +123178,7 @@ MonoBehaviour:
   mWidth: 200
   mHeight: 40
   mDepth: 9
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123023,6 +123199,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &775
 MonoBehaviour:
@@ -123058,6 +123235,7 @@ MonoBehaviour:
   mWidth: 140
   mHeight: 140
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123097,6 +123275,7 @@ MonoBehaviour:
   mWidth: 140
   mHeight: 140
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 2100000, guid: 92283eadd3711c84bbb57e520c961f41, type: 2}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123159,6 +123338,7 @@ MonoBehaviour:
   mWidth: 200
   mHeight: 8
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123179,6 +123359,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: 4x4
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &778
 MonoBehaviour:
@@ -123214,6 +123395,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: -1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123234,6 +123416,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &779
 MonoBehaviour:
@@ -123269,6 +123452,7 @@ MonoBehaviour:
   mWidth: 218
   mHeight: 26
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123297,8 +123481,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -123338,6 +123525,7 @@ MonoBehaviour:
   mWidth: 700
   mHeight: 120
   mDepth: 15
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123366,8 +123554,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -123407,6 +123598,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 16
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123427,6 +123619,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &782
 MonoBehaviour:
@@ -123462,6 +123655,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123482,6 +123676,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_honor
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &783
 MonoBehaviour:
@@ -123517,6 +123712,7 @@ MonoBehaviour:
   mWidth: 372
   mHeight: 400
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123545,8 +123741,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -123586,6 +123785,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123606,6 +123806,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_coin
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &785
 MonoBehaviour:
@@ -123691,6 +123892,7 @@ MonoBehaviour:
   mWidth: 44
   mHeight: 52
   mDepth: 12
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123711,6 +123913,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: pic_decal208
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &789
 MonoBehaviour:
@@ -123746,6 +123949,7 @@ MonoBehaviour:
   mWidth: 108
   mHeight: 20
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123774,8 +123978,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -123815,6 +124022,7 @@ MonoBehaviour:
   mWidth: 350
   mHeight: 44
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123843,8 +124051,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -123884,6 +124095,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123904,6 +124116,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_crystal
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &792
 MonoBehaviour:
@@ -123939,6 +124152,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: -1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -123959,6 +124173,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &793
 MonoBehaviour:
@@ -123994,6 +124209,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -124033,6 +124249,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 999
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124053,6 +124270,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &795
 MonoBehaviour:
@@ -124088,6 +124306,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124108,6 +124327,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_crystal
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &796
 MonoBehaviour:
@@ -124143,6 +124363,7 @@ MonoBehaviour:
   mWidth: 755
   mHeight: 255
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124195,6 +124416,7 @@ MonoBehaviour:
   mWidth: 176
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124223,8 +124445,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -124264,6 +124489,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124284,6 +124510,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &800
 MonoBehaviour:
@@ -124319,6 +124546,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -124370,6 +124598,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 256
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124409,6 +124638,7 @@ MonoBehaviour:
   mWidth: 392
   mHeight: 250
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -124462,6 +124692,7 @@ MonoBehaviour:
   mWidth: 36
   mHeight: 36
   mDepth: 4
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124482,6 +124713,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: T-logo-36
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &806
 MonoBehaviour:
@@ -124517,6 +124749,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 40
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124537,6 +124770,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &807
 MonoBehaviour:
@@ -124595,6 +124829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   group: 13
   activeSprite: {fileID: 764}
+  inactiveSprite: {fileID: 0}
   invertSpriteState: 0
   activeAnimation: {fileID: 0}
   animator: {fileID: 0}
@@ -124642,6 +124877,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124662,6 +124898,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &811
 MonoBehaviour:
@@ -124697,6 +124934,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124717,6 +124955,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &812
 MonoBehaviour:
@@ -124752,6 +124991,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 50
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124791,6 +125031,7 @@ MonoBehaviour:
   mWidth: 166
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124819,8 +125060,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -124860,6 +125104,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124880,6 +125125,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &815
 MonoBehaviour:
@@ -124946,6 +125192,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: -1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -124966,6 +125213,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &818
 MonoBehaviour:
@@ -125001,6 +125249,7 @@ MonoBehaviour:
   mWidth: 535
   mHeight: 476
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125021,6 +125270,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame034__L30R30T30B30
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &819
 MonoBehaviour:
@@ -125056,6 +125306,7 @@ MonoBehaviour:
   mWidth: 84
   mHeight: 42
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125076,6 +125327,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame084__L0R0T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &820
 MonoBehaviour:
@@ -125111,6 +125363,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 263
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125131,6 +125384,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &821
 MonoBehaviour:
@@ -125166,6 +125420,7 @@ MonoBehaviour:
   mWidth: 82
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125194,8 +125449,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125235,6 +125493,7 @@ MonoBehaviour:
   mWidth: 166
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125263,8 +125522,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125304,6 +125566,7 @@ MonoBehaviour:
   mWidth: 66
   mHeight: 18
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125332,8 +125595,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125373,6 +125639,7 @@ MonoBehaviour:
   mWidth: 112
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125401,8 +125668,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125538,6 +125808,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 60
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -125558,6 +125829,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &831
 MonoBehaviour:
@@ -125577,6 +125849,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -125604,6 +125878,7 @@ MonoBehaviour:
   iOSDragEmulation: 1
   scrollWheelFactor: 0.25
   momentumAmount: 35
+  springStrength: 8
   dampenStrength: 9
   horizontalScrollBar: {fileID: 0}
   verticalScrollBar: {fileID: 0}
@@ -125691,6 +125966,7 @@ MonoBehaviour:
   mWidth: 78
   mHeight: 22
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125719,8 +125995,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125760,6 +126039,7 @@ MonoBehaviour:
   mWidth: 162
   mHeight: 56
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125780,6 +126060,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_yeqian07_on_161x44_b__L40R60T0B0_s
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &838
 MonoBehaviour:
@@ -125815,6 +126096,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125835,6 +126117,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_crystal
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &839
 MonoBehaviour:
@@ -125870,6 +126153,7 @@ MonoBehaviour:
   mWidth: 30
   mHeight: 20
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125898,8 +126182,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -125951,6 +126238,7 @@ MonoBehaviour:
   mWidth: 54
   mHeight: 32
   mDepth: 12
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -125971,6 +126259,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: pic_decal207
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &842
 MonoBehaviour:
@@ -126006,6 +126295,7 @@ MonoBehaviour:
   mWidth: 162
   mHeight: 56
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126026,6 +126316,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_yeqian07_on_161x44_s__L40R60T0B0_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &843
 MonoBehaviour:
@@ -126061,6 +126352,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 40
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126081,6 +126373,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &844
 MonoBehaviour:
@@ -126116,6 +126409,7 @@ MonoBehaviour:
   mWidth: 700
   mHeight: 150
   mDepth: 15
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126144,8 +126438,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -126185,6 +126482,7 @@ MonoBehaviour:
   mWidth: 620
   mHeight: 408
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126205,6 +126503,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame002__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &846
 MonoBehaviour:
@@ -126240,6 +126539,7 @@ MonoBehaviour:
   mWidth: 68
   mHeight: 24
   mDepth: 103
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126268,8 +126568,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -126309,6 +126612,7 @@ MonoBehaviour:
   mWidth: 755
   mHeight: 255
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126329,6 +126633,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &848
 MonoBehaviour:
@@ -126361,11 +126666,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrangement: 0
   sorting: 0
+  inverted: 0
   pivot: 0
+  expansionStyle: 0
   maxPerLine: 4
   cellWidth: 130
   cellHeight: 190
   animateSmoothly: 0
+  animateFadeIn: 0
   hideInactive: 1
   keepWithinPanel: 1
   sorted: 1
@@ -126403,6 +126711,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126423,6 +126732,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &851
 MonoBehaviour:
@@ -126464,6 +126774,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 2
+  delayAffects: 2
   duration: 1
   steeperCurves: 0
   tweenGroup: 0
@@ -126473,6 +126784,8 @@ MonoBehaviour:
   callWhenFinished: 
   from: 0
   to: 1
+  autoCleanup: 0
+  colorProperty: 
 --- !u!114 &852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126507,6 +126820,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126527,6 +126841,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: 4x4
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &853
 MonoBehaviour:
@@ -126562,6 +126877,7 @@ MonoBehaviour:
   mWidth: 657
   mHeight: 305
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -126582,6 +126898,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame016__L22R22T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &854
 MonoBehaviour:
@@ -126617,6 +126934,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 16
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126637,6 +126955,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &855
 MonoBehaviour:
@@ -126704,6 +127023,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 80
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -126724,6 +127044,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &857
 MonoBehaviour:
@@ -126743,6 +127064,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -126783,6 +127106,7 @@ MonoBehaviour:
   mWidth: 58
   mHeight: 24
   mDepth: 103
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126811,8 +127135,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -126852,6 +127179,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 16
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126872,6 +127200,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &860
 MonoBehaviour:
@@ -126907,6 +127236,7 @@ MonoBehaviour:
   mWidth: 550
   mHeight: 275
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -126927,6 +127257,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame016__L22R22T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &861
 MonoBehaviour:
@@ -126962,6 +127293,7 @@ MonoBehaviour:
   mWidth: 18
   mHeight: 10
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -126982,6 +127314,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: pic_decal028
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &862
 MonoBehaviour:
@@ -127067,6 +127400,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 40
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127106,6 +127440,7 @@ MonoBehaviour:
   mWidth: 718
   mHeight: 50
   mDepth: 15
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127134,8 +127469,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -127225,6 +127563,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -127280,6 +127619,7 @@ MonoBehaviour:
   mWidth: 190
   mHeight: 44
   mDepth: 105
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -127353,6 +127693,7 @@ MonoBehaviour:
   mWidth: 272
   mHeight: 28
   mDepth: 17
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127381,8 +127722,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -127422,6 +127766,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127442,6 +127787,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame037__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &877
 MonoBehaviour:
@@ -127477,6 +127823,7 @@ MonoBehaviour:
   mWidth: 4096
   mHeight: 4096
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -127516,6 +127863,7 @@ MonoBehaviour:
   mWidth: 252
   mHeight: 26
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127544,8 +127892,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -127585,6 +127936,7 @@ MonoBehaviour:
   mWidth: 590
   mHeight: 52
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127605,6 +127957,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame089__L80R60T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &880
 MonoBehaviour:
@@ -127640,6 +127993,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 40
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127660,6 +128014,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &881
 MonoBehaviour:
@@ -127695,6 +128050,7 @@ MonoBehaviour:
   mWidth: 66
   mHeight: 20
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127723,8 +128079,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -127764,6 +128123,7 @@ MonoBehaviour:
   mWidth: 34
   mHeight: 22
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127792,8 +128152,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -127833,6 +128196,7 @@ MonoBehaviour:
   mWidth: 590
   mHeight: 52
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127853,6 +128217,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame089__L80R60T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &884
 MonoBehaviour:
@@ -127888,6 +128253,7 @@ MonoBehaviour:
   mWidth: 84
   mHeight: 42
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127908,6 +128274,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame084__L0R0T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &885
 MonoBehaviour:
@@ -127943,6 +128310,7 @@ MonoBehaviour:
   mWidth: 210
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -127963,6 +128331,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &886
 MonoBehaviour:
@@ -127985,6 +128354,7 @@ MonoBehaviour:
   iOSDragEmulation: 1
   scrollWheelFactor: 0.25
   momentumAmount: 35
+  springStrength: 8
   dampenStrength: 9
   horizontalScrollBar: {fileID: 0}
   verticalScrollBar: {fileID: 0}
@@ -128028,6 +128398,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 440
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -128084,6 +128455,7 @@ MonoBehaviour:
   mWidth: 6
   mHeight: 20
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128112,8 +128484,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -128153,6 +128528,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 35
   mDepth: 8
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128173,6 +128549,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &891
 MonoBehaviour:
@@ -128208,6 +128585,7 @@ MonoBehaviour:
   mWidth: 50
   mHeight: 50
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128228,6 +128606,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_coin
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &892
 MonoBehaviour:
@@ -128263,6 +128642,7 @@ MonoBehaviour:
   mWidth: 960
   mHeight: 480
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128302,6 +128682,7 @@ MonoBehaviour:
   mWidth: 600
   mHeight: 44
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128330,8 +128711,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -128445,6 +128829,7 @@ MonoBehaviour:
   mWidth: 260
   mHeight: 52
   mDepth: 13
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128465,6 +128850,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: btn_denglu07_181x51_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &899
 MonoBehaviour:
@@ -128500,6 +128886,7 @@ MonoBehaviour:
   mWidth: 1370
   mHeight: 768
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128562,6 +128949,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 50
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128651,6 +129039,7 @@ MonoBehaviour:
   mWidth: 40
   mHeight: 40
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128671,6 +129060,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114937249209101913, guid: 782debdbbf8ffa945b78147e58fb79ea, type: 3}
   mSpriteName: Arnoud
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &905
 MonoBehaviour:
@@ -128706,6 +129096,7 @@ MonoBehaviour:
   mWidth: 392
   mHeight: 250
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128726,6 +129117,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame001__L12R12T12B12
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &906
 MonoBehaviour:
@@ -128793,6 +129185,7 @@ MonoBehaviour:
   mWidth: 720
   mHeight: 80
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -128813,6 +129206,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame088__L15R15T15B15
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &908
 MonoBehaviour:
@@ -128832,6 +129226,8 @@ MonoBehaviour:
   playDirection: 1
   resetOnPlay: 0
   resetIfDisabled: 0
+  setState: 0
+  startState: 0
   ifDisabledOnPlay: 0
   disableWhenFinished: 0
   includeChildren: 0
@@ -128922,6 +129318,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 313
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128942,6 +129339,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &913
 MonoBehaviour:
@@ -128977,6 +129375,7 @@ MonoBehaviour:
   mWidth: 590
   mHeight: 52
   mDepth: 2
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -128997,6 +129396,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame089__L80R60T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &914
 MonoBehaviour:
@@ -129032,6 +129432,7 @@ MonoBehaviour:
   mWidth: 192
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129060,8 +129461,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -129101,6 +129505,7 @@ MonoBehaviour:
   mWidth: 580
   mHeight: 320
   mDepth: 10
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -129154,6 +129559,7 @@ MonoBehaviour:
   mWidth: 700
   mHeight: 60
   mDepth: 11
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129182,8 +129588,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -129273,6 +129682,7 @@ MonoBehaviour:
   mWidth: 92
   mHeight: 18
   mDepth: 7
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129301,8 +129711,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -129342,6 +129755,7 @@ MonoBehaviour:
   mWidth: 392
   mHeight: 35
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129362,6 +129776,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame007__L20R25_T0_B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &923
 MonoBehaviour:
@@ -129497,6 +129912,7 @@ MonoBehaviour:
   mWidth: 324
   mHeight: 55
   mDepth: 102
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129536,6 +129952,7 @@ MonoBehaviour:
   mWidth: 600
   mHeight: 44
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129564,8 +129981,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -129605,6 +130025,7 @@ MonoBehaviour:
   mWidth: 594
   mHeight: 60
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129625,6 +130046,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 0}
   mSpriteName: youxizhong_tishibg
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &932
 MonoBehaviour:
@@ -129710,6 +130132,7 @@ MonoBehaviour:
   mWidth: 70
   mHeight: 40
   mDepth: 103
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129730,6 +130153,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_off01_69x39_b
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &936
 MonoBehaviour:
@@ -129815,6 +130239,7 @@ MonoBehaviour:
   mWidth: 400
   mHeight: 150
   mDepth: 0
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
@@ -129835,6 +130260,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame016__L22R22T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &940
 MonoBehaviour:
@@ -129870,6 +130296,7 @@ MonoBehaviour:
   mWidth: 30
   mHeight: 30
   mDepth: 6
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129890,6 +130317,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: icon_honor
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &941
 MonoBehaviour:
@@ -129963,6 +130391,7 @@ MonoBehaviour:
   mWidth: 594
   mHeight: 36
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -129991,8 +130420,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -130032,6 +130464,7 @@ MonoBehaviour:
   mWidth: 56
   mHeight: 24
   mDepth: 14
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130060,8 +130493,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -130101,6 +130537,7 @@ MonoBehaviour:
   mWidth: 300
   mHeight: 40
   mDepth: 5
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130140,6 +130577,7 @@ MonoBehaviour:
   mWidth: 340
   mHeight: 28
   mDepth: 17
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130168,8 +130606,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -130209,6 +130650,7 @@ MonoBehaviour:
   mWidth: 84
   mHeight: 42
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130229,6 +130671,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame084__L0R0T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &951
 MonoBehaviour:
@@ -130264,6 +130707,7 @@ MonoBehaviour:
   mWidth: 758
   mHeight: 440
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130284,6 +130728,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114634921650617887, guid: 20887e1be36dc2541bf790f681bda1f7, type: 3}
   mSpriteName: bg_frame087__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &952
 MonoBehaviour:
@@ -130306,6 +130751,7 @@ MonoBehaviour:
   iOSDragEmulation: 1
   scrollWheelFactor: 0.25
   momentumAmount: 35
+  springStrength: 8
   dampenStrength: 9
   horizontalScrollBar: {fileID: 0}
   verticalScrollBar: {fileID: 0}
@@ -130349,6 +130795,7 @@ MonoBehaviour:
   mWidth: 960
   mHeight: 480
   mDepth: 101
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130369,6 +130816,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: bg_frame002__L20R20T20B20
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &954
 MonoBehaviour:
@@ -130404,6 +130852,7 @@ MonoBehaviour:
   mWidth: 150
   mHeight: 40
   mDepth: 1
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130424,6 +130873,7 @@ MonoBehaviour:
   topType: 1
   mAtlas: {fileID: 114181151244386478, guid: 008b9d0e11b9f1d4780d88e57e3b3d74, type: 3}
   mSpriteName: btn_classic01on_192x43_b__L15R15T0B0
+  mFixedAspect: 0
   mFillCenter: 1
 --- !u!114 &955
 MonoBehaviour:
@@ -130459,6 +130909,7 @@ MonoBehaviour:
   mWidth: 336
   mHeight: 26
   mDepth: 3
+  boundless: 0
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -130487,8 +130938,11 @@ MonoBehaviour:
   mFloatSpacingX: 0
   mFloatSpacingY: 0
   mOverflowEllipsis: 0
+  mMinWidth: 0
   mOverflowWidth: 0
+  mOverflowHeight: 0
   mModifier: 0
+  mSymbolDepth: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -130559,6 +131013,7 @@ MonoBehaviour:
   startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130609,6 +131064,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130659,6 +131115,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
@@ -130709,6 +131166,7 @@ MonoBehaviour:
   startingRenderQueue: 3013
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130759,6 +131217,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130809,6 +131268,7 @@ MonoBehaviour:
   startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 2
   mClipRange: {x: 0, y: 0, z: 580, w: 320}
   mClipSoftness: {x: 4, y: 4}
@@ -130859,6 +131319,7 @@ MonoBehaviour:
   startingRenderQueue: 3000
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130909,6 +131370,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -130959,6 +131421,7 @@ MonoBehaviour:
   startingRenderQueue: 3000
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
@@ -131009,6 +131472,7 @@ MonoBehaviour:
   startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 4
   mClipRange: {x: 0, y: 0, z: 400, w: 480}
   mClipSoftness: {x: 4, y: 4}
@@ -131059,6 +131523,7 @@ MonoBehaviour:
   startingRenderQueue: 3007
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -131109,6 +131574,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -131159,6 +131625,7 @@ MonoBehaviour:
   startingRenderQueue: 3011
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 2
   mClipRange: {x: 0, y: 0, z: 392, w: 220}
   mClipSoftness: {x: 4, y: 4}
@@ -131209,6 +131676,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -131259,6 +131727,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
   mClipSoftness: {x: 4, y: 4}
@@ -131309,6 +131778,7 @@ MonoBehaviour:
   startingRenderQueue: 3005
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 2
   mClipRange: {x: 0, y: 0, z: 520, w: 460}
   mClipSoftness: {x: 4, y: 4}
@@ -131359,6 +131829,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
@@ -131409,6 +131880,7 @@ MonoBehaviour:
   startingRenderQueue: 3003
   mClipTexture: {fileID: 0}
   mAlpha: 1
+  mAlphaProp: 
   mClipping: 2
   mClipRange: {x: 0, y: 35, z: 900, w: 350}
   mClipSoftness: {x: 4, y: 4}

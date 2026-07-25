@@ -1,9 +1,9 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
-#if !UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_WP_8_1 || UNITY_BLACKBERRY || UNITY_WINRT || UNITY_METRO)
+#if !UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_WP_8_1 || UNITY_BLACKBERRY)
 #define MOBILE
 #endif
 
@@ -18,14 +18,14 @@ using System.Text;
 [AddComponentMenu("NGUI/UI/Input Field")]
 public class UIInput : MonoBehaviour
 {
-	public enum InputType
+	[DoNotObfuscateNGUI] public enum InputType
 	{
 		Standard,
 		AutoCorrect,
 		Password,
 	}
 
-	public enum Validation
+	[DoNotObfuscateNGUI] public enum Validation
 	{
 		None,
 		Integer,
@@ -37,7 +37,7 @@ public class UIInput : MonoBehaviour
 	}
 
 #if UNITY_EDITOR
-	public enum KeyboardType
+	[DoNotObfuscateNGUI] public enum KeyboardType
 	{
 		Default = (int)TouchScreenKeyboardType.Default,
 		ASCIICapable = (int)TouchScreenKeyboardType.ASCIICapable,
@@ -49,7 +49,7 @@ public class UIInput : MonoBehaviour
 		EmailAddress = (int)TouchScreenKeyboardType.EmailAddress,
 	}
 #else
-	public enum KeyboardType
+	[DoNotObfuscateNGUI] public enum KeyboardType
 	{
 		Default = 0,
 		ASCIICapable = 1,
@@ -62,7 +62,7 @@ public class UIInput : MonoBehaviour
 	}
 #endif
 
-	public enum OnReturnKey
+	[DoNotObfuscateNGUI] public enum OnReturnKey
 	{
 		Default,
 		Submit,
@@ -119,6 +119,10 @@ public class UIInput : MonoBehaviour
 
 	[System.NonSerialized]
 	public bool selectAllTextOnFocus = true;
+
+	/// <summary>
+	/// Whether the input text will be submitted when the input field gets unselected. By default this is off, and submit event will only be called when Enter is used.
+	/// </summary>
 
 	public bool submitOnUnselect = false;
 
@@ -525,7 +529,7 @@ public class UIInput : MonoBehaviour
 		if (!string.IsNullOrEmpty(savedAs))
 		{
 			if (string.IsNullOrEmpty(val)) PlayerPrefs.DeleteKey(savedAs);
-			else PlayerPrefs.SetString(savedAs, val);
+			else NGUITools.SetString(savedAs, val);
 		}
 	}
 
@@ -626,7 +630,7 @@ public class UIInput : MonoBehaviour
 	/// <summary>
 	/// Update the text based on input.
 	/// </summary>
-	
+
 	protected virtual void Update ()
 	{
 #if UNITY_EDITOR
@@ -654,18 +658,7 @@ public class UIInput : MonoBehaviour
 			label.color = activeTextColor;
 #if MOBILE
 			RuntimePlatform pf = Application.platform;
-			if (pf == RuntimePlatform.IPhonePlayer
-				|| pf == RuntimePlatform.Android
-				|| pf == RuntimePlatform.WP8Player
- #if UNITY_4_3
-				|| pf == RuntimePlatform.BB10Player
- #else
-				|| pf == RuntimePlatform.BlackBerryPlayer
-				|| pf == RuntimePlatform.MetroPlayerARM
-				|| pf == RuntimePlatform.MetroPlayerX64
-				|| pf == RuntimePlatform.MetroPlayerX86
- #endif
-			)
+			if (pf == RuntimePlatform.IPhonePlayer || pf == RuntimePlatform.Android)
 			{
 				string val;
 				TouchScreenKeyboardType kt;
@@ -696,9 +689,6 @@ public class UIInput : MonoBehaviour
 					TouchScreenKeyboard.Open(val, kt, false, false, true) :
 					TouchScreenKeyboard.Open(val, kt, !inputShouldBeHidden && inputType == InputType.AutoCorrect,
 						label.multiLine && !hideInput, false, false, defaultText);
-#if UNITY_METRO
-				mKeyboard.active = true;
-#endif
 			}
 			else
 #endif // MOBILE
@@ -718,7 +708,7 @@ public class UIInput : MonoBehaviour
 		if (mKeyboard != null)
 		{
 			string text = (mKeyboard.done || !mKeyboard.active) ? mCached : mKeyboard.text;
- 
+
 			if (inputShouldBeHidden)
 			{
 				if (text != "|")
@@ -856,7 +846,7 @@ public class UIInput : MonoBehaviour
 		int frame = Time.frameCount;
 
 		if (mIgnoreKey == frame) return;
-		
+
 		if (mCam != null && (key == mCam.cancelKey0 || key == mCam.cancelKey1))
 		{
 			mIgnoreKey = frame;
@@ -1036,7 +1026,11 @@ public class UIInput : MonoBehaviour
 			{
 				ev.Use();
 
-				if (!string.IsNullOrEmpty(mValue))
+				if (onUpArrow != null)
+				{
+					onUpArrow();
+				}
+				else if (!string.IsNullOrEmpty(mValue))
 				{
 					mSelectionEnd = label.GetCharacterIndex(mSelectionEnd, KeyCode.UpArrow);
 					if (mSelectionEnd != 0) mSelectionEnd += mDrawStart;
@@ -1050,7 +1044,11 @@ public class UIInput : MonoBehaviour
 			{
 				ev.Use();
 
-				if (!string.IsNullOrEmpty(mValue))
+				if (onDownArrow != null)
+				{
+					onDownArrow();
+				}
+				else if (!string.IsNullOrEmpty(mValue))
 				{
 					mSelectionEnd = label.GetCharacterIndex(mSelectionEnd, KeyCode.DownArrow);
 					if (mSelectionEnd != label.processedText.Length) mSelectionEnd += mDrawStart;
@@ -1111,6 +1109,9 @@ public class UIInput : MonoBehaviour
 		return false;
 	}
 #endif
+
+	[System.NonSerialized] public System.Action onUpArrow;
+	[System.NonSerialized] public System.Action onDownArrow;
 
 	/// <summary>
 	/// Insert the specified text string into the current input value, respecting selection and validation.
@@ -1253,7 +1254,19 @@ public class UIInput : MonoBehaviour
 	/// Ensure we've released the dynamically created resources.
 	/// </summary>
 
-	void OnDisable () { Cleanup(); }
+	void OnDisable ()
+	{
+		Cleanup();
+
+#if !MOBILE
+		if (mOnGUI != null)
+		{
+			Destroy(mOnGUI);
+			mOnGUI = null;
+		}
+#endif
+		if (selection == this) OnDeselectEvent();
+	}
 
 	/// <summary>
 	/// Cleanup.
@@ -1316,12 +1329,9 @@ public class UIInput : MonoBehaviour
 				if (inputType == InputType.Password)
 				{
 					processed = "";
-
 					string asterisk = "*";
-
-					if (label.bitmapFont != null && label.bitmapFont.bmFont != null &&
-						label.bitmapFont.bmFont.GetGlyph('*') == null) asterisk = "x";
-
+					var fnt = label.font as INGUIFont;
+					if (fnt != null && fnt.bmFont != null && fnt.bmFont.GetGlyph('*') == null) asterisk = "x";
 					for (int i = 0, imax = fullText.Length; i < imax; ++i) processed += asterisk;
 				}
 				else processed = fullText;
@@ -1512,31 +1522,58 @@ public class UIInput : MonoBehaviour
 		}
 		else if (validation == Validation.Name)
 		{
-			char lastChar = (text.Length > 0) ? text[Mathf.Clamp(pos, 0, text.Length - 1)] : ' ';
-			char nextChar = (text.Length > 0) ? text[Mathf.Clamp(pos + 1, 0, text.Length - 1)] : '\n';
+			return ValidateNameChar(text, pos, ch);
+		}
+		return (char)0;
+	}
 
-			if (ch >= 'a' && ch <= 'z')
-			{
-				// Space followed by a letter -- make sure it's capitalized
-				if (lastChar == ' ') return (char)(ch - 'a' + 'A');
-				return ch;
-			}
-			else if (ch >= 'A' && ch <= 'Z')
-			{
-				// Uppercase letters are only allowed after spaces (and apostrophes)
-				if (lastChar != ' ' && lastChar != '\'') return (char)(ch - 'A' + 'a');
-				return ch;
-			}
-			else if (ch == '\'')
-			{
-				// Don't allow more than one apostrophe
-				if (lastChar != ' ' && lastChar != '\'' && nextChar != '\'' && !text.Contains("'")) return ch;
-			}
-			else if (ch == ' ')
-			{
-				// Don't allow more than one space in a row
-				if (lastChar != ' ' && lastChar != '\'' && nextChar != ' ' && nextChar != '\'') return ch;
-			}
+	/// <summary>
+	/// Use the name validation to validate the specified text.
+	/// </summary>
+
+	static public string ValidateName (string text)
+	{
+		var sb = new StringBuilder();
+
+		foreach (var ch in text)
+		{
+			var v = ValidateNameChar(sb.ToString(), sb.Length, ch);
+			if (v == (char)0) continue;
+			sb.Append(v);
+		}
+		return sb.ToString();
+	}
+
+	/// <summary>
+	/// Validate the specified character using naming validation.
+	/// </summary>
+
+	static public char ValidateNameChar (string text, int pos, char ch)
+	{
+		char lastChar = (text.Length > 0) ? text[Mathf.Clamp(pos, 0, text.Length - 1)] : ' ';
+		char nextChar = (text.Length > 0) ? text[Mathf.Clamp(pos + 1, 0, text.Length - 1)] : '\n';
+
+		if (ch >= 'a' && ch <= 'z')
+		{
+			// Space followed by a letter -- make sure it's capitalized
+			if (lastChar == ' ') return (char)(ch - 'a' + 'A');
+			return ch;
+		}
+		else if (ch >= 'A' && ch <= 'Z')
+		{
+			// Uppercase letters are only allowed after spaces (and apostrophes)
+			if (lastChar != ' ' && lastChar != '\'') return (char)(ch - 'A' + 'a');
+			return ch;
+		}
+		else if (ch == '\'')
+		{
+			// Don't allow more than one apostrophe
+			if (lastChar != ' ' && lastChar != '\'' && nextChar != '\'' && !text.Contains("'")) return ch;
+		}
+		else if (ch == ' ')
+		{
+			// Don't allow more than one space in a row
+			if (lastChar != ' ' && lastChar != '\'' && nextChar != ' ' && nextChar != '\'') return ch;
 		}
 		return (char)0;
 	}
@@ -1577,7 +1614,7 @@ public class UIInput : MonoBehaviour
 		{
 			string val = mValue.Replace("\\n", "\n");
 			mValue = "";
-			value = PlayerPrefs.HasKey(savedAs) ? PlayerPrefs.GetString(savedAs) : val;
+			value = PlayerPrefs.HasKey(savedAs) ? NGUITools.GetString(savedAs) : val;
 		}
 	}
 }

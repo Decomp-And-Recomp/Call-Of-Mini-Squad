@@ -1,8 +1,9 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
+using System;
 using UnityEngine;
 
 public class MinMaxRangeAttribute : PropertyAttribute

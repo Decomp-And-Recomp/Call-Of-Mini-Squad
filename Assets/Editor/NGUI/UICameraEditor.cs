@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -90,16 +90,21 @@ public class UICameraEditor : Editor
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("stickyTooltip"));
 			EditorGUI.EndDisabledGroup();
 
-			GUILayout.BeginHorizontal();
-			EditorGUILayout.PropertyField(serializedObject.FindProperty("longPressTooltip"));
-			GUILayout.EndHorizontal();
-
 			EditorGUI.BeginDisabledGroup(!mouse.boolValue);
 			GUILayout.BeginHorizontal();
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("tooltipDelay"));
 			GUILayout.Label("seconds", GUILayout.MinWidth(60f));
 			GUILayout.EndHorizontal();
 			EditorGUI.EndDisabledGroup();
+
+			GUILayout.BeginHorizontal();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("longPressDelay"));
+			GUILayout.Label("seconds", GUILayout.MinWidth(60f));
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("longPressTooltip"));
+			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
 			SerializedProperty rd = serializedObject.FindProperty("rangeDistance");

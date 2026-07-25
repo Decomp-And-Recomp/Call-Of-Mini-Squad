@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -17,6 +17,7 @@ public class UIScrollView : MonoBehaviour
 {
 	static public BetterList<UIScrollView> list = new BetterList<UIScrollView>();
 
+	[DoNotObfuscateNGUI]
 	public enum Movement
 	{
 		Horizontal,
@@ -25,6 +26,7 @@ public class UIScrollView : MonoBehaviour
 		Custom,
 	}
 
+	[DoNotObfuscateNGUI]
 	public enum DragEffect
 	{
 		None,
@@ -32,6 +34,7 @@ public class UIScrollView : MonoBehaviour
 		MomentumAndSpring,
 	}
 
+	[DoNotObfuscateNGUI]
 	public enum ShowCondition
 	{
 		Always,
@@ -81,7 +84,7 @@ public class UIScrollView : MonoBehaviour
 	/// <summary>
 	/// Whether to use iOS drag emulation, where the content only drags at half the speed of the touch/mouse movement when the content edge is within the clipping area.
 	/// </summary>	
-	
+
 	public bool iOSDragEmulation = true;
 
 	/// <summary>
@@ -96,10 +99,10 @@ public class UIScrollView : MonoBehaviour
 
 	public float momentumAmount = 35f;
 
-	/// <summary>
-	/// Strength of the spring dampening effect.
-	/// </summary>
+	[Tooltip("Strength of the spring effect when moving the contents back into viewable area")]
+	public float springStrength = 8f;
 
+	[Tooltip("Strength of the spring dampening effect.")]
 	public float dampenStrength = 9f;
 
 	/// <summary>
@@ -157,10 +160,10 @@ public class UIScrollView : MonoBehaviour
 	public OnDragNotification onStoppedMoving;
 
 	// Deprecated functionality. Use 'movement' instead.
-	[HideInInspector][SerializeField] Vector3 scale = new Vector3(1f, 0f, 0f);
+	[HideInInspector] [SerializeField] Vector3 scale = new Vector3(1f, 0f, 0f);
 
 	// Deprecated functionality. Use 'contentPivot' instead.
-	[SerializeField][HideInInspector] Vector2 relativePositionOnReset = Vector2.zero;
+	[SerializeField] [HideInInspector] Vector2 relativePositionOnReset = Vector2.zero;
 
 	protected Transform mTrans;
 	protected UIPanel mPanel;
@@ -277,7 +280,7 @@ public class UIScrollView : MonoBehaviour
 			Vector4 clip = mPanel.finalClipRegion;
 			Bounds b = bounds;
 
-			float hx = (clip.z == 0f) ? Screen.width  : clip.z * 0.5f;
+			float hx = (clip.z == 0f) ? Screen.width : clip.z * 0.5f;
 			float hy = (clip.w == 0f) ? Screen.height : clip.w * 0.5f;
 
 			if (canMoveHorizontally)
@@ -323,7 +326,7 @@ public class UIScrollView : MonoBehaviour
 
 		if (mPanel.clipping == UIDrawCall.Clipping.None)
 			mPanel.clipping = UIDrawCall.Clipping.ConstrainButDontClip;
-		
+
 		// Auto-upgrade
 		if (movement != Movement.Custom && scale.sqrMagnitude > 0.001f)
 		{
@@ -409,8 +412,8 @@ public class UIScrollView : MonoBehaviour
 	{
 		if (mPanel == null) return false;
 
-		Bounds b = bounds;
-		Vector3 constraint = mPanel.CalculateConstrainOffset(b.min, b.max);
+		var b = bounds;
+		var constraint = mPanel.CalculateConstrainOffset(b.min, b.max);
 
 		if (!horizontal) constraint.x = 0f;
 		if (!vertical) constraint.y = 0f;
@@ -420,10 +423,10 @@ public class UIScrollView : MonoBehaviour
 			if (!instant && dragEffect == DragEffect.MomentumAndSpring)
 			{
 				// Spring back into place
-				Vector3 pos = mTrans.localPosition + constraint;
+				var pos = mTrans.localPosition + constraint;
 				pos.x = Mathf.Round(pos.x);
 				pos.y = Mathf.Round(pos.y);
-				SpringPanel.Begin(mPanel.gameObject, pos, 8f);
+				SpringPanel.Begin(mPanel.gameObject, pos, springStrength);
 			}
 			else
 			{
@@ -431,9 +434,9 @@ public class UIScrollView : MonoBehaviour
 				MoveRelative(constraint);
 
 				// Clear the momentum in the constrained direction
-				if (Mathf.Abs(constraint.x) > 0.01f) mMomentum.x = 0;
-				if (Mathf.Abs(constraint.y) > 0.01f) mMomentum.y = 0;
-				if (Mathf.Abs(constraint.z) > 0.01f) mMomentum.z = 0;
+				if (Mathf.Abs(constraint.x) > 0.01f) mMomentum.x = 0f;
+				if (Mathf.Abs(constraint.y) > 0.01f) mMomentum.y = 0f;
+				if (Mathf.Abs(constraint.z) > 0.01f) mMomentum.z = 0f;
 				mScroll = 0f;
 			}
 			return true;
@@ -457,6 +460,23 @@ public class UIScrollView : MonoBehaviour
 
 	public void UpdateScrollbars () { UpdateScrollbars(true); }
 
+	[System.NonSerialized] bool mUpdateScrollbars = false;
+
+	/// <summary>
+	/// Make scroll view update its scroll bars on the next update.
+	/// </summary>
+
+	public void QueueUpdateScrollbars () { mUpdateScrollbars = true; }
+
+	protected void Update ()
+	{
+		if (mUpdateScrollbars)
+		{
+			mUpdateScrollbars = false;
+			UpdateScrollbars(true);
+		}
+	}
+
 	/// <summary>
 	/// Update the values of the associated scroll bars.
 	/// </summary>
@@ -464,6 +484,8 @@ public class UIScrollView : MonoBehaviour
 	public virtual void UpdateScrollbars (bool recalculateBounds)
 	{
 		if (mPanel == null) return;
+
+		mUpdateScrollbars = false;
 
 		if (horizontalScrollBar != null || verticalScrollBar != null)
 		{
@@ -643,7 +665,7 @@ public class UIScrollView : MonoBehaviour
 	/// </summary>
 
 	[ContextMenu("Reset Clipping Position")]
-	public void ResetPosition()
+	public void ResetPosition ()
 	{
 		if (NGUITools.GetActive(this))
 		{
@@ -727,8 +749,11 @@ public class UIScrollView : MonoBehaviour
 
 	public void Press (bool pressed)
 	{
-		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
-
+#if W2
+		if (mPressed == pressed || (UICamera.currentScheme == UICamera.ControlScheme.Controller && !UIControllerCursor.isVisible)) return;
+#else
+		if (mPressed == pressed || UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+#endif
 		if (smoothDragStart && pressed)
 		{
 			mDragStarted = false;
@@ -800,7 +825,11 @@ public class UIScrollView : MonoBehaviour
 
 	public void Drag ()
 	{
+#if W2
+		if (!mPressed || (UICamera.currentScheme == UICamera.ControlScheme.Controller && !UIControllerCursor.isVisible)) return;
+#else
 		if (!mPressed || UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+#endif
 
 		if (enabled && NGUITools.GetActive(gameObject) && mShouldMove)
 		{
@@ -1011,7 +1040,7 @@ public class UIScrollView : MonoBehaviour
 				mScroll = 0f;
 				mMomentum = Vector3.zero;
 
-				SpringPanel sp = GetComponent<SpringPanel>();
+				var sp = GetComponent<SpringPanel>();
 				if (sp != null && sp.enabled) return;
 
 				mShouldMove = false;

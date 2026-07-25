@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 public class NGUISettings
 {
-	public enum ColorMode
+	[DoNotObfuscateNGUI] public enum ColorMode
 	{
 		Orange,
 		Green,
@@ -110,7 +110,7 @@ public class NGUISettings
 	/// </summary>
 
 	static public string GetString (string name, string defaultValue) { return EditorPrefs.GetString(name, defaultValue); }
-	
+
 	/// <summary>
 	/// Get a previously saved color value.
 	/// </summary>
@@ -139,7 +139,7 @@ public class NGUISettings
 		string val = GetString(name, defaultValue.ToString());
 		string[] names = System.Enum.GetNames(typeof(T));
 		System.Array values = System.Enum.GetValues(typeof(T));
-		
+
 		for (int i = 0; i < names.Length; ++i)
 		{
 			if (names[i] == val)
@@ -156,9 +156,9 @@ public class NGUISettings
 	{
 		string path = EditorPrefs.GetString(name);
 		if (string.IsNullOrEmpty(path)) return null;
-		
+
 		T retVal = NGUIEditorTools.LoadAsset<T>(path);
-		
+
 		if (retVal == null)
 		{
 			int id;
@@ -217,34 +217,36 @@ public class NGUISettings
 	{
 		get
 		{
-			Font fnt = Get<Font>("NGUI Dynamic Font", null);
-			if (fnt != null) return fnt;
-			return Get<UIFont>("NGUI Bitmap Font", null);
+			var f0 = Get<Font>("NGUI Font", null);
+			if (f0 != null) return f0;
+
+			var f1 = Get<NGUIFont>("NGUI Font", null);
+			if (f1 != null) return f1;
+
+			return Get<UIFont>("NGUI Font", null);
+		}
+		set { Set("NGUI Font", value); }
+	}
+
+	static public INGUIAtlas atlas
+	{
+		get
+		{
+			var atl = Get<NGUIAtlas>("NGUI Atlas", null);
+			if (atl != null) return atl;
+
+			return Get<UIAtlas>("NGUI Atlas", null);
 		}
 		set
 		{
-			if (value == null)
-			{
-				Set("NGUI Bitmap Font", null);
-				Set("NGUI Dynamic Font", null);
-			}
-			else if (value is Font)
-			{
-				Set("NGUI Bitmap Font", null);
-				Set("NGUI Dynamic Font", value as Font);
-			}
-			else if (value is UIFont)
-			{
-				Set("NGUI Bitmap Font", value as UIFont);
-				Set("NGUI Dynamic Font", null);
-			}
+			Set("NGUI Atlas", value as Object);
 		}
 	}
 
-	static public UIAtlas atlas
+	static public UISpriteData GetSprite (string spriteName)
 	{
-		get { return Get<UIAtlas>("NGUI Atlas", null); }
-		set { Set("NGUI Atlas", value); }
+		var atlas = NGUISettings.atlas;
+		return atlas != null ? atlas.GetSprite(spriteName) : null;
 	}
 
 	static public Texture texture
@@ -310,6 +312,12 @@ public class NGUISettings
 		set { SetInt("NGUI FM Size", value); }
 	}
 
+	static public int FMPadding
+	{
+		get { return GetInt("NGUI FM Pad", 1); }
+		set { SetInt("NGUI FM Pad", value); }
+	}
+
 	static public bool fontKerning
 	{
 		get { return GetBool("NGUI Font Kerning", true); }
@@ -334,9 +342,9 @@ public class NGUISettings
 		set { Set("NGUI FM Font", value); }
 	}
 
-	static public UIFont BMFont
+	static public Object BMFont
 	{
-		get { return Get<UIFont>("NGUI BM Font", null); }
+		get { return Get<Object>("NGUI BM Font", null); }
 		set { Set("NGUI BM Font", value); }
 	}
 
@@ -386,12 +394,6 @@ public class NGUISettings
 	{
 		get { return GetBool("NGUI AutoUpgrade", false); }
 		set { SetBool("NGUI AutoUpgrade", value); }
-	}
-
-	static public bool keepPadding
-	{
-		get { return GetBool("NGUI KeepPadding", false); }
-		set { SetBool("NGUI KeepPadding", value); }
 	}
 
 	static public bool forceSquareAtlas
@@ -509,6 +511,23 @@ public class NGUISettings
 	}
 
 	/// <summary>
+	/// Convenience method -- add a circle.
+	/// </summary>
+
+	static public UICircle AddCircle (GameObject go)
+	{
+		var w = NGUITools.AddWidget<UICircle>(go);
+		w.name = "Circle";
+		w.atlas = atlas;
+		w.spriteName = selectedSprite;
+		w.pivot = pivot;
+		w.width = 100;
+		w.height = 100;
+		w.MakePixelPerfect();
+		return w;
+	}
+
+	/// <summary>
 	/// Convenience method -- add a sprite.
 	/// </summary>
 
@@ -519,13 +538,25 @@ public class NGUISettings
 		w.atlas = atlas;
 		w.spriteName = selectedSprite;
 
-		if (w.atlas != null && !string.IsNullOrEmpty(w.spriteName))
-		{
-			UISpriteData sp = w.atlas.GetSprite(w.spriteName);
-			if (sp != null && sp.hasBorder)
-				w.type = UISprite.Type.Sliced;
-		}
+		var sp = w.GetAtlasSprite();
+		if (sp != null && sp.hasBorder) w.type = UISprite.Type.Sliced;
 
+		w.pivot = pivot;
+		w.width = 100;
+		w.height = 100;
+		w.MakePixelPerfect();
+		return w;
+	}
+
+	/// <summary>
+	/// Convenience method -- add a sprite collection.
+	/// </summary>
+
+	static public UISpriteCollection AddSpriteCollection (GameObject go)
+	{
+		UISpriteCollection w = NGUITools.AddWidget<UISpriteCollection>(go);
+		w.name = "Sprite Collection";
+		w.atlas = atlas;
 		w.pivot = pivot;
 		w.width = 100;
 		w.height = 100;
@@ -609,7 +640,7 @@ public class NGUISettings
 
 	static void CopySprite (UISprite sp)
 	{
-		SetString("Atlas", NGUIEditorTools.ObjectToGUID(sp.atlas));
+		SetString("Atlas", NGUIEditorTools.ObjectToGUID(sp.atlas as UnityEngine.Object));
 		SetString("Sprite", sp.spriteName);
 		SetEnum("Sprite Type", sp.type);
 		SetEnum("Left Type", sp.leftType);

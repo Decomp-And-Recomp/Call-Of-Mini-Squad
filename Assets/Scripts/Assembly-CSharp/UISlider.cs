@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -85,7 +85,7 @@ public class UISlider : UIProgressBar
 	protected override void OnStart ()
 	{
 #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
-				GameObject bg = (mBG != null && (mBG.collider != null || mBG.GetComponent<Collider2D>() != null)) ? mBG.gameObject : gameObject;
+		GameObject bg = (mBG != null && (mBG.collider != null || mBG.GetComponent<Collider2D>() != null)) ? mBG.gameObject : gameObject;
 		UIEventListener bgl = UIEventListener.Get(bg);
 		bgl.onPress += OnPressBackground;
 		bgl.onDrag += OnDragBackground;
@@ -112,7 +112,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnPressBackground (GameObject go, bool isPressed)
 	{
-		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller && UICamera.currentTouchID != -1) return;
 		mCam = UICamera.currentCamera;
 		value = ScreenToValue(UICamera.lastEventPosition);
 		if (!isPressed && onDragFinished != null) onDragFinished();
@@ -124,7 +124,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnDragBackground (GameObject go, Vector2 delta)
 	{
-		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller && UICamera.currentTouchID != -1) return;
 		mCam = UICamera.currentCamera;
 		value = ScreenToValue(UICamera.lastEventPosition);
 	}
@@ -135,7 +135,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnPressForeground (GameObject go, bool isPressed)
 	{
-		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller && UICamera.currentTouchID != -1) return;
 		mCam = UICamera.currentCamera;
 
 		if (isPressed)
@@ -152,7 +152,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnDragForeground (GameObject go, Vector2 delta)
 	{
-		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller && UICamera.currentTouchID != -1) return;
 		mCam = UICamera.currentCamera;
 		value = mOffset + ScreenToValue(UICamera.lastEventPosition);
 	}

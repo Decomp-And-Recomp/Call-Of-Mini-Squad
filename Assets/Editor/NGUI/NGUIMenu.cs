@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 static public class NGUIMenu
 {
-#region Selection
+	#region Selection
 
 	static public GameObject SelectedRoot () { return NGUIEditorTools.SelectedRoot(); }
 
@@ -90,14 +90,39 @@ static public class NGUIMenu
 	}
 
 	[MenuItem("NGUI/Selection/Make Pixel Perfect &#p", true)]
-	static bool PixelPerfectSelectionValidation ()
+	static bool PixelPerfectSelectionValidation () { return (Selection.activeTransform != null); }
+
+	[MenuItem("NGUI/Selection/Check for issues", false, 0)]
+	static public void CheckForIssues () { foreach (Transform t in Selection.transforms) CheckForIssues(t); Debug.Log("Issue check finished"); }
+
+	static void CheckForIssues (Transform t)
 	{
-		return (Selection.activeTransform != null);
+		if (t.localPosition.magnitude > 2000f)
+		{
+			Debug.LogWarning(NGUITools.GetHierarchy(t.gameObject) + " has a large position offset and is likely to cause floating precision issues", t.gameObject);
+		}
+
+		if (t.GetComponent<UIRoot>() == null && t.localScale != Vector3.one)
+		{
+			Debug.LogWarning(NGUITools.GetHierarchy(t.gameObject) + " doesn't have a uniform scale. Consider changing to (1, 1, 1).", t.gameObject);
+		}
+
+		var p = t.GetComponent<UIPanel>();
+
+		if (p != null && p.clipping != UIDrawCall.Clipping.None && p.clipOffset.magnitude > 1000f)
+		{
+			Debug.LogWarning(NGUITools.GetHierarchy(t.gameObject) + " has a panel with a large clipping offset. Consider resetting it to zero.", t.gameObject);
+		}
+
+		var parent = t.parent;
+		if (parent != null) CheckForIssues(parent);
 	}
 
-#endregion
-#region Create
+	[MenuItem("NGUI/Selection/Check for issues", true)]
+	static bool CheckForIssuesValidation () { return (Selection.activeTransform != null); }
 
+	#endregion
+	#region Create
 	[MenuItem("NGUI/Create/Sprite &#s", false, 6)]
 	static public void AddSprite ()
 	{
@@ -154,8 +179,72 @@ static public class NGUIMenu
 		else Debug.Log("You must select a game object first.");
 	}
 
+	[MenuItem("NGUI/Create/Circle", false, 6)]
+	static public void AddCircle ()
+	{
+		GameObject go = NGUIEditorTools.SelectedRoot(true);
+		if (go != null) Selection.activeGameObject = NGUISettings.AddCircle(go).gameObject;
+		else Debug.Log("You must select a game object first.");
+	}
+
 	[MenuItem("NGUI/Create/", false, 6)]
-	static void AddBreaker123 () {}
+	static void AddBreaker123 () { }
+
+	[MenuItem("NGUI/Create/Font", false, 6)]
+	static void AddFont ()
+	{
+		var path = EditorUtility.SaveFilePanelInProject("Save As", "New Font.asset", "asset", "Save font as...", NGUISettings.currentPath);
+
+		if (!string.IsNullOrEmpty(path))
+		{
+			NGUISettings.currentPath = System.IO.Path.GetDirectoryName(path);
+
+			var fontName = path.Replace(".asset", "");
+			fontName = fontName.Substring(path.LastIndexOfAny(new char[] { '/', '\\' }) + 1);
+
+			var asset = ScriptableObject.CreateInstance<NGUIFont>();
+			asset.name = fontName;
+
+			var existing = AssetDatabase.LoadMainAssetAtPath(path);
+			if (existing != null) EditorUtility.CopySerialized(asset, existing);
+			else AssetDatabase.CreateAsset(asset, path);
+
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+			asset = AssetDatabase.LoadAssetAtPath<NGUIFont>(path);
+			NGUISettings.ambigiousFont = asset;
+			Selection.activeObject = asset;
+		}
+	}
+
+	[MenuItem("NGUI/Create/Atlas", false, 6)]
+	static void AddAtlas ()
+	{
+		var path = EditorUtility.SaveFilePanelInProject("Save As", "New Atlas.asset", "asset", "Save atlas as...", NGUISettings.currentPath);
+
+		if (!string.IsNullOrEmpty(path))
+		{
+			NGUISettings.currentPath = System.IO.Path.GetDirectoryName(path);
+
+			var fontName = path.Replace(".asset", "");
+			fontName = fontName.Substring(path.LastIndexOfAny(new char[] { '/', '\\' }) + 1);
+
+			var asset = ScriptableObject.CreateInstance<NGUIAtlas>();
+			asset.name = fontName;
+
+			var existing = AssetDatabase.LoadMainAssetAtPath(path);
+			if (existing != null) EditorUtility.CopySerialized(asset, existing);
+			else AssetDatabase.CreateAsset(asset, path);
+
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+			asset = AssetDatabase.LoadAssetAtPath<NGUIAtlas>(path);
+			NGUISettings.atlas = asset;
+			Selection.activeObject = asset;
+		}
+	}
 
 	[MenuItem("NGUI/Create/Anchor (Legacy)", false, 6)]
 	static void AddAnchor2 () { Add<UIAnchor>(); }
@@ -229,8 +318,8 @@ static public class NGUIMenu
 		return true;
 	}
 
-#endregion
-#region Attach
+	#endregion
+	#region Attach
 
 	static void AddIfMissing<T> () where T : Component
 	{
@@ -314,8 +403,8 @@ static public class NGUIMenu
 	[MenuItem("NGUI/Attach/Localization Script", false, 7)]
 	static public void Add14 () { AddIfMissing<UILocalize>(); }
 
-#endregion
-#region Tweens
+	#endregion
+	#region Tweens
 
 	[MenuItem("NGUI/Tween/Alpha", false, 8)]
 	static void Tween1 () { if (Selection.activeGameObject != null) Selection.activeGameObject.AddMissingComponent<TweenAlpha>(); }
@@ -383,8 +472,8 @@ static public class NGUIMenu
 	[MenuItem("NGUI/Tween/Orthographic Size", true)]
 	static bool Tween11a () { return (Selection.activeGameObject != null) && (Selection.activeGameObject.GetComponent<Camera>() != null); }
 
-#endregion
-#region Open
+	#endregion
+	#region Open
 
 	[MenuItem("NGUI/Open/Atlas Maker", false, 9)]
 	[MenuItem("Assets/NGUI/Open Atlas Maker", false, 0)]
@@ -404,12 +493,6 @@ static public class NGUIMenu
 	[MenuItem("Assets/NGUI/", false, 0)]
 	static public void OpenSeparator2 () { }
 
-	[MenuItem("NGUI/Open/Prefab Toolbar", false, 9)]
-	static public void OpenPrefabTool ()
-	{
-		EditorWindow.GetWindow<UIPrefabTool>(false, "Prefab Toolbar", true).Show();
-	}
-
 	[MenuItem("NGUI/Open/Panel Tool", false, 9)]
 	static public void OpenPanelWizard ()
 	{
@@ -428,7 +511,13 @@ static public class NGUIMenu
 		EditorWindow.GetWindow<UICameraTool>(false, "Camera Tool", true).Show();
 	}
 
-	[MenuItem("NGUI/Open/Widget Wizard (Legacy)", false, 9)]
+	[MenuItem("NGUI/Open/Prefab Toolbar (Deprecated)", false, 9)]
+	static public void OpenPrefabTool ()
+	{
+		EditorWindow.GetWindow<UIPrefabTool>(false, "Prefab Toolbar", true).Show();
+	}
+
+	[MenuItem("NGUI/Open/Widget Wizard (Deprecated)", false, 9)]
 	static public void CreateWidgetWizard ()
 	{
 		EditorWindow.GetWindow<UICreateWidgetWizard>(false, "Widget Tool", true).Show();
@@ -440,8 +529,8 @@ static public class NGUIMenu
 	//    EditorWindow.GetWindow<UICreateNewUIWizard>(false, "UI Tool", true).Show();
 	//}
 
-#endregion
-#region Options
+	#endregion
+	#region Options
 
 	[MenuItem("NGUI/Options/Transform Move Gizmo/Turn On", false, 10)]
 	static public void TurnGizmosOn ()
@@ -565,7 +654,7 @@ static public class NGUIMenu
 	static public void SwitchTo2D ()
 	{
 		BoxCollider[] colliders = NGUITools.FindActive<BoxCollider>();
-		
+
 		for (int i = 0; i < colliders.Length; ++i)
 		{
 			BoxCollider c = colliders[i];
@@ -593,7 +682,7 @@ static public class NGUIMenu
 			NGUITools.SetDirty(go);
 
 			UIPanel p = NGUITools.FindInParents<UIPanel>(go);
-			
+
 			if (p != null)
 			{
 #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
@@ -647,7 +736,7 @@ static public class NGUIMenu
 			NGUITools.SetDirty(go);
 
 			UIPanel p = NGUITools.FindInParents<UIPanel>(go);
-			
+
 			if (p != null)
 			{
 				if (p.GetComponent<Rigidbody2D>() != null)
@@ -670,7 +759,7 @@ static public class NGUIMenu
 	[MenuItem("NGUI/Extras/Align Scene View to UI", false, 10)]
 	static public void AlignSVToUI ()
 	{
-		GameObject go = Selection.activeGameObject ?? UICamera.list[0].gameObject;
+		var go = Selection.activeGameObject != null ? Selection.activeGameObject : UICamera.list.buffer[0].gameObject;
 		Camera cam = NGUITools.FindCameraForLayer(go.layer);
 		SceneView sv = SceneView.lastActiveSceneView;
 		Camera svc = sv.camera;
@@ -688,10 +777,10 @@ static public class NGUIMenu
 	{
 		if (SceneView.lastActiveSceneView == null) return false;
 		if (UICamera.list.size == 0) return false;
-		
-		GameObject go = Selection.activeGameObject ?? UICamera.list[0].gameObject;
+
+		var go = Selection.activeGameObject != null ? Selection.activeGameObject : UICamera.list.buffer[0].gameObject;
 		if (go == null) return false;
-		
+
 		Camera cam = NGUITools.FindCameraForLayer(go.layer);
 		if (cam == null || !cam.orthographic) return false;
 		return true;
@@ -707,9 +796,9 @@ static public class NGUIMenu
 		if (go == null) return false;
 		return AlignSVToUICheck();
 	}
-#endregion
+	#endregion
 
-	[MenuItem("NGUI/Normalize Depth Hierarchy &#0", false, 11)]
+	[MenuItem("NGUI/Extras/Normalize Depth Hierarchy", false, 11)]
 	static public void Normalize () { NGUITools.NormalizeDepths(); }
 
 	[MenuItem("NGUI/Help", false, 120)]

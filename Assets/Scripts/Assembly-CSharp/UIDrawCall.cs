@@ -1,6 +1,6 @@
 //-------------------------------------------------
-//            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+//			  NGUI: Next-Gen UI kit
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 //#define SHOW_HIDDEN_OBJECTS
@@ -34,7 +34,7 @@ public class UIDrawCall : MonoBehaviour
 
 	static public BetterList<UIDrawCall> inactiveList { get { return mInactiveList; } }
 
-	public enum Clipping : int
+	[DoNotObfuscateNGUI] public enum Clipping : int
 	{
 		None = 0,
 		TextureMask = 1,			// Clipped using a texture rather than math
@@ -103,7 +103,7 @@ public class UIDrawCall : MonoBehaviour
 	/// Callback that will be triggered when a new draw call gets created.
 	/// </summary>
 
-	public OnCreateDrawCall onCreateDrawCall; 
+	public OnCreateDrawCall onCreateDrawCall;
 	public delegate void OnCreateDrawCall (UIDrawCall dc, MeshFilter filter, MeshRenderer ren);
 
 	/// <summary>
@@ -266,7 +266,7 @@ public class UIDrawCall : MonoBehaviour
 		{
 			mTexture = value;
 			if (mBlock == null) mBlock = new MaterialPropertyBlock();
-			mBlock.SetTexture("_MainTex", value ?? Texture2D.whiteTexture);
+			mBlock.SetTexture("_MainTex", value != null ? value : Texture2D.whiteTexture);
 		}
 	}
 
@@ -291,7 +291,7 @@ public class UIDrawCall : MonoBehaviour
 	}
 
 #if !UNITY_4_7
-	public enum ShadowMode
+	[DoNotObfuscateNGUI] public enum ShadowMode
 	{
 		None,
 		Receive,
@@ -355,12 +355,13 @@ public class UIDrawCall : MonoBehaviour
 
 	void CreateMaterial ()
 	{
+		UnityEngine.Profiling.Profiler.BeginSample("UIDrawCall.CreateMaterial");
+
 		mTextureClip = false;
 		mLegacyShader = false;
 		mClipCount = panel.clipCount;
 
-		string shaderName = (mShader != null) ? mShader.name :
-			((mMaterial != null) ? mMaterial.shader.name : "Unlit/Transparent Colored");
+		var shaderName = (mShader != null) ? mShader.name : ((mMaterial != null) ? mMaterial.shader.name : "Unlit/Transparent Colored");
 
 		// Figure out the normal shader's name
 		shaderName = shaderName.Replace("GUI/Text Shader", "Unlit/Text");
@@ -374,8 +375,7 @@ public class UIDrawCall : MonoBehaviour
 			}
 		}
 
-		if (shaderName.StartsWith("Hidden/"))
-			shaderName = shaderName.Substring(7);
+		if (shaderName.StartsWith("Hidden/")) shaderName = shaderName.Substring(7);
 
 		// Legacy functionality
 		const string soft = " (SoftClip)";
@@ -408,14 +408,16 @@ public class UIDrawCall : MonoBehaviour
 
 		if (mMaterial != null)
 		{
+			UnityEngine.Profiling.Profiler.BeginSample("UIDrawCall.CreateMaterial (new copied material)");
 			mDynamicMat = new Material(mMaterial);
 			mDynamicMat.name = "[NGUI] " + mMaterial.name;
 			mDynamicMat.hideFlags = (HideFlags.DontSave | HideFlags.NotEditable);
+			UnityEngine.Profiling.Profiler.BeginSample("UIDrawCall.CreateMaterial (copy material properties)");
 			mDynamicMat.CopyPropertiesFromMaterial(mMaterial);
+			UnityEngine.Profiling.Profiler.EndSample();
 #if !UNITY_FLASH
-			string[] keywords = mMaterial.shaderKeywords;
-			for (int i = 0; i < keywords.Length; ++i)
-				mDynamicMat.EnableKeyword(keywords[i]);
+			var keywords = mMaterial.shaderKeywords;
+			for (int i = 0; i < keywords.Length; ++i) mDynamicMat.EnableKeyword(keywords[i]);
 #endif
 			// If there is a valid shader, assign it to the custom material
 			if (shader != null)
@@ -426,13 +428,19 @@ public class UIDrawCall : MonoBehaviour
 			{
 				Debug.LogError(shaderName + " shader doesn't have a clipped shader version for " + mClipCount + " clip regions");
 			}
+
+			UnityEngine.Profiling.Profiler.EndSample();
 		}
 		else
 		{
+			UnityEngine.Profiling.Profiler.BeginSample("UIDrawCall.CreateMaterial (new material)");
 			mDynamicMat = new Material(shader);
 			mDynamicMat.name = "[NGUI] " + shader.name;
 			mDynamicMat.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+			UnityEngine.Profiling.Profiler.EndSample();
 		}
+
+		UnityEngine.Profiling.Profiler.EndSample();
 	}
 
 	/// <summary>
@@ -451,9 +459,11 @@ public class UIDrawCall : MonoBehaviour
 		// Update the renderer
 		if (mRenderer != null)
 		{
+			UnityEngine.Profiling.Profiler.BeginSample("UIDrawCall.RebuildMaterial");
 			mRenderer.sharedMaterials = new Material[] { mDynamicMat };
 			mRenderer.sortingLayerName = mSortingLayerName;
 			mRenderer.sortingOrder = mSortingOrder;
+			UnityEngine.Profiling.Profiler.EndSample();
 		}
 		return mDynamicMat;
 	}
@@ -480,7 +490,7 @@ public class UIDrawCall : MonoBehaviour
 	/// Set the draw call's geometry.
 	/// </summary>
 
-	public void UpdateGeometry (int widgetCount)
+	public void UpdateGeometry (int widgetCount, bool needsBounds)
 	{
 		this.widgetCount = widgetCount;
 		int vertexCount = verts.Count;
@@ -491,18 +501,7 @@ public class UIDrawCall : MonoBehaviour
 			if (mColorSpace == ColorSpace.Uninitialized)
 				mColorSpace = QualitySettings.activeColorSpace;
 
-			if (mColorSpace == ColorSpace.Linear)
-			{
-				for (int i = 0; i < vertexCount; ++i)
-				{
-					var c = cols[i];
-					c.r = Mathf.GammaToLinearSpace(c.r);
-					c.g = Mathf.GammaToLinearSpace(c.g);
-					c.b = Mathf.GammaToLinearSpace(c.b);
-					c.a = Mathf.GammaToLinearSpace(c.a);
-					cols[i] = c;
-				}
-			}
+			if (mColorSpace == ColorSpace.Linear) for (int i = 0; i < vertexCount; ++i) cols[i] = cols[i].GammaToLinearSpace();
 
 			// Cache all components
 			if (mFilter == null) mFilter = gameObject.GetComponent<MeshFilter>();
@@ -545,56 +544,19 @@ public class UIDrawCall : MonoBehaviour
 					mMesh.Clear();
 					setIndices = true;
 				}
-#if UNITY_4_7
-				var hasUV2 = (uv2 != null && uv2.Count == vertexCount);
-				var hasNormals = (norms != null && norms.Count == vertexCount);
-				var hasTans = (tans != null && tans.Count == vertexCount);
 
-				if (mTempVerts == null || mTempVerts.Length < vertexCount) mTempVerts = new Vector3[vertexCount];
-				if (mTempUV0 == null || mTempUV0.Length < vertexCount) mTempUV0 = new Vector2[vertexCount];
-				if (mTempCols == null || mTempCols.Length < vertexCount) mTempCols = new Color[vertexCount];
-
-				if (hasUV2 && (mTempUV2 == null || mTempUV2.Length < vertexCount)) mTempUV2 = new Vector2[vertexCount];
-				if (hasNormals && (mTempNormals == null || mTempNormals.Length < vertexCount)) mTempNormals = new Vector3[vertexCount];
-				if (hasTans && (mTempTans == null || mTempTans.Length < vertexCount)) mTempTans = new Vector4[vertexCount];
-
-				verts.CopyTo(mTempVerts);
-				uvs.CopyTo(mTempUV0);
-				cols.CopyTo(mTempCols);
-
-				if (hasNormals) norms.CopyTo(mTempNormals);
-				if (hasTans) tans.CopyTo(mTempTans);
-				if (hasUV2) for (int i = 0, imax = verts.Count; i < imax; ++i) mTempUV2[i] = uv2[i];
-
-				mMesh.vertices = mTempVerts;
-				mMesh.uv = mTempUV0;
-				mMesh.colors = mTempCols;
-				mMesh.uv2 = hasUV2 ? mTempUV2 : null;
-				mMesh.normals = hasNormals ? mTempNormals : null;
-				mMesh.tangents = hasTans ? mTempTans : null;
-#else
 				mMesh.SetVertices(verts);
 				mMesh.SetUVs(0, uvs);
 				mMesh.SetColors(cols);
 
- #if UNITY_5_4 || UNITY_5_5_OR_NEWER
 				mMesh.SetUVs(1, (uv2.Count == vertexCount) ? uv2 : null);
 				mMesh.SetNormals((norms.Count == vertexCount) ? norms : null);
 				mMesh.SetTangents((tans.Count == vertexCount) ? tans : null);
- #else
-				if (uv2.Count != vertexCount) uv2.Clear();
-				if (norms.Count != vertexCount) norms.Clear();
-				if (tans.Count != vertexCount) tans.Clear();
 
-				mMesh.SetUVs(1, uv2);
-				mMesh.SetNormals(norms);
-				mMesh.SetTangents(tans);
- #endif
-#endif
 				if (setIndices)
 				{
 					mIndices = GenerateCachedIndexBuffer(vertexCount, indexCount);
-					mMesh.triangles = mIndices;
+					mMesh.SetTriangles(mIndices, 0, needsBounds);
 				}
 
 #if !UNITY_FLASH
@@ -619,7 +581,6 @@ public class UIDrawCall : MonoBehaviour
 #if UNITY_EDITOR
 				mRenderer.enabled = isActive;
 #endif
-#if !UNITY_4_7
 				if (mShadowMode == ShadowMode.None)
 				{
 					mRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -635,7 +596,6 @@ public class UIDrawCall : MonoBehaviour
 					mRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 					mRenderer.receiveShadows = true;
 				}
-#endif
 			}
 
 			if (mIsNew)
@@ -713,7 +673,7 @@ public class UIDrawCall : MonoBehaviour
 		UpdateMaterials();
 
 		if (mBlock != null) mRenderer.SetPropertyBlock(mBlock);
-		if (onRender != null) onRender(mDynamicMat ?? mMaterial);
+		if (onRender != null) onRender(mDynamicMat != null ? mDynamicMat : mMaterial);
 		if (mDynamicMat == null || mClipCount == 0) return;
 
 		if (mTextureClip)
@@ -731,6 +691,7 @@ public class UIDrawCall : MonoBehaviour
 		else if (!mLegacyShader)
 		{
 			UIPanel currentPanel = panel;
+			var rootScale = panel.cachedTransform.localScale;
 
 			for (int i = 0; currentPanel != null; )
 			{
@@ -743,8 +704,21 @@ public class UIDrawCall : MonoBehaviour
 					if (currentPanel != panel)
 					{
 						Vector3 pos = currentPanel.cachedTransform.InverseTransformPoint(panel.cachedTransform.position);
+						
 						cr.x -= pos.x;
 						cr.y -= pos.y;
+
+						if (rootScale.x != 0f && rootScale.x != 1f)
+						{
+							cr.x /= rootScale.x;
+							cr.z /= rootScale.x;
+						}
+
+						if (rootScale.y != 0f && rootScale.y != 1f)
+						{
+							cr.y /= rootScale.y;
+							cr.w /= rootScale.y;
+						}
 
 						Vector3 v0 = panel.cachedTransform.rotation.eulerAngles;
 						Vector3 v1 = currentPanel.cachedTransform.rotation.eulerAngles;
@@ -763,6 +737,7 @@ public class UIDrawCall : MonoBehaviour
 					// Pass the clipping parameters to the shader
 					SetClipping(i++, cr, currentPanel.clipSoftness, angle);
 				}
+
 				currentPanel = currentPanel.parentPanel;
 			}
 		}
@@ -916,6 +891,23 @@ public class UIDrawCall : MonoBehaviour
 		dc.renderQueue = pan.startingRenderQueue;
 		dc.sortingOrder = pan.sortingOrder;
 		dc.manager = pan;
+
+#if UNITY_EDITOR && UNITY_2018_3_OR_NEWER
+		// We need to perform this check here and not in Create (string) to get to manager reference
+#if UNITY_2021_2_OR_NEWER
+		var prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage ();
+#else
+		var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+#endif
+		if (prefabStage != null && dc.manager != null)
+		{
+			// If prefab stage exists and new daw call
+			var stage = UnityEditor.SceneManagement.StageUtility.GetStageHandle (dc.manager.gameObject);
+			if (stage == prefabStage.stageHandle)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene (dc.gameObject, prefabStage.scene);
+		}
+#endif
+
 		return dc;
 	}
 
@@ -970,7 +962,7 @@ public class UIDrawCall : MonoBehaviour
 
 		for (int i = mActiveList.size; i > 0; )
 		{
-			UIDrawCall dc = mActiveList[--i];
+			var dc = mActiveList.buffer[--i];
 
 			if (dc)
 			{
@@ -1003,7 +995,7 @@ public class UIDrawCall : MonoBehaviour
 	{
 		for (int i = mInactiveList.size; i > 0; )
 		{
-			UIDrawCall dc = mInactiveList[--i];
+			var dc = mInactiveList.buffer[--i];
 
 			if (dc)
 			{
@@ -1025,7 +1017,7 @@ public class UIDrawCall : MonoBehaviour
 	{
 		int count = 0;
 		for (int i = 0; i < mActiveList.size; ++i)
-			if (mActiveList[i].manager == panel) ++count;
+			if (mActiveList.buffer[i].manager == panel) ++count;
 		return count;
 	}
 

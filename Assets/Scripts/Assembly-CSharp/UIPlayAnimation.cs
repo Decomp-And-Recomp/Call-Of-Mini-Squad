@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -81,15 +81,15 @@ public class UIPlayAnimation : MonoBehaviour
 	[HideInInspector][SerializeField] GameObject eventReceiver;
 	[HideInInspector][SerializeField] string callWhenFinished;
 
-	bool mStarted = false;
-	bool mActivated = false;
-	bool dragHighlight = false;
+	[System.NonSerialized] bool mStarted = false;
+	[System.NonSerialized] bool mActivated = false;
+	[System.NonSerialized] bool dragHighlight = false;
 
 	bool dualState { get { return trigger == Trigger.OnPress || trigger == Trigger.OnHover; } }
 
 	void Awake ()
 	{
-		UIButton btn = GetComponent<UIButton>();
+		var btn = GetComponent<UIButton>();
 		if (btn != null) dragHighlight = btn.dragHighlight;
 
 		// Remove deprecated functionality if new one is used
@@ -263,9 +263,9 @@ public class UIPlayAnimation : MonoBehaviour
 			if (clearSelection && UICamera.selectedObject == gameObject)
 				UICamera.selectedObject = null;
 
-			int pd = -(int)playDirection;
-			Direction dir = forward ? playDirection : ((Direction)pd);
-			ActiveAnimation anim = target ?
+			var pd = -(int)playDirection;
+			var dir = forward ? playDirection : ((Direction)pd);
+			var anim = target ?
 				ActiveAnimation.Play(target, clipName, dir, ifDisabledOnPlay, disableWhenFinished) :
 				ActiveAnimation.Play(animator, clipName, dir, ifDisabledOnPlay, disableWhenFinished);
 

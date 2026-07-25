@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -21,14 +21,14 @@ public class UIRoot : MonoBehaviour
 
 	static public List<UIRoot> list = new List<UIRoot>();
 
-	public enum Scaling
+	[DoNotObfuscateNGUI] public enum Scaling
 	{
 		Flexible,
 		Constrained,
 		ConstrainedOnMobiles,
 	}
 
-	public enum Constraint
+	[DoNotObfuscateNGUI] public enum Constraint
 	{
 		Fit,
 		Fill,
@@ -212,6 +212,19 @@ public class UIRoot : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Same as pixelSizeAdjustment, but constrained within minimum and maximum height values.
+	/// </summary>
+
+	public float constrainedPixelSizeAdjustment
+	{
+		get
+		{
+			int height = Mathf.RoundToInt(Mathf.Clamp(NGUITools.screenSize.y, minimumHeight, maximumHeight));
+			return height == -1 ? 1f : GetPixelSizeAdjustment(height);
+		}
+	}
+
+	/// <summary>
 	/// Helper function that figures out the pixel size adjustment for the specified game object.
 	/// </summary>
 
@@ -282,9 +295,9 @@ public class UIRoot : MonoBehaviour
 
 				Vector3 ls = mTrans.localScale;
 
-				if (!(Mathf.Abs(ls.x - size) <= float.Epsilon) ||
-					!(Mathf.Abs(ls.y - size) <= float.Epsilon) ||
-					!(Mathf.Abs(ls.z - size) <= float.Epsilon))
+				if (!(Mathf.Abs(ls.x - size) <= 0.0001f) ||
+					!(Mathf.Abs(ls.y - size) <= 0.0001f) ||
+					!(Mathf.Abs(ls.z - size) <= 0.0001f))
 				{
 					mTrans.localScale = new Vector3(size, size, size);
 					if (updateAnchors) BroadcastMessage("UpdateAnchors", SendMessageOptions.DontRequireReceiver);

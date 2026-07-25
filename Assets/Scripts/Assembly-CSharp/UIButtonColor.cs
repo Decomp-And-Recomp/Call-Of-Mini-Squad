@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 using UnityEngine;
@@ -13,7 +13,7 @@ using UnityEngine;
 [AddComponentMenu("NGUI/Interaction/Button Color")]
 public class UIButtonColor : UIWidgetContainer
 {
-	public enum State
+	[DoNotObfuscateNGUI] public enum State
 	{
 		Normal,
 		Hover,
@@ -168,7 +168,7 @@ public class UIButtonColor : UIWidgetContainer
 			return;
 		}
 #endif
-		if (mInitDone) OnHover(UICamera.IsHighlighted(gameObject));
+		if (mInitDone && mState != State.Disabled) OnHover(UICamera.IsHighlighted(gameObject));
 
 		if (UICamera.currentTouch != null)
 		{
@@ -186,18 +186,18 @@ public class UIButtonColor : UIWidgetContainer
 #if UNITY_EDITOR
 		if (!Application.isPlaying) return;
 #endif
-		if (mInitDone && mState != State.Normal)
+		if (mInitDone && mState != State.Normal && mState != State.Disabled)
 		{
 			SetState(State.Normal, true);
 
 			if (tweenTarget != null)
 			{
-				TweenColor tc = tweenTarget.GetComponent<TweenColor>();
+				var tc = tweenTarget.GetComponent<TweenColor>();
 
 				if (tc != null)
 				{
 					tc.value = mDefaultColor;
-					tc.enabled = false;
+					tc.Finish();
 				}
 			}
 		}
@@ -222,7 +222,7 @@ public class UIButtonColor : UIWidgetContainer
 
 	protected virtual void OnPress (bool isPressed)
 	{
-		if (isEnabled && UICamera.currentTouch != null)
+		if (isEnabled)
 		{
 			if (!mInitDone) OnInit();
 
@@ -232,7 +232,7 @@ public class UIButtonColor : UIWidgetContainer
 				{
 					SetState(State.Pressed, false);
 				}
-				else if (UICamera.currentTouch.current == gameObject)
+				else if (UICamera.currentTouch != null && UICamera.currentTouch.current == gameObject)
 				{
 					if (UICamera.currentScheme == UICamera.ControlScheme.Controller)
 					{
@@ -300,6 +300,8 @@ public class UIButtonColor : UIWidgetContainer
 
 	public void UpdateColor (bool instant)
 	{
+		if (!mInitDone) return;
+
 		TweenColor tc;
 
 		if (tweenTarget != null)
@@ -315,7 +317,7 @@ public class UIButtonColor : UIWidgetContainer
 			if (instant && tc != null)
 			{
 				tc.value = tc.to;
-				tc.enabled = false;
+				tc.Finish();
 			}
 		}
 	}

@@ -86,7 +86,7 @@ namespace CoMDS2
 				}
 				if (m_cachedBitmapFont == null && all[i].bitmapFont != null)
 				{
-					m_cachedBitmapFont = all[i].bitmapFont;
+					m_cachedBitmapFont = all[i].bitmapFont as UIFont;
 				}
 				if (m_cachedTtfFont != null || m_cachedBitmapFont != null) break;
 			}

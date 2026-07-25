@@ -1,6 +1,6 @@
 //-------------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2017 Tasharen Entertainment Inc
+// Copyright © 2011-2023 Tasharen Entertainment Inc
 //-------------------------------------------------
 
 #if !UNITY_3_5 && !UNITY_FLASH
@@ -19,7 +19,7 @@ using System.Text;
 [AddComponentMenu("NGUI/UI/Text List")]
 public class UITextList : MonoBehaviour
 {
-	public enum Style
+	[DoNotObfuscateNGUI] public enum Style
 	{
 		Text,
 		Chat,
@@ -56,12 +56,14 @@ public class UITextList : MonoBehaviour
 		public string[] lines;	// Split lines
 	}
 
-	protected char[] mSeparator = new char[] { '\n' };
-	protected float mScroll = 0f;
-	protected int mTotalLines = 0;
-	protected int mLastWidth = 0;
-	protected int mLastHeight = 0;
-	BetterList<Paragraph> mParagraphs;
+	[System.NonSerialized] protected char[] mSeparator = new char[] { '\n' };
+	[System.NonSerialized] protected float mScroll = 0f;
+	[System.NonSerialized] protected int mTotalLines = 0;
+	[System.NonSerialized] protected int mLastWidth = 0;
+	[System.NonSerialized] protected int mLastHeight = 0;
+	[System.NonSerialized] protected int mLastSize = 0;
+	[System.NonSerialized] protected BetterList<Paragraph> mParagraphs;
+	[System.NonSerialized] protected bool mStarted = false;
 
 	/// <summary>
 	/// Chat history is in a dictionary so that there can be multiple chat window tabs, each with its own text list.
@@ -89,6 +91,12 @@ public class UITextList : MonoBehaviour
 			return mParagraphs;
 		}
 	}
+
+	/// <summary>
+	/// Return the number of paragraphs currently in the text list.
+	/// </summary>
+
+	public int paragraphCount { get { return paragraphs.size; } }
 
 	/// <summary>
 	/// Whether the text list is usable.
@@ -165,6 +173,8 @@ public class UITextList : MonoBehaviour
 
 	void Start ()
 	{
+		mStarted = true;
+
 		if (textLabel == null)
 			textLabel = GetComponentInChildren<UILabel>();
 
@@ -183,6 +193,8 @@ public class UITextList : MonoBehaviour
 			textLabel.pivot = UIWidget.Pivot.TopLeft;
 			scrollValue = 0f;
 		}
+
+		Rebuild();
 	}
 
 	/// <summary>
@@ -191,7 +203,7 @@ public class UITextList : MonoBehaviour
 
 	void Update ()
 	{
-		if (isValid && (textLabel.width != mLastWidth || textLabel.height != mLastHeight))
+		if (isValid && (textLabel.width != mLastWidth || textLabel.height != mLastHeight || textLabel.fontSize != mLastSize))
 			Rebuild();
 	}
 
@@ -239,13 +251,7 @@ public class UITextList : MonoBehaviour
 	/// Add a new paragraph.
 	/// </summary>
 
-	public void Add (string text) { Add(text, true); }
-
-	/// <summary>
-	/// Add a new paragraph.
-	/// </summary>
-
-	protected void Add (string text, bool updateVisible)
+	public void Add (string text)
 	{
 		Paragraph ce = null;
 
@@ -255,7 +261,7 @@ public class UITextList : MonoBehaviour
 		}
 		else
 		{
-			ce = mParagraphs[0];
+			ce = mParagraphs.buffer[0];
 			mParagraphs.RemoveAt(0);
 		}
 
@@ -270,10 +276,13 @@ public class UITextList : MonoBehaviour
 
 	protected void Rebuild ()
 	{
+		if (!mStarted) return;
+
 		if (isValid)
 		{
 			mLastWidth = textLabel.width;
 			mLastHeight = textLabel.height;
+			mLastSize = textLabel.fontSize;
 
 			// Although we could simply use UILabel.Wrap, it would mean setting the same data
 			// over and over every paragraph, which is not ideal. It's faster to only do it once
@@ -287,6 +296,7 @@ public class UITextList : MonoBehaviour
 			{
 				string final;
 				Paragraph p = mParagraphs.buffer[i];
+				NGUIText.tint = Color.white;
 				NGUIText.WrapText(p.text, out final, false, true);
 				p.lines = final.Split('\n');
 				mTotalLines += p.lines.Length;
