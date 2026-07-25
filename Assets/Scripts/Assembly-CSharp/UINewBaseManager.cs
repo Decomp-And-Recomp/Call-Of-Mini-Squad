@@ -597,7 +597,7 @@ public class UINewBaseManager : MonoBehaviour
 			DataCenter.Save().tutorialStep = Defined.TutorialStep.FinishStageOneWaveOne;
 		}
 		UIBASECONFIRMBATTLEINFO.SetBattleBtnEnable(false);
-		DataCenter.Save().SaveGameData();
+		Save.Write();
 		SceneLoadingManager.s_lastSceneName = "UIBase";
 		SceneLoadingManager.s_nextSceneName = DataCenter.Conf().GetCurrentGameLevelData().id;
 		SceneManager.Instance.SwitchScene("Loading");

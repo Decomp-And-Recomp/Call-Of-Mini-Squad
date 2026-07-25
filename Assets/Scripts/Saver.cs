@@ -39,7 +39,12 @@ namespace Zweronz.SavingSystem
 	            worldNodes = TypeSaver.Save<WorldNodeSaver>() as List<GameProgressData>,
 	            achievements = TypeSaver.Save<AchievementSaver>() as AchievementSave,
 	            battleTutorialFinished = DataCenter.Save().BattleTutorialFinished,
-	            bNewUser = DataCenter.Save().bNewUser
+	            bNewUser = DataCenter.Save().bNewUser,
+	            playMusic = DataCenter.Save().PlayMusic,
+	            playSound = DataCenter.Save().PlaySound,
+	            cameraView = (int)DataCenter.Save().CameraView,
+	            lastLoginTime = DataCenter.Save().lastLoginTime,
+	            tutorialChangeMode = DataCenter.Save().tutorialChangeMode
 	        };
 	    }
 	}

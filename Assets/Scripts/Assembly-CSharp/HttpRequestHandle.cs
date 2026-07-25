@@ -417,7 +417,7 @@ public class HttpRequestHandle : MonoBehaviour
 			if (pause)
 			{
 				DataCenter.Save().lastLoginTime += Time.realtimeSinceStartup - m_fLastLoginTime;
-				DataCenter.Save().SaveGameData();
+				Save.Write();
 			}
 			else
 			{

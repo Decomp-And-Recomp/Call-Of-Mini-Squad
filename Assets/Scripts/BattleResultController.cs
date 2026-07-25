@@ -13,6 +13,11 @@ public static class BattleResultController
 		}
 
 		GameProgressData wpd = DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode);
+		if (wpd == null)
+		{
+			GameBattle.m_instance.bGetBattleResultData = true;
+			return;
+		}
 		Defined.LevelMode mode = DataCenter.State().selectLevelMode;
 		int areaNode = DataCenter.State().selectAreaNode;
 		ushort oldStars = wpd.levelStars[mode][areaNode];

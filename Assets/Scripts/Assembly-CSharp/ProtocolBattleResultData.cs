@@ -25,7 +25,12 @@ public class ProtocolBattleResultData : Protocol
 
 	public override int GetResponse(string response)
 	{
-		DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode).levelStars[DataCenter.State().selectLevelMode][DataCenter.State().selectAreaNode] = (ushort)DataCenter.State().battleStars;
+		GameProgressData wpd = DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode);
+		if (wpd == null)
+		{
+			return 0;
+		}
+		wpd.levelStars[DataCenter.State().selectLevelMode][DataCenter.State().selectAreaNode] = (ushort)DataCenter.State().battleStars;
 
 		int[] baseRewards = LevelCalcTest.LevelRewards[DataCenter.State().selectWorldNode];
 		baseRewards[0] += GameBattle.m_instance.getMoneyInBattle;

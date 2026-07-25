@@ -594,10 +594,6 @@ public class GameBattle : MonoBehaviour
 		m_teammateList.Clear();
 		m_nodeGroupMap = new Dictionary<int, NodeGroup>();
 		m_nodeGroupMap.Clear();
-		if (Util.s_debug)
-		{
-			DataCenter.Save().LoadGameData();
-		}
 		DataCenter.Conf().LoadEnemySpawnInfoFromDisk();
 	}
 

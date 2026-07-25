@@ -384,7 +384,7 @@ namespace CoMDS2
 					indicatePanel.gameObject.SetActive(false);
 					GameBattle.m_instance.IsPause = false;
 					DataCenter.Save().tutorialChangeMode = true;
-					DataCenter.Save().SaveGameData();
+					Save.Write();
 				}
 			}
 		}

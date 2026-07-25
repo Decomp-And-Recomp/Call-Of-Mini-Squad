@@ -171,7 +171,7 @@ public class PhenixDebug : MonoBehaviour
 		GUILayout.Space(30f);
 		if (GUILayout.Button("Save GameData"))
 		{
-			DataCenter.Save().SaveGameData();
+			Save.Write();
 		}
 		if (GUILayout.Button("BaseMap Point LayOut") && UINewBaseManager.Instance.gameObject.GetComponent<BaseMapPositionEdior>() == null)
 		{

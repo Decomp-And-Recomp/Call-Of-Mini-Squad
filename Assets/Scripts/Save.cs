@@ -47,7 +47,8 @@ public static class Save
 		try
 		{
 			string json = JsonConvert.SerializeObject(saveInstance = Saver.Save());
-			File.WriteAllText(TempPath, json);
+			byte[] encrypted = SaveCrypto.Encrypt(json);
+			File.WriteAllBytes(TempPath, encrypted);
 
 			if (File.Exists(Path))
 			{
@@ -89,7 +90,25 @@ public static class Save
 	{
 		try
 		{
-			string json = File.ReadAllText(path);
+			byte[] bytes = File.ReadAllBytes(path);
+			string json;
+			try
+			{
+				json = SaveCrypto.Decrypt(bytes);
+			}
+			catch (Exception decryptException)
+			{
+				string plaintext = File.ReadAllText(path);
+				SaveData plaintextData = JsonConvert.DeserializeObject<SaveData>(plaintext);
+				if (plaintextData == null)
+				{
+					Debug.LogError("Decrypt of " + path + " failed (" + decryptException.Message + ") and plaintext fallback also returned null.");
+					return false;
+				}
+				Loader.Load(saveInstance = plaintextData);
+				return true;
+			}
+
 			SaveData data = JsonConvert.DeserializeObject<SaveData>(json);
 			if (data == null)
 			{
@@ -158,6 +177,16 @@ public class SaveData
 	public bool battleTutorialFinished;
 
 	public bool bNewUser;
+
+	public bool playMusic;
+
+	public bool playSound;
+
+	public int cameraView;
+
+	public float lastLoginTime;
+
+	public bool tutorialChangeMode;
 }
 
 public class Currency

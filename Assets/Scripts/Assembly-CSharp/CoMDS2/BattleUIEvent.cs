@@ -855,9 +855,9 @@ namespace CoMDS2
 					{
 						BackgroundMusicManager.Instance().StopBG();
 					}
-					DataCenter.Save().SaveGameData();
 					break;
 				case UIControlID.Pause_BT_SFX:
+					Save.Write();
 					DataCenter.Save().PlaySound = !DataCenter.Save().PlaySound;
 					break;
 				}
@@ -1099,7 +1099,7 @@ namespace CoMDS2
 					Application.LoadLevel("TestSceneLaboratory02");
 					break;
 				case UIControlID.BT_SaveData:
-					DataCenter.Save().SaveGameData();
+					Save.Write();
 					break;
 				case UIControlID.BT_Pause:
 					GameBattle.m_instance.GameState = GameBattle.State.Pause;
@@ -2447,15 +2447,16 @@ namespace CoMDS2
 		{
 			Time.timeScale = 1f;
 			GameBattle.s_enemyCount = 0;
-			DataCenter.Save().SaveGameData();
+			Save.Write();
 			BackgroundMusicManager.Instance().PlayBackgroundMusic(BackgroundMusicManager.MusicType.UI_BG);
+			bool wasNewUser = DataCenter.Save().bNewUser;
 			if (DataCenter.Save().bNewUser)
 			{
 				DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
 				DataCenter.Save().BattleTutorialFinished = true;
 				DataCenter.Save().bNewUser = false;
 				DataCenter.Save().MigrateTutorialDummyTeamSites();
-				DataCenter.Save().SaveGameData();
+				Save.Write();
 			}
 			if (DataCenter.State().isEncounterLevel)
 			{
@@ -2467,7 +2468,7 @@ namespace CoMDS2
 			}
 			else if (GameBattle.m_instance.GameState == GameBattle.State.Win)
 			{
-				if (DataCenter.Save().bNewUser)
+				if (wasNewUser)
 				{
 					SceneLoadingManager.SwitchScene("UICaricature");
 				}
@@ -2527,7 +2528,7 @@ namespace CoMDS2
 				GameBattle.m_instance.SetCameraView(DataCenter.Save().CameraView);
 				Vector3 targetPos = new Vector3(GameBattle.m_instance.CameraFocus.GetTransform().position.x, GameBattle.m_instance.CameraFocus.GetTransform().position.y + GameBattle.m_instance.CameraViewDisY, GameBattle.m_instance.CameraFocus.GetTransform().position.z - GameBattle.m_instance.CameraViewDisZ);
 				GameBattle.m_instance.SetCameraMove(targetPos, 15f, GameBattle.m_instance.CameraFocus, true);
-				DataCenter.Save().SaveGameData();
+				Save.Write();
 			}
 		}
 

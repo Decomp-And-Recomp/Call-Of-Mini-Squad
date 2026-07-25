@@ -39,6 +39,11 @@ namespace Zweronz.SavingSystem
 			TypeLoader.Load<AchievementLoader>(loadObject.achievements);
 			DataCenter.Save().BattleTutorialFinished = loadObject.battleTutorialFinished;
 			DataCenter.Save().bNewUser = loadObject.bNewUser;
+			DataCenter.Save().PlayMusic = loadObject.playMusic;
+			DataCenter.Save().PlaySound = loadObject.playSound;
+			DataCenter.Save().CameraView = (Defined.CameraView)loadObject.cameraView;
+			DataCenter.Save().lastLoginTime = loadObject.lastLoginTime;
+			DataCenter.Save().tutorialChangeMode = loadObject.tutorialChangeMode;
 			DataCenter.Save().MigrateTutorialDummyTeamSites();
 		}
 

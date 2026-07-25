@@ -1013,7 +1013,7 @@ public class UINewTeamManager : MonoBehaviour
 			{
 				UIBASECOURSEINFO.GetCourse(1058).STATE = UtilUICourseInfo.CoursePhaseState.Done;
 				DataCenter.Save().tutorialStep = Defined.TutorialStep.Finish;
-				DataCenter.Save().SaveGameData();
+				Save.Write();
 			}
 			break;
 		}

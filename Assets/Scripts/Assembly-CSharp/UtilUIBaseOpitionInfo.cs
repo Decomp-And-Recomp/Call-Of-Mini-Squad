@@ -104,7 +104,7 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 		{
 			BackgroundMusicManager.Instance().StopBG();
 		}
-		DataCenter.Save().SaveGameData();
+		Save.Write();
 	}
 
 	public void HandelAccountBtnEvent()
@@ -192,6 +192,6 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 	public void HandleSoundPress()
 	{
 		DataCenter.Save().PlaySound = !DataCenter.Save().PlaySound;
-		DataCenter.Save().SaveGameData();
+		Save.Write();
 	}
 }

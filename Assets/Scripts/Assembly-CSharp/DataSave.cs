@@ -928,45 +928,6 @@ public class DataSave
 		tutorialChangeMode = false;
 	}
 
-	public void SaveGameData()
-	{
-		int num = 0;
-		XmlDocument xmlDocument = new XmlDocument();
-		xmlDocument.AppendChild(xmlDocument.CreateXmlDeclaration("1.0", "utf-8", "no"));
-		XmlElement xmlElement = xmlDocument.CreateElement("GameData");
-		xmlElement.SetAttribute("Version", m_sGameVersion);
-		xmlElement.SetAttribute("UUID", uuid);
-		xmlDocument.AppendChild(xmlElement);
-		XmlElement xmlElement2 = xmlDocument.CreateElement("Options");
-		xmlElement2.SetAttribute("Music", m_optionMusic.ToString());
-		xmlElement2.SetAttribute("Sound", m_optionSound.ToString());
-		xmlElement2.SetAttribute("Joystick", m_optionJoystick.ToString());
-		xmlElement.AppendChild(xmlElement2);
-		XmlElement xmlElement3 = xmlDocument.CreateElement("CameraView");
-		int num2 = (int)cameraView;
-		xmlElement3.SetAttribute("View", num2.ToString());
-		xmlElement.AppendChild(xmlElement3);
-		XmlElement xmlElement4 = xmlDocument.CreateElement("Tutorail");
-		xmlElement4.SetAttribute("BattleTutorial", (BattleTutorialFinished ? 1 : 0).ToString());
-		xmlElement4.SetAttribute("tutorialChangeMode", (tutorialChangeMode ? 1 : 0).ToString());
-		xmlElement.AppendChild(xmlElement4);
-		XmlElement xmlElement5 = xmlDocument.CreateElement("LastLoginTime");
-		xmlElement5.SetAttribute("time", lastLoginTime.ToString());
-		xmlElement.AppendChild(xmlElement5);
-		StringBuilder stringBuilder = new StringBuilder();
-		XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-		xmlWriterSettings.NewLineChars = "\r\n";
-		xmlWriterSettings.Indent = true;
-		xmlWriterSettings.IndentChars = "\t";
-		XmlWriter xmlWriter = XmlWriter.Create(stringBuilder, xmlWriterSettings);
-		xmlDocument.Save(xmlWriter);
-		string content = stringBuilder.ToString();
-		string zipedcontent = string.Empty;
-		Util.ZipString(content, ref zipedcontent);
-		string content2 = Util.EncryptData(zipedcontent, "B;g^L%S&K*7630");
-		FileUtil.WriteSave("GameData.dat", content2);
-	}
-
 	public bool LoadGameData()
 	{
 		if (Util.s_debug)
@@ -977,8 +938,6 @@ public class DataSave
 		if (text == null || text.Length <= 0)
 		{
 			m_bHasSavaData = false;
-			CreateGameData();
-			SaveGameData();
 			return false;
 		}
 		int num = 0;
@@ -1006,7 +965,14 @@ public class DataSave
 		xmlElement = (XmlElement)documentElement.GetElementsByTagName("LastLoginTime").Item(0);
 		if (xmlElement != null)
 		{
-			lastLoginTime = float.Parse(xmlElement.GetAttribute("time"));
+			string timeStr = xmlElement.GetAttribute("time");
+			if (!float.TryParse(timeStr, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out lastLoginTime))
+			{
+				if (!float.TryParse(timeStr.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out lastLoginTime))
+				{
+					lastLoginTime = 0f;
+				}
+			}
 		}
 		m_bHasSavaData = true;
 		return m_bHasSavaData;
@@ -1041,10 +1007,6 @@ public class DataSave
 				m_teamData.teamSitesData[i].playerData = playerData;
 			}
 		}
-	}
-
-	public void CreateGameData()
-	{
 	}
 
 	public void CreateDummyGameData()

@@ -178,7 +178,6 @@ public class CheckUpdateScript : MonoBehaviour
 			{
 			case 0:
 				DataCenter.State().gameLoaded = false;
-				DataCenter.Save().LoadGameData();
 				if (DataCenter.Save().PlayMusic)
 				{
 					BackgroundMusicManager.Instance().PlayBackgroundMusic(BackgroundMusicManager.MusicType.UI_BG);
