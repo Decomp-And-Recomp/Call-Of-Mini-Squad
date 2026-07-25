@@ -13,7 +13,7 @@ public class DownloadText : MonoBehaviour
 
 	private IEnumerator Start()
 	{
-		WWW www = new WWW(url + Random.Range(1000, 1000000));
+		/*WWW www = new WWW(url + Random.Range(1000, 1000000));
 		yield return www;
 		if (www.error != null)
 		{
@@ -30,6 +30,7 @@ public class DownloadText : MonoBehaviour
 		{
 			m_defaultEvent();
 		}
-		www.Dispose();
+		www.Dispose();*/
+		yield return null;
 	}
 }
