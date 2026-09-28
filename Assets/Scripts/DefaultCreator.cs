@@ -212,15 +212,17 @@ namespace Zweronz.SavingSystem
 					new PlayerData
 					{
 						heroIndex = 2,
-						state = Defined.ItemState.Locked,
-						unlockNeedTeamLevel = -1
+						state = Defined.ItemState.Purchase,
+						costType = Defined.COST_TYPE.Crystal,
+						unlockCost = 299
 					},
 					new PlayerData
 					{
 						heroIndex = 6,
-						state = Defined.ItemState.Locked,
-						unlockNeedTeamLevel = -2
-					},
+                        state = Defined.ItemState.Purchase,
+						costType = Defined.COST_TYPE.Crystal,
+						unlockCost = 399
+                    },
 					new PlayerData
 					{
 						heroIndex = 12,
