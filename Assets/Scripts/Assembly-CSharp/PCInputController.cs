@@ -99,19 +99,11 @@ public class PCInputController : MonoBehaviour
 		m_lastRightLparam = lparam;
 	}
 
-	private bool IsTutorialActive()
-	{
-		if (!DataCenter.Save().BattleTutorialFinished) return true;
-		if (!DataCenter.Save().tutorialChangeMode) return true;
-		if (Tutorial.Instance != null && Tutorial.Instance.TutorialInProgress) return true;
-		return false;
-	}
-
 	private void HandleDiscreteKeys(Player player)
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			if (IsTutorialActive())
+			if (GameBattle.IsPauseBlockedByTutorial())
 			{
 				return;
 			}

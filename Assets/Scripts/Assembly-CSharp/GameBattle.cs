@@ -285,6 +285,13 @@ public class GameBattle : MonoBehaviour
 		}
 	}
 
+	public static bool IsPauseBlockedByTutorial()
+	{
+		if (!DataCenter.Save().BattleTutorialFinished) return true;
+		if (Tutorial.Instance != null && Tutorial.Instance.TutorialInProgress) return true;
+		return false;
+	}
+
 	public State GameState
 	{
 		get
@@ -293,6 +300,10 @@ public class GameBattle : MonoBehaviour
 		}
 		set
 		{
+			if (value == State.Pause && IsPauseBlockedByTutorial())
+			{
+				return;
+			}
 			if (value == State.Win)
 			{
 				if (DataCenter.Save().BattleTutorialFinished)
@@ -324,7 +335,7 @@ public class GameBattle : MonoBehaviour
 				DataCenter.State().battleStars = 0;
 				if (m_UIButtonPause != null)
 				{
-					m_UIButtonPause.SetActive(true);
+					m_UIButtonPause.SetActive(!IsPauseBlockedByTutorial());
 				}
 				if (m_UIGamePanel != null)
 				{
