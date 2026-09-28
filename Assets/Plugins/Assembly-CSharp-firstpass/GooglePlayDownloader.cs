@@ -87,9 +87,8 @@ public class GooglePlayDownloader
 
 	public static void FetchOBB()
 	{
-		using (AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
 		{
-			AndroidJavaObject @static = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+			AndroidJavaObject @static = UnityEngine.Android.AndroidApplication.currentActivity;
 			AndroidJavaObject androidJavaObject = new AndroidJavaObject("android.content.Intent", @static, new AndroidJavaClass("com.unity3d.plugin.downloader.UnityDownloaderActivity"));
 			int num = 65536;
 			androidJavaObject.Call<AndroidJavaObject>("addFlags", new object[1] { num });
@@ -113,9 +112,8 @@ public class GooglePlayDownloader
 		{
 			return;
 		}
-		using (AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
 		{
-			AndroidJavaObject @static = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+			AndroidJavaObject @static = UnityEngine.Android.AndroidApplication.currentActivity;
 			obb_package = @static.Call<string>("getPackageName", new object[0]);
 			AndroidJavaObject androidJavaObject = @static.Call<AndroidJavaObject>("getPackageManager", new object[0]).Call<AndroidJavaObject>("getPackageInfo", new object[2] { obb_package, 0 });
 			obb_version = androidJavaObject.Get<int>("versionCode");

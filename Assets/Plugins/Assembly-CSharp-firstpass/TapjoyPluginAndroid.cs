@@ -20,8 +20,7 @@ public class TapjoyPluginAndroid : MonoBehaviour
 			if (tapjoyConnect == null)
 			{
 				Debug.Log("C#: Loading TapjoyPlugin");
-				AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-				currentActivity = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+				currentActivity = UnityEngine.Android.AndroidApplication.currentActivity;
 				tapjoyConnect = new AndroidJavaClass("com.tapjoy.TapjoyConnectUnity");
 			}
 			return tapjoyConnect;

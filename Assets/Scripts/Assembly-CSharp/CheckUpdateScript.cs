@@ -90,7 +90,7 @@ public class CheckUpdateScript : MonoBehaviour
 		needDownloadConfigList = new List<KeyValuePair<string, string>>();
 		DataCenter.State().lastSceneType = Defined.SceneType.Menu;
 		DataCenter.Save().LoadServerConfigData();
-		MyTapjoy.Instance();
+		//MyTapjoy.Instance();
 		if (GameObject.Find("_AndroidPlatform") == null)
 		{
 			GameObject gameObject = new GameObject("_AndroidPlatform");

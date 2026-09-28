@@ -404,8 +404,7 @@ public class KamcordImplementationAndroid : Kamcord.Implementation
 		{
 			int num = 1;
 			num = ((videoQuality != 0 && videoQuality == Kamcord.VideoQuality.Trailer) ? 1 : 0);
-			AndroidJavaClass androidJavaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-			AndroidJavaObject @static = androidJavaClass.GetStatic<AndroidJavaObject>("currentActivity");
+			AndroidJavaObject @static = UnityEngine.Android.AndroidApplication.currentActivity;
 			kamcordJavaClass().CallStatic("initActivity", @static);
 			kamcordJavaClass().CallStatic("initKeyAndSecret", devKey, devSecret, appName, num);
 		}

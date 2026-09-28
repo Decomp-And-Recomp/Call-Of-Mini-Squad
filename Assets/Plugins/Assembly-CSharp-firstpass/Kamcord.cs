@@ -761,10 +761,10 @@ public class Kamcord : MonoBehaviour
 
 	private static Implementation implementation()
 	{
-		if (implementation_ == null && (iOSEnabled_ || androidEnabled_) && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) && androidEnabled_ && KamcordImplementationAndroid.getSDKVersion() >= 16)
-		{
-			implementation_ = new KamcordImplementationAndroid();
-		}
+		//if (implementation_ == null && (iOSEnabled_ || androidEnabled_) && (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) && androidEnabled_ && KamcordImplementationAndroid.getSDKVersion() >= 16)
+		//{
+		//	implementation_ = new KamcordImplementationAndroid();
+		//}
 		if (implementation_ == null)
 		{
 			implementation_ = new Implementation();
