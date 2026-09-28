@@ -68,8 +68,23 @@ public class UIDialogManager : MonoBehaviour
 		}
 	}
 
-	private void OnLevelWasLoaded(int level)
+	private void Start()
 	{
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnDestroy()
+	{
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+	{
+		if (!isActiveAndEnabled)
+		{
+			return;
+		}
+		int level = scene.buildIndex;
 		Instance.HideShopDialogUI();
 		Instance.ClearBlocks();
 		UIEffectManager.Instance.ClearEffects();

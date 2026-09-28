@@ -77,14 +77,17 @@ public class ColorAnimationScript : MonoBehaviour
 			AnimationCurve curve2 = new AnimationCurve(new Keyframe(0f, m_StartColor.g, 0f, 0f), new Keyframe(m_AnimPeriod / 2f, m_EndColor.g, 0f, 0f), new Keyframe(m_AnimPeriod, m_StartColor.g, 0f, 0f));
 			AnimationCurve curve3 = new AnimationCurve(new Keyframe(0f, m_StartColor.b, 0f, 0f), new Keyframe(m_AnimPeriod / 2f, m_EndColor.b, 0f, 0f), new Keyframe(m_AnimPeriod, m_StartColor.b, 0f, 0f));
 			AnimationClip animationClip = new AnimationClip();
+			animationClip.legacy = true;
 			animationClip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".r", curve);
 			animationClip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".g", curve2);
 			animationClip.SetCurve(string.Empty, typeof(Material), m_propertyName + ".b", curve3);
 			animationClip.wrapMode = WrapMode.Once;
 			base.GetComponent<Animation>().AddClip(animationClip, "ColorAnimation");
 			AnimationClip clip = new AnimationClip();
+			clip.legacy = true;
 			base.GetComponent<Animation>().AddClip(clip, "ChangeColorAnimation");
 			AnimationClip clip2 = new AnimationClip();
+			clip2.legacy = true;
 			base.GetComponent<Animation>().AddClip(clip2, "ResetColorAnimation");
 		}
 	}

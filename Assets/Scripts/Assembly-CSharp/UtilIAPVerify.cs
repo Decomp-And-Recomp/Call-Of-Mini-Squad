@@ -375,10 +375,6 @@ public class UtilIAPVerify : MonoBehaviour
 		}
 	}
 
-	private void OnLevelWasLoaded(int level)
-	{
-	}
-
 	public void AddToLocal(string a, string b, string c, string d)
 	{
 		AddToLocal(a, b, c, d, "0", "0", "0", "0");

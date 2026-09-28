@@ -77,8 +77,23 @@ public class SceneManager : MonoBehaviour
 		Application.LoadLevel(strSceneName);
 	}
 
-	private void OnLevelWasLoaded(int level)
+	private void Start()
 	{
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnDestroy()
+	{
+		UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+	{
+		if (!isActiveAndEnabled)
+		{
+			return;
+		}
+		int level = scene.buildIndex;
 		if (level != 0 && (Application.loadedLevelName.StartsWith("UI") || Application.loadedLevelName.StartsWith("Load")))
 		{
 			if (Application.loadedLevelName.StartsWith("Load"))

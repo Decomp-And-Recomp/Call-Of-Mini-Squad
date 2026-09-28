@@ -63,7 +63,7 @@ public static class Save
 
 	public static void Flush()
 	{
-		if (IsDirty)
+		if (canWrite && IsDirty)
 		{
 			Write();
 		}
