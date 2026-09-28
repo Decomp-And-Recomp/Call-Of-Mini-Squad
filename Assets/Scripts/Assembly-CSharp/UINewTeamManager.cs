@@ -865,14 +865,9 @@ public class UINewTeamManager : MonoBehaviour
 
 	public bool UpdateHeroDetailWSPartToggleNewTips(PlayerData playdata)
 	{
-		bool flag = false;
-		if (playdata.upgradeData.weaponCanUpgrade || playdata.upgradeData.weaponCanBk || playdata.upgradeData.skillCanUpgrade || playdata.upgradeData.skillCanBk)
-		{
-			UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(0, true);
-			return true;
-		}
-		UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(0, false);
-		return false;
+		bool result = UpgradeController.CanImproveWeapon(playdata) || UpgradeController.CanImproveSkill(playdata);
+		UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(0, result);
+		return result;
 	}
 
 	public bool UpdateHeroDetailHeadPartToggleNewTips(PlayerData playdata)
@@ -882,19 +877,11 @@ public class UINewTeamManager : MonoBehaviour
 		{
 			if (playdata.upgradeData.helmsUpgrade[i].equipIndex == playdata.equips[Defined.EQUIP_TYPE.Head].currEquipIndex)
 			{
-				if (playdata.upgradeData.helmsUpgrade[i].canUpgrade)
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(1, true);
-					result = true;
-				}
-				else
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(1, false);
-					result = false;
-				}
+				result = UpgradeController.CanUpgradeEquipment(playdata.upgradeData.helmsUpgrade[i]);
 				break;
 			}
 		}
+		UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(1, result);
 		return result;
 	}
 
@@ -905,19 +892,11 @@ public class UINewTeamManager : MonoBehaviour
 		{
 			if (playdata.upgradeData.ArmorsUpgrade[i].equipIndex == playdata.equips[Defined.EQUIP_TYPE.Body].currEquipIndex)
 			{
-				if (playdata.upgradeData.ArmorsUpgrade[i].canUpgrade)
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(2, true);
-					result = true;
-				}
-				else
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(2, false);
-					result = false;
-				}
+				result = UpgradeController.CanUpgradeEquipment(playdata.upgradeData.ArmorsUpgrade[i]);
 				break;
 			}
 		}
+		UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(2, result);
 		return result;
 	}
 
@@ -928,19 +907,11 @@ public class UINewTeamManager : MonoBehaviour
 		{
 			if (playdata.upgradeData.ornamentsUpgrade[i].equipIndex == playdata.equips[Defined.EQUIP_TYPE.Acc].currEquipIndex)
 			{
-				if (playdata.upgradeData.ornamentsUpgrade[i].canUpgrade)
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(3, true);
-					result = true;
-				}
-				else
-				{
-					UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(3, false);
-					result = false;
-				}
+				result = UpgradeController.CanUpgradeEquipment(playdata.upgradeData.ornamentsUpgrade[i]);
 				break;
 			}
 		}
+		UITEAMPLAYERDETAILINFOSCRIPT.TPDETAILEXDATAINFOSCRIPT.SetToggleTipsVisable(3, result);
 		return result;
 	}
 

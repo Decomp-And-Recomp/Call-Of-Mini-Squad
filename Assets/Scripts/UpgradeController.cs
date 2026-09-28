@@ -40,6 +40,43 @@ public static class UpgradeController
 		}
 	}
 
+	public static bool CanImproveWeapon(PlayerData hero)
+	{
+		return CanImprove(hero.weaponLevel, hero.weaponMaxLevel, hero.weaponStar, 0);
+	}
+
+	public static bool CanImproveSkill(PlayerData hero)
+	{
+		return CanImprove(hero.skillLevel, hero.skillMaxLevel, hero.skillStar, 1);
+	}
+
+	public static bool CanUpgradeEquipment(EquipUpgradeData equip)
+	{
+		return equip != null && equip.state == Defined.ItemState.Available && equip.canUpgrade && equip.level < equip.maxLevel && DataCenter.Save().Money >= equip.cost;
+	}
+
+	private static bool CanImprove(int level, int maxLevel, int star, int costColumn)
+	{
+		if (UpgradeCalcTest.upgrades == null)
+		{
+			UpgradeCalcTest.Init();
+		}
+
+		int costIndex = level + (star - 1);
+		if (level >= 21 || costIndex < 0 || costIndex >= UpgradeCalcTest.upgrades.Count)
+		{
+			return false;
+		}
+
+		int moneyCost = UpgradeCalcTest.upgrades[costIndex][costColumn];
+		if (level < maxLevel)
+		{
+			return DataCenter.Save().Money >= moneyCost;
+		}
+
+		return DataCenter.Save().GetTeamData().teamLevel >= GetLevelBreak(star) && DataCenter.Save().Money >= moneyCost && DataCenter.Save().Crystal >= GetCrystalBreak(star);
+	}
+
 	public static void RefreshWeapons()
 	{
 		if (UpgradeCalcTest.upgrades == null)
