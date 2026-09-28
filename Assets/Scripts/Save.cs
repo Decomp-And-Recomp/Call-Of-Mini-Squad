@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -36,54 +36,127 @@ public static class Save
 
 	private static bool canWrite;
 
+	private static bool dirty;
+
+	private static bool writeRequested;
+
+	public static bool IsDirty
+	{
+		get { return dirty || writeRequested; }
+	}
+
+	public static bool IsWriteRequested
+	{
+		get { return writeRequested; }
+	}
+
+	public static void MarkDirty()
+	{
+		dirty = true;
+	}
+
+	public static void RequestWrite()
+	{
+		dirty = true;
+		writeRequested = true;
+	}
+
+	public static void Flush()
+	{
+		if (IsDirty)
+		{
+			Write();
+		}
+	}
+
 	public static void Write()
 	{
 		if (!canWrite)
 		{
+			dirty = false;
+			writeRequested = false;
 			Debug.LogWarning("Write skipped — save is in read-only emergency mode (load previously failed for both primary and backup).");
 			return;
 		}
+
+		dirty = false;
+		writeRequested = false;
 
 		try
 		{
 			string json = JsonConvert.SerializeObject(saveInstance = Saver.Save());
 			byte[] encrypted = SaveCrypto.Encrypt(json);
-			File.WriteAllBytes(TempPath, encrypted);
+			WriteDurable(TempPath, encrypted);
 
 			if (File.Exists(Path))
 			{
-				File.Copy(Path, BackupPath, true);
-				File.Delete(Path);
+				SwapInTemp();
 			}
-			File.Move(TempPath, Path);
+			else
+			{
+				File.Move(TempPath, Path);
+			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogError("Write failed: " + e);
-			try { if (File.Exists(TempPath)) File.Delete(TempPath); } catch { }
+			dirty = true;
+			try { if (File.Exists(Path) && File.Exists(TempPath)) File.Delete(TempPath); } catch { }
 		}
+	}
+
+	private static void WriteDurable(string path, byte[] bytes)
+	{
+		using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+		{
+			stream.Write(bytes, 0, bytes.Length);
+			stream.Flush(true);
+		}
+	}
+
+	private static void SwapInTemp()
+	{
+		try
+		{
+			File.Replace(TempPath, Path, BackupPath);
+			return;
+		}
+		catch (PlatformNotSupportedException) { }
+		catch (NotSupportedException) { }
+		File.Copy(Path, BackupPath, true);
+		File.Delete(Path);
+		File.Move(TempPath, Path);
 	}
 
 	public static void Load()
 	{
 		canWrite = false;
 
-		if (TryLoadFromFile(Path))
+		if (File.Exists(Path) && TryLoadFromFile(Path))
 		{
 			canWrite = true;
 			return;
 		}
-
-		if (File.Exists(BackupPath) && TryLoadFromFile(BackupPath))
+		if (TryRecoverFrom(TempPath, "temp") || TryRecoverFrom(BackupPath, "backup"))
 		{
-			Debug.LogWarning("Primary save unreadable — restored from backup.");
-			try { File.Copy(BackupPath, Path, true); } catch (Exception e) { Debug.LogError("Could not copy backup over primary: " + e); }
 			canWrite = true;
 			return;
 		}
 
 		Debug.LogError("Both primary and backup save are unreadable. Running with defaults, autosave DISABLED. Restore a save manually to re-enable writes.");
 		Loader.Load(saveInstance = Creator.Create());
+	}
+
+	private static bool TryRecoverFrom(string path, string label)
+	{
+		if (!File.Exists(path) || !TryLoadFromFile(path))
+		{
+			return false;
+		}
+
+		Debug.LogWarning("Primary save missing or unreadable — restored from " + label + ".");
+		try { File.Copy(path, Path, true); } catch (Exception e) { Debug.LogError("Could not copy " + label + " over primary: " + e); }
+		return true;
 	}
 
 	private static bool TryLoadFromFile(string path)
@@ -135,6 +208,7 @@ public static class Save
 	{
 		try { if (File.Exists(Path)) File.Delete(Path); } catch { }
 		try { if (File.Exists(BackupPath)) File.Delete(BackupPath); } catch { }
+		try { if (File.Exists(TempPath)) File.Delete(TempPath); } catch { }
 		Application.Quit();
 	}
 
@@ -142,7 +216,7 @@ public static class Save
 	{
 		get
 		{
-			return !File.Exists(Path);
+			return !File.Exists(Path) && !File.Exists(TempPath) && !File.Exists(BackupPath);
 		}
 	}
 

@@ -34,6 +34,7 @@ public static class HeroListController
 		{
 			DataCenter.Save().Money -= hero.unlockCost;
 			hero.state = Defined.ItemState.Available;
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -41,6 +42,7 @@ public static class HeroListController
 		{
 			DataCenter.Save().Crystal -= hero.unlockCost;
 			hero.state = Defined.ItemState.Available;
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -54,6 +56,7 @@ public static class HeroListController
 		{
 			DataCenter.Save().Crystal -= DataCenter.Save().GetTeamData().teamSitesData[DataCenter.State().selectTeamSiteIndex].unlockSitePrice;
 			DataCenter.Save().GetTeamData().teamSitesData[DataCenter.State().selectTeamSiteIndex].state = Defined.ItemState.Available;
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -70,5 +73,6 @@ public static class HeroListController
 		hero.equips[DataCenter.State().selectEquipType].currEquipLevel = upgradeData[DataCenter.State().selectEquipIndex - 1].level;
 
 		Refresh();
+		Save.RequestWrite();
 	}
 }

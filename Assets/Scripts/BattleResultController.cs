@@ -57,6 +57,8 @@ public static class BattleResultController
 		DataCenter.Save().selectLevelDropData.money = baseRewards[0];
 		DataCenter.Save().selectLevelDropData.exp = baseRewards[1];
 
+		Save.RequestWrite();
+
 		GameBattle.m_instance.bGetBattleResultData = true;
 	}
 

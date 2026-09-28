@@ -49,6 +49,57 @@ public class LoadManager : MonoBehaviour
 		{
 			Save.Load();
 		}
+
+		nextAutosaveTime = Time.realtimeSinceStartup + AutosaveInterval;
+	}
+
+	private const float AutosaveInterval = 30f;
+
+	private float nextAutosaveTime;
+
+	private void OnEnable()
+	{
+		UnityEngine.SceneManagement.SceneManager.activeSceneChanged += OnActiveSceneChanged;
+	}
+
+	private void OnDisable()
+	{
+		UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+	}
+
+	private void LateUpdate()
+	{
+		if (Save.IsWriteRequested)
+		{
+			Save.Write();
+			nextAutosaveTime = Time.realtimeSinceStartup + AutosaveInterval;
+		}
+		else if (Time.realtimeSinceStartup >= nextAutosaveTime)
+		{
+			Save.Flush();
+			nextAutosaveTime = Time.realtimeSinceStartup + AutosaveInterval;
+		}
+	}
+
+	private void OnActiveSceneChanged(UnityEngine.SceneManagement.Scene previous, UnityEngine.SceneManagement.Scene next)
+	{
+		Save.Flush();
+	}
+
+	private void OnApplicationPause(bool paused)
+	{
+		if (paused)
+		{
+			Save.Write();
+		}
+	}
+
+	private void OnApplicationFocus(bool focused)
+	{
+		if (!focused)
+		{
+			Save.Flush();
+		}
 	}
 
 	private void OnApplicationQuit()

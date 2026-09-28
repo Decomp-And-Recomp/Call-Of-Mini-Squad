@@ -316,6 +316,16 @@ public class DataStore
 
 	private bool DoCost(Defined.COST_TYPE costType, int cost)
 	{
+		bool paid = TryPay(costType, cost);
+		if (paid)
+		{
+			Save.RequestWrite();
+		}
+		return paid;
+	}
+
+	private bool TryPay(Defined.COST_TYPE costType, int cost)
+	{
 		switch (costType)
 		{
 		case Defined.COST_TYPE.Money:

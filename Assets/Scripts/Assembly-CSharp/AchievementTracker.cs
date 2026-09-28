@@ -76,17 +76,20 @@ public static class AchievementTracker
         DataSave save = DataCenter.Save();
         save.achTotalKills++;
         save.achDailyKills++;
+        Save.MarkDirty();
     }
 
     public static void OnStageCleared()
     {
         EnsureDailyReset();
         DataCenter.Save().achDailyStages++;
+        Save.MarkDirty();
     }
 
     public static void OnIapCrystalPurchased(int amount)
     {
         DataCenter.Save().achIapCrystals += amount;
+        Save.RequestWrite();
     }
 
     private static int GetTeamLevel()
@@ -284,5 +287,6 @@ public static class AchievementTracker
     public static void MarkClaimed(string questId)
     {
         DataCenter.Save().achClaimed.Add(questId);
+        Save.RequestWrite();
     }
 }

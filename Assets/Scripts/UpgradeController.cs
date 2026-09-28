@@ -169,6 +169,7 @@ public static class UpgradeController
 			equip.canUpgrade = true;
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -202,6 +203,7 @@ public static class UpgradeController
 			}
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 				
 			return 0;
 		}
@@ -262,6 +264,7 @@ public static class UpgradeController
 			}
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -304,6 +307,7 @@ public static class UpgradeController
 			hero.weaponMaxLevel += 4;
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 
 			return 0;
 		}
@@ -335,6 +339,7 @@ public static class UpgradeController
 			}
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 				
 			return 0;
 		}
@@ -381,6 +386,7 @@ public static class UpgradeController
 			hero.skillMaxLevel += 4;
 
 			HeroListController.Refresh();
+			Save.RequestWrite();
 
 			return 0;
 		}

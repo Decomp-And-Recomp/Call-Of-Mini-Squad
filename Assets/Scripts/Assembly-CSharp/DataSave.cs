@@ -231,6 +231,7 @@ public class DataSave
 		set
 		{
 			m_money = value;
+			Save.MarkDirty();
 		}
 	}
 
@@ -243,6 +244,7 @@ public class DataSave
 		set
 		{
 			m_crystal = value;
+			Save.MarkDirty();
 		}
 	}
 
