@@ -82,6 +82,7 @@ public class TAudioManager : MonoBehaviour
 				return;
 			}
 			m_isMusicOn = value;
+			RemoveDestroyedSources();
 			if (m_isMusicOn)
 			{
 				foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
@@ -121,6 +122,7 @@ public class TAudioManager : MonoBehaviour
 				return;
 			}
 			m_isSoundOn = value;
+			RemoveDestroyedSources();
 			if (m_isSoundOn)
 			{
 				foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
@@ -156,6 +158,7 @@ public class TAudioManager : MonoBehaviour
 		set
 		{
 			m_musicVolume = Mathf.Clamp01(value);
+			RemoveDestroyedSources();
 			foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
 			{
 				AudioInfo value2 = playAudio.Value;
@@ -177,6 +180,7 @@ public class TAudioManager : MonoBehaviour
 		set
 		{
 			m_soundVolume = Mathf.Clamp01(value);
+			RemoveDestroyedSources();
 			foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
 			{
 				AudioInfo value2 = playAudio.Value;
@@ -226,8 +230,32 @@ public class TAudioManager : MonoBehaviour
 		s_instance = null;
 	}
 
+	private void RemoveDestroyedSources()
+	{
+		List<AudioSource> destroyed = null;
+		foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
+		{
+			if (playAudio.Key == null)
+			{
+				if (destroyed == null)
+				{
+					destroyed = new List<AudioSource>();
+				}
+				destroyed.Add(playAudio.Key);
+			}
+		}
+		if (destroyed != null)
+		{
+			foreach (AudioSource item in destroyed)
+			{
+				m_playAudios.Remove(item);
+			}
+		}
+	}
+
 	private void Update()
 	{
+		RemoveDestroyedSources();
 		m_talkPlaying = false;
 		List<AudioSource> list = new List<AudioSource>();
 		foreach (KeyValuePair<AudioSource, AudioInfo> playAudio in m_playAudios)
@@ -464,7 +492,10 @@ public class TAudioManager : MonoBehaviour
 		}
 		foreach (AudioInfo item in list)
 		{
-			item.audioEvt.Stop();
+			if ((bool)item.audioEvt)
+			{
+				item.audioEvt.Stop();
+			}
 		}
 		m_playAudios.Clear();
 	}
