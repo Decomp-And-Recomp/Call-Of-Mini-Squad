@@ -174,14 +174,16 @@ public class UtilUIBaseConfirmBattleInfo : MonoBehaviour
 		{
 			if (i < teamPlayerIcons.Count)
 			{
-				if (teamPlayerIcons[i] != null)
+				teamPlayerGO[i].SetActive(true);
+				GameObject icon = teamPlayerGO[i].transform.Find("Icon").gameObject;
+				if (!string.IsNullOrEmpty(teamPlayerIcons[i]))
 				{
-					teamPlayerGO[i].SetActive(true);
-					teamPlayerGO[i].transform.Find("Icon").GetComponent<UISprite>().spriteName = teamPlayerIcons[i];
+					icon.SetActive(true);
+					icon.GetComponent<UISprite>().spriteName = teamPlayerIcons[i];
 				}
 				else
 				{
-					teamPlayerGO[i].SetActive(false);
+					icon.SetActive(false);
 				}
 			}
 			else
