@@ -20,7 +20,7 @@ AnimationClip:
       - time: 0
         value: {x: 0.09, y: 0.1, z: 0.1}
         inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: -0.02000001, y: -0.019999996, z: -0.019999996}
+        outSlope: {x: -0.02, y: -0.02, z: -0.02}
         tangentMode: 1
       - time: 0.5
         value: {x: 0.08, y: 0.09, z: 0.09}
@@ -29,7 +29,7 @@ AnimationClip:
         tangentMode: 1
       - time: 1
         value: {x: 0.09, y: 0.1, z: 0.1}
-        inSlope: {x: 0.02000001, y: 0.019999996, z: 0.019999996}
+        inSlope: {x: 0.02, y: 0.02, z: 0.02}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
       m_PreInfinity: 2

@@ -20,16 +20,16 @@ AnimationClip:
       - time: 0
         value: {x: 1.678, y: 1.678, z: 1.678}
         inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0.27543056, y: 0.27543056, z: 0.27543056}
+        outSlope: {x: 0.2754, y: 0.2754, z: 0.2754}
         tangentMode: 1
       - time: 1
-        value: {x: 1.9534305, y: 1.9534305, z: 1.9534305}
+        value: {x: 1.9534, y: 1.9534, z: 1.9534}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
       - time: 2
         value: {x: 1.678, y: 1.678, z: 1.678}
-        inSlope: {x: -0.27543056, y: -0.27543056, z: -0.27543056}
+        inSlope: {x: -0.2754, y: -0.2754, z: -0.2754}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
       m_PreInfinity: 2

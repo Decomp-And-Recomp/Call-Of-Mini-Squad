@@ -17,17 +17,17 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: {x: 0, y: 0, z: -1.823149}
+        value: {x: 0, y: 0, z: -1.8231}
         inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: -1.3029925E-06, z: 10.930286}
+        outSlope: {x: 0, y: 0, z: 10.9303}
         tangentMode: 1
       - time: 0.16666667
-        value: {x: 0, y: -2.1716542E-07, z: -0.0014345759}
+        value: {x: 0, y: 0, z: -0.0014}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
       - time: 0.5
-        value: {x: 0, y: -2.1716576E-07, z: -0.0014321919}
+        value: {x: 0, y: 0, z: -0.0014}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 1
