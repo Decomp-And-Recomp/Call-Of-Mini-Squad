@@ -1902,10 +1902,15 @@ namespace CoMDS2
 				int num7 = targetList.Length;
 				if (num7 == 0)
 				{
-					for (int j = 0; j <= m_iValue; j++)
+					for (int j = 0; j < m_gameObjects.Length; j++)
 					{
-						m_gameObjects[m_iValue].SetActive(false);
+						if (m_gameObjects[j].activeSelf)
+						{
+							m_gameObjects[j].SetActive(false);
+						}
 					}
+					m_iValue = 0;
+					m_iValueMax = 0;
 					break;
 				}
 				if (num7 > m_gameObjects.Length)
