@@ -184,10 +184,7 @@ public class MinimapNGUI : MonoBehaviour
 
 	private void Update()
 	{
-		if (m_allysObj == null)
-		{
-			m_allysObj = GameBattle.m_instance.GetTeammateList();
-		}
+		m_allysObj = GameBattle.m_instance.GetTeammateList();
 		float num = 0f;
 		float num2 = 0f;
 		float num3 = 0f;
@@ -201,7 +198,7 @@ public class MinimapNGUI : MonoBehaviour
 		for (int i = 0; i < m_allysObj.Length; i++)
 		{
 			Player player2 = m_allysObj[i] as Player;
-			if (!player2.CurrentController)
+			if (player2 != null && !player2.CurrentController)
 			{
 				if (num5 < m_allyMarksTex.Length)
 				{
@@ -214,10 +211,13 @@ public class MinimapNGUI : MonoBehaviour
 					m_allyMarksTex[num5].transform.localPosition = new Vector3(m_viewSize.x + num - m_sceneSize.x - num3 * 0.5f, m_viewSize.y + (num2 - m_sceneSize.y) - num4 * 0.5f);
 					num5++;
 				}
-				else
-				{
-					m_allyMarksTex[i].gameObject.SetActive(false);
-				}
+			}
+		}
+		for (int j = num5; j < m_allyMarksTex.Length; j++)
+		{
+			if (m_allyMarksTex[j].gameObject.activeSelf)
+			{
+				m_allyMarksTex[j].gameObject.SetActive(false);
 			}
 		}
 	}
