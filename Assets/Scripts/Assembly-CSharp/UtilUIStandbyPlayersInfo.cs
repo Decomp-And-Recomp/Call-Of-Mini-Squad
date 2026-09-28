@@ -178,11 +178,22 @@ public class UtilUIStandbyPlayersInfo : MonoBehaviour
 		}
 		nowSelectStoreItemIndex = index;
 		needSelectStoreItemIndex = index;
+		if (dictPlayersInfo[nowSelectStoreItemIndex].data.MODELGO == null)
+		{
+			CreatePlayersModel(nowSelectStoreItemIndex, nowSelectStoreItemIndex);
+		}
 		GameObject mODELGO2 = dictPlayersInfo[nowSelectStoreItemIndex].data.MODELGO;
+		if (mODELGO2 == null)
+		{
+			return;
+		}
 		SetPlayerModelHaloEffectVisable(true, mODELGO2, selectPlayerEffectPrefab);
 		SetPlayerModelOutLineEffectVisable(true, mODELGO2);
 		AudioTalkManager componentInChildren = mODELGO2.GetComponentInChildren<AudioTalkManager>();
-		componentInChildren.PlaySelect();
+		if (componentInChildren != null)
+		{
+			componentInChildren.PlaySelect();
+		}
 		UITeamModelAnimationManager componentInChildren2 = mODELGO2.GetComponentInChildren<UITeamModelAnimationManager>();
 		if (componentInChildren2 != null)
 		{
