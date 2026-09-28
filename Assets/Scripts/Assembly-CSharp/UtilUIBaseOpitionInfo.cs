@@ -31,30 +31,30 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 		m_gameObjectsMusic[0] = m_musicBtnGO.transform.Find("cusor").gameObject;
 		if (DataCenter.Save().PlayMusic)
 		{
-			m_labelTextMusic.text = "OFF";
-			m_labelTextMusic.transform.localPosition = new Vector3(17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
-			m_gameObjectsMusic[0].transform.localPosition = new Vector3(-17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
-		}
-		else
-		{
 			m_labelTextMusic.text = "ON";
 			m_labelTextMusic.transform.localPosition = new Vector3(-17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
 			m_gameObjectsMusic[0].transform.localPosition = new Vector3(17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
+		}
+		else
+		{
+			m_labelTextMusic.text = "OFF";
+			m_labelTextMusic.transform.localPosition = new Vector3(17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
+			m_gameObjectsMusic[0].transform.localPosition = new Vector3(-17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
 		}
 		m_labelTextSound = m_soundBtnGO.transform.Find("Label").gameObject.GetComponent<UILabel>();
 		m_gameObjectsSound = new GameObject[1];
 		m_gameObjectsSound[0] = m_soundBtnGO.transform.Find("cusor").gameObject;
 		if (DataCenter.Save().PlaySound)
 		{
-			m_labelTextSound.text = "OFF";
-			m_labelTextSound.transform.localPosition = new Vector3(17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
-			m_gameObjectsSound[0].transform.localPosition = new Vector3(-17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
-		}
-		else
-		{
 			m_labelTextSound.text = "ON";
 			m_labelTextSound.transform.localPosition = new Vector3(-17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
 			m_gameObjectsSound[0].transform.localPosition = new Vector3(17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
+		}
+		else
+		{
+			m_labelTextSound.text = "OFF";
+			m_labelTextSound.transform.localPosition = new Vector3(17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
+			m_gameObjectsSound[0].transform.localPosition = new Vector3(-17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
 		}
 	}
 
@@ -134,27 +134,27 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 		{
 			if (DataCenter.Save().PlayMusic)
 			{
-				if (m_gameObjectsMusic[0].transform.localPosition.x > -17f)
+				if (m_gameObjectsMusic[0].transform.localPosition.x < 17f)
 				{
 					float num = 5f;
-					m_gameObjectsMusic[0].transform.localPosition = new Vector3(m_gameObjectsMusic[0].transform.localPosition.x - num, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
-					if (m_gameObjectsMusic[0].transform.localPosition.x <= -17f)
+					m_gameObjectsMusic[0].transform.localPosition = new Vector3(m_gameObjectsMusic[0].transform.localPosition.x + num, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
+					if (m_gameObjectsMusic[0].transform.localPosition.x >= 17f)
 					{
-						m_gameObjectsMusic[0].transform.localPosition = new Vector3(-17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
-						m_labelTextMusic.text = "OFF";
-						m_labelTextMusic.transform.localPosition = new Vector3(17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
+						m_gameObjectsMusic[0].transform.localPosition = new Vector3(17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
+						m_labelTextMusic.text = "ON";
+						m_labelTextMusic.transform.localPosition = new Vector3(-17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
 					}
 				}
 			}
-			else if (m_gameObjectsMusic[0].transform.localPosition.x < 17f)
+			else if (m_gameObjectsMusic[0].transform.localPosition.x > -17f)
 			{
 				float num2 = 5f;
-				m_gameObjectsMusic[0].transform.localPosition = new Vector3(m_gameObjectsMusic[0].transform.localPosition.x + num2, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
-				if (m_gameObjectsMusic[0].transform.localPosition.x >= 17f)
+				m_gameObjectsMusic[0].transform.localPosition = new Vector3(m_gameObjectsMusic[0].transform.localPosition.x - num2, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
+				if (m_gameObjectsMusic[0].transform.localPosition.x <= -17f)
 				{
-					m_gameObjectsMusic[0].transform.localPosition = new Vector3(17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
-					m_labelTextMusic.text = "ON";
-					m_labelTextMusic.transform.localPosition = new Vector3(-17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
+					m_gameObjectsMusic[0].transform.localPosition = new Vector3(-17f, m_gameObjectsMusic[0].transform.localPosition.y, m_gameObjectsMusic[0].transform.localPosition.z);
+					m_labelTextMusic.text = "OFF";
+					m_labelTextMusic.transform.localPosition = new Vector3(17f, m_labelTextMusic.transform.localPosition.y, m_labelTextMusic.transform.localPosition.z);
 				}
 			}
 		}
@@ -164,27 +164,27 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 		}
 		if (DataCenter.Save().PlaySound)
 		{
-			if (m_gameObjectsSound[0].transform.localPosition.x > -17f)
+			if (m_gameObjectsSound[0].transform.localPosition.x < 17f)
 			{
 				float num3 = 5f;
-				m_gameObjectsSound[0].transform.localPosition = new Vector3(m_gameObjectsSound[0].transform.localPosition.x - num3, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
-				if (m_gameObjectsSound[0].transform.localPosition.x <= -17f)
+				m_gameObjectsSound[0].transform.localPosition = new Vector3(m_gameObjectsSound[0].transform.localPosition.x + num3, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
+				if (m_gameObjectsSound[0].transform.localPosition.x >= 17f)
 				{
-					m_gameObjectsSound[0].transform.localPosition = new Vector3(-17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
-					m_labelTextSound.text = "OFF";
-					m_labelTextSound.transform.localPosition = new Vector3(17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
+					m_gameObjectsSound[0].transform.localPosition = new Vector3(17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
+					m_labelTextSound.text = "ON";
+					m_labelTextSound.transform.localPosition = new Vector3(-17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
 				}
 			}
 		}
-		else if (m_gameObjectsSound[0].transform.localPosition.x < 17f)
+		else if (m_gameObjectsSound[0].transform.localPosition.x > -17f)
 		{
 			float num4 = 5f;
-			m_gameObjectsSound[0].transform.localPosition = new Vector3(m_gameObjectsSound[0].transform.localPosition.x + num4, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
-			if (m_gameObjectsSound[0].transform.localPosition.x >= 17f)
+			m_gameObjectsSound[0].transform.localPosition = new Vector3(m_gameObjectsSound[0].transform.localPosition.x - num4, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
+			if (m_gameObjectsSound[0].transform.localPosition.x <= -17f)
 			{
-				m_gameObjectsSound[0].transform.localPosition = new Vector3(17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
-				m_labelTextSound.text = "ON";
-				m_labelTextSound.transform.localPosition = new Vector3(-17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
+				m_gameObjectsSound[0].transform.localPosition = new Vector3(-17f, m_gameObjectsSound[0].transform.localPosition.y, m_gameObjectsSound[0].transform.localPosition.z);
+				m_labelTextSound.text = "OFF";
+				m_labelTextSound.transform.localPosition = new Vector3(17f, m_labelTextSound.transform.localPosition.y, m_labelTextSound.transform.localPosition.z);
 			}
 		}
 	}

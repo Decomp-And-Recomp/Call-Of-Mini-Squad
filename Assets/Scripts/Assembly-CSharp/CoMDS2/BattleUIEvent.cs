@@ -712,15 +712,15 @@ namespace CoMDS2
 				m_gameObjects[0] = base.transform.Find("cusor").gameObject;
 				if (DataCenter.Save().PlayMusic)
 				{
-					m_labelText.text = "OFF";
-					m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
-					m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-				}
-				else
-				{
 					m_labelText.text = "ON";
 					m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 					m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+				}
+				else
+				{
+					m_labelText.text = "OFF";
+					m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+					m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
 				}
 				break;
 			case UIControlID.Pause_BT_SFX:
@@ -729,15 +729,15 @@ namespace CoMDS2
 				m_gameObjects[0] = base.transform.Find("cusor").gameObject;
 				if (DataCenter.Save().PlaySound)
 				{
-					m_labelText.text = "OFF";
-					m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
-					m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-				}
-				else
-				{
 					m_labelText.text = "ON";
 					m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 					m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+				}
+				else
+				{
+					m_labelText.text = "OFF";
+					m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+					m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
 				}
 				break;
 			case UIControlID.EnemyHpBars:
@@ -855,10 +855,11 @@ namespace CoMDS2
 					{
 						BackgroundMusicManager.Instance().StopBG();
 					}
+					Save.RequestWrite();
 					break;
 				case UIControlID.Pause_BT_SFX:
-					Save.Write();
 					DataCenter.Save().PlaySound = !DataCenter.Save().PlaySound;
+					Save.RequestWrite();
 					break;
 				}
 			}
@@ -1305,54 +1306,54 @@ namespace CoMDS2
 				case UIControlID.Pause_BT_Music:
 					if (DataCenter.Save().PlayMusic)
 					{
-						if (m_gameObjects[0].transform.localPosition.x > -17f)
+						if (m_gameObjects[0].transform.localPosition.x < 17f)
 						{
 							float num5 = 5f;
-							m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x - num5, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-							if (m_gameObjects[0].transform.localPosition.x <= -17f)
+							m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x + num5, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+							if (m_gameObjects[0].transform.localPosition.x >= 17f)
 							{
-								m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-								m_labelText.text = "OFF";
-								m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+								m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+								m_labelText.text = "ON";
+								m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 							}
 						}
 					}
-					else if (m_gameObjects[0].transform.localPosition.x < 17f)
+					else if (m_gameObjects[0].transform.localPosition.x > -17f)
 					{
 						float num6 = 5f;
-						m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x + num6, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-						if (m_gameObjects[0].transform.localPosition.x >= 17f)
+						m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x - num6, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+						if (m_gameObjects[0].transform.localPosition.x <= -17f)
 						{
-							m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-							m_labelText.text = "ON";
-							m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+							m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+							m_labelText.text = "OFF";
+							m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 						}
 					}
 					break;
 				case UIControlID.Pause_BT_SFX:
 					if (DataCenter.Save().PlaySound)
 					{
-						if (m_gameObjects[0].transform.localPosition.x > -17f)
+						if (m_gameObjects[0].transform.localPosition.x < 17f)
 						{
 							float num3 = 5f;
-							m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x - num3, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-							if (m_gameObjects[0].transform.localPosition.x <= -17f)
+							m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x + num3, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+							if (m_gameObjects[0].transform.localPosition.x >= 17f)
 							{
-								m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-								m_labelText.text = "OFF";
-								m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+								m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+								m_labelText.text = "ON";
+								m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 							}
 						}
 					}
-					else if (m_gameObjects[0].transform.localPosition.x < 17f)
+					else if (m_gameObjects[0].transform.localPosition.x > -17f)
 					{
 						float num4 = 5f;
-						m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x + num4, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-						if (m_gameObjects[0].transform.localPosition.x >= 17f)
+						m_gameObjects[0].transform.localPosition = new Vector3(m_gameObjects[0].transform.localPosition.x - num4, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+						if (m_gameObjects[0].transform.localPosition.x <= -17f)
 						{
-							m_gameObjects[0].transform.localPosition = new Vector3(17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
-							m_labelText.text = "ON";
-							m_labelText.transform.localPosition = new Vector3(-17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
+							m_gameObjects[0].transform.localPosition = new Vector3(-17f, m_gameObjects[0].transform.localPosition.y, m_gameObjects[0].transform.localPosition.z);
+							m_labelText.text = "OFF";
+							m_labelText.transform.localPosition = new Vector3(17f, m_labelText.transform.localPosition.y, m_labelText.transform.localPosition.z);
 						}
 					}
 					break;

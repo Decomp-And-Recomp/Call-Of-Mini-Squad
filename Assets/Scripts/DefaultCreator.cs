@@ -40,7 +40,9 @@ namespace Zweronz.SavingSystem
 					worldNodes = DefaultCreator.Create<WorldNodeDefaultCreator>().gameProgressData,
 					achievements = DefaultCreator.Create<AchievementDefaultCreator>().achievements,
 					battleTutorialFinished = false,
-					bNewUser = true
+					bNewUser = true,
+					playMusic = true,
+					playSound = true
 				}
 			};
 		}
