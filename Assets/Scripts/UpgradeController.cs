@@ -86,6 +86,15 @@ public static class UpgradeController
 
 		foreach (PlayerData hero in DataCenter.Save().GetHeroList())
 		{
+			if (hero.weaponLevel < 21)
+			{
+				int costIndex = hero.weaponLevel + (hero.weaponStar - 1);
+				if (costIndex >= 0 && costIndex < UpgradeCalcTest.upgrades.Count)
+				{
+					hero.upgradeData.weaponUpgradeCost = UpgradeCalcTest.upgrades[costIndex][0];
+				}
+			}
+
 			if (hero.weaponLevel == 21)
 			{
 				hero.upgradeData.weaponCanUpgrade = false;
@@ -116,6 +125,15 @@ public static class UpgradeController
 
 		foreach (PlayerData hero in DataCenter.Save().GetHeroList())
 		{
+			if (hero.skillLevel < 21)
+			{
+				int costIndex = hero.skillLevel + (hero.skillStar - 1);
+				if (costIndex >= 0 && costIndex < UpgradeCalcTest.upgrades.Count)
+				{
+					hero.upgradeData.skillUpgradeCost = UpgradeCalcTest.upgrades[costIndex][1];
+				}
+			}
+
 			if (hero.skillLevel == 21)
 			{
 				hero.upgradeData.skillCanUpgrade = false;

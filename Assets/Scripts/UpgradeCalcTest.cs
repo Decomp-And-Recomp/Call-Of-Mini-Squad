@@ -15,6 +15,11 @@ public class UpgradeCalcTest : MonoBehaviour
 	public static void Init()
 	{
 		upgrades = new List<int[]>();
+		currentWeaponAdd = 0;
+		currentSkillAdd = 0;
+		currentCombatAdd = 0;
+		currentWeaponIncrease = WeaponIncrease;
+		currentSkillIncrease = SkillIncrease;
 
 		for (int i = 0; i < 30; i++)
 		{
