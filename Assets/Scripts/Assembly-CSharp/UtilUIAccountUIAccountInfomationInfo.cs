@@ -30,7 +30,7 @@ public class UtilUIAccountUIAccountInfomationInfo : MonoBehaviour
 	public void OnLoginBtnClickedEvent()
 	{
 		UtilUIAccountManager.mInstance.HideScene(UtilUIAccountManager.UIScene.E_ACCOUNT);
-		DataCenter.State().ResetData(true);
-		Application.LoadLevel("UICheckUpdate");
+		//DataCenter.State().ResetData(true);
+		//Application.LoadLevel("UICheckUpdate");
 	}
 }

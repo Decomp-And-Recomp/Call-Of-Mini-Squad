@@ -22,8 +22,8 @@ public class UtilUIAccountUILogoutInfo : MonoBehaviour
 
 	public void OnLogoutBtnClickedEvent()
 	{
-		DataCenter.State().ResetData(true);
-		Application.LoadLevel("UICheckUpdate");
+		//DataCenter.State().ResetData(true);
+		//Application.LoadLevel("UICheckUpdate");
 		UtilUIAccountManager.mInstance.HideScene(UtilUIAccountManager.UIScene.E_LOGOUT);
 	}
 }

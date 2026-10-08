@@ -26,6 +26,7 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 	public void Init()
 	{
 		SetVisable(true);
+		HideAccountButton();
 		m_labelTextMusic = m_musicBtnGO.transform.Find("Label").gameObject.GetComponent<UILabel>();
 		m_gameObjectsMusic = new GameObject[1];
 		m_gameObjectsMusic[0] = m_musicBtnGO.transform.Find("cusor").gameObject;
@@ -107,19 +108,30 @@ public class UtilUIBaseOpitionInfo : MonoBehaviour
 		Save.Write();
 	}
 
+	private void HideAccountButton()
+	{
+		foreach (UIButtonMessage message in m_go.GetComponentsInChildren<UIButtonMessage>(true))
+		{
+			if (message.functionName == "HandelAccountBtnEvent")
+			{
+				message.gameObject.SetActive(false);
+			}
+		}
+	}
+
 	public void HandelAccountBtnEvent()
 	{
-		UIConstant.bNeedLoseConnect = true;
-		if ((UtilUIAccountManager.mInstance.accountData.email != string.Empty && UtilUIAccountManager.mInstance.accountData.password != string.Empty) ? true : false)
-		{
-			UtilUIAccountManager.mInstance.HideAll();
-			UtilUIAccountManager.mInstance.ShowScene(UtilUIAccountManager.UIScene.E_LOGOUT);
-		}
-		else
-		{
-			UtilUIAccountManager.mInstance.HideAll();
-			UtilUIAccountManager.mInstance.ShowScene(UtilUIAccountManager.UIScene.E_ACCOUNT);
-		}
+		//UIConstant.bNeedLoseConnect = true;
+		//if ((UtilUIAccountManager.mInstance.accountData.email != string.Empty && UtilUIAccountManager.mInstance.accountData.password != string.Empty) ? true : false)
+		//{
+		//	UtilUIAccountManager.mInstance.HideAll();
+		//	UtilUIAccountManager.mInstance.ShowScene(UtilUIAccountManager.UIScene.E_LOGOUT);
+		//}
+		//else
+		//{
+		//	UtilUIAccountManager.mInstance.HideAll();
+		//	UtilUIAccountManager.mInstance.ShowScene(UtilUIAccountManager.UIScene.E_ACCOUNT);
+		//}
 	}
 
 	public void HandleAnimationBtnEvent()
