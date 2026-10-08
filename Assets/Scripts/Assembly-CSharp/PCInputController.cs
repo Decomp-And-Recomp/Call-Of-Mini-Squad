@@ -266,6 +266,11 @@ public class PCInputController : MonoBehaviour
 		{
 			return;
 		}
+		GameBattle.State gameState = GameBattle.m_instance.GameState;
+		if (gameState == GameBattle.State.DialogStart || gameState == GameBattle.State.DialogEnd)
+		{
+			return;
+		}
 		Player player = GameBattle.m_instance.GetPlayer();
 		if (player == null)
 		{

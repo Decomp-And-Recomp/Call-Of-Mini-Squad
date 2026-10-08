@@ -500,6 +500,7 @@ public class GameBattle : MonoBehaviour
 			case State.DialogStart:
 			case State.DialogEnd:
 			{
+				StopPlayerMovementForDialog();
 				if (m_UIGamePanel != null)
 				{
 					m_UIGamePanel.SetActive(false);
@@ -513,6 +514,32 @@ public class GameBattle : MonoBehaviour
 			}
 			case State.Retreat:
 				break;
+			}
+		}
+	}
+
+	private static readonly HashSet<string> s_dialogStopStates = new HashSet<string> { "Move", "MoveShoot", "LowerMove", "AllyFollow", "FindSeat" };
+
+	private void StopPlayerMovementForDialog()
+	{
+		DS2ActiveObject[] players = GetTeammateList(DS2ActiveObject.Clique.Player);
+		if (players == null)
+		{
+			return;
+		}
+		foreach (DS2ActiveObject obj in players)
+		{
+			Player player = obj as Player;
+			if (player == null || !player.Alive())
+			{
+				continue;
+			}
+			player.SetMove(false, player.FaceDirection);
+			AIState current = player.GetCurrentAIState();
+			AIState idle = player.GetAIState("Idle");
+			if (current != null && idle != null && s_dialogStopStates.Contains(current.name))
+			{
+				player.SwitchFSM(idle);
 			}
 		}
 	}
