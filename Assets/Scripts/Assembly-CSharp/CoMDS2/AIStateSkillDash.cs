@@ -106,6 +106,20 @@ namespace CoMDS2
 			}
 			m_character.SetAttackCollider(false, AttackCollider.AttackColliderType.Dash);
 			m_character.SetGodTime(0f);
+			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER || m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY)
+			{
+				Player player = (Player)m_character;
+				if (player.CurrentController)
+				{
+					player.m_objAutoShootAreaTarget = null;
+					player.m_bPlayerLockAttackDirection = false;
+					if (player.m_fire)
+					{
+						player.SetFire(false, player.m_fireDirection);
+					}
+					player.FaceToMoveDirection = true;
+				}
+			}
 		}
 
 		protected override void OnUpdate(float deltaTime)
