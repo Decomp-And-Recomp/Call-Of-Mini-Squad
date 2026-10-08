@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Upgrade price tables. Prices are generated from these formula values when the game starts. -->
+<Upgrades>
+    <!-- Weapon and skill level-ups (one table row per level, looked up by level + star - 1). Row 0 = *Starting. Each next row n adds increase * n, and the increase itself grows by *IncreaseGrowth every row. combat*: weapon combat rating per row (grows by combatIncrease * n). -->
+    <WeaponSkill rows="30" weaponStarting="1000" weaponIncrease="50" weaponIncreaseGrowth="20" skillStarting="300" skillIncrease="10" skillIncreaseGrowth="10" combatStarting="200" combatIncrease="70" />
+
+    <!-- Weapon/skill breakthroughs, by the star being broken out of. crystal: crystal cost. teamLevel: team level required. The money part of a breakthrough uses the level-up table price. Stars not listed use star 1's values. -->
+    <Breakthroughs>
+        <Breakthrough star="1" crystal="10" teamLevel="10" />
+        <Breakthrough star="2" crystal="20" teamLevel="15" />
+        <Breakthrough star="3" crystal="30" teamLevel="20" />
+        <Breakthrough star="4" crystal="40" teamLevel="25" />
+    </Breakthroughs>
+
+    <!-- Helmet / armor / ornament prices. Starting: first price. Increase: how fast prices climb. Combat: starting combat rating (climbs at a quarter of Increase). -->
+    <Equipment helmetStarting="300" helmetIncrease="15" helmetCombat="60" armorStarting="500" armorIncrease="25" armorCombat="100" ornamentStarting="200" ornamentIncrease="10" ornamentCombat="40">
+        <!-- Per equipment slot (0-10, same for all three types). teamLevel: team level that makes it buyable. crystal: extra crystal cost to unlock, on top of the money price. -->
+        <Slot index="0" teamLevel="0" crystal="0" />
+        <Slot index="1" teamLevel="8" crystal="0" />
+        <Slot index="2" teamLevel="8" crystal="0" />
+        <Slot index="3" teamLevel="16" crystal="10" />
+        <Slot index="4" teamLevel="16" crystal="10" />
+        <Slot index="5" teamLevel="16" crystal="10" />
+        <Slot index="6" teamLevel="16" crystal="10" />
+        <Slot index="7" teamLevel="24" crystal="20" />
+        <Slot index="8" teamLevel="24" crystal="20" />
+        <Slot index="9" teamLevel="24" crystal="20" />
+        <Slot index="10" teamLevel="24" crystal="20" />
+    </Equipment>
+</Upgrades>

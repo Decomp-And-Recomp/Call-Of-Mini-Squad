@@ -6,26 +6,31 @@ public static class ExperienceCalcTest
 {
 	public static int[] levelTest;
 
-	public static int XPStarting = 510, XPStartIncreasing = 240, XPIncrease = 240, XPIncreaseIncrease = 30;
-
-	private static int currentXPAdd;
+	public static int XPStarting
+	{
+		get { EconomyConfig.EnsureLoaded(); return EconomyConfig.TeamXPStarting; }
+	}
 
 	public static void Init()
 	{
-		levelTest = new int[100];
+		EconomyConfig.EnsureLoaded();
+		int rows = Mathf.Max(EconomyConfig.TeamXPRows, EconomyConfig.TeamMaxLevel + 1);
+		int xpIncrease = EconomyConfig.TeamXPIncrease;
+		int currentXPAdd = 0;
+		levelTest = new int[rows];
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < rows; i++)
 		{
 			if (i == 0)
 			{
-				levelTest[i] = XPStarting;
+				levelTest[i] = EconomyConfig.TeamXPStarting;
 				continue;
 			}
 
-			currentXPAdd += XPStartIncreasing + (XPIncrease * (i - 1));
-			XPIncrease += XPIncreaseIncrease;
+			currentXPAdd += EconomyConfig.TeamXPStartIncreasing + (xpIncrease * (i - 1));
+			xpIncrease += EconomyConfig.TeamXPIncreaseGrowth;
 
-			levelTest[i] = XPStarting + currentXPAdd;
+			levelTest[i] = EconomyConfig.TeamXPStarting + currentXPAdd;
 		}
 	}
 }

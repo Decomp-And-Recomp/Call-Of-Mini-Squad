@@ -124,9 +124,21 @@ namespace Zweronz.SavingSystem
 			{
 				if (!existing.Contains(defaultHero.heroIndex))
 				{
+					defaultHero.siteNum = -1;
 					DataCenter.Save().AddHero(defaultHero);
 					added++;
 				}
+			}
+
+			DataCenter.Save().SortHeroes(hero =>
+			{
+				EconomyConfig.HeroUnlock unlock = hero != null ? EconomyConfig.GetHeroUnlock(hero.heroIndex) : null;
+				return unlock != null ? unlock.order : int.MaxValue;
+			});
+
+			if (added > 0)
+			{
+				Debug.Log("Added " + added + " new hero(es) from Heroes.xml to the save.");
 			}
 		}
 	}

@@ -7,12 +7,15 @@ public class EquipUpgradeCalcTest
 {
 	public static List<int[]> helmets, armors, ornaments;
 
-	public const int HelmetStarting = 300, ArmorStarting = 500, OrnamentStarting = 200, HelmetCombat = 60, ArmorCombat = 100, OrnamentCombat = 40, HelmetIncrease = 15, ArmorIncrease = 25, OrnamentIncrease = 10;
-
-	private static int currentHelmetAdd, currentArmorAdd, currentOrnamentAdd, currentHelmetCombatAdd, currentArmorCombatAdd, currentOrnamentCombatAdd, currentHelmetIncrease = HelmetIncrease, currentArmorIncrease = ArmorIncrease, currentOrnamentIncrease = OrnamentIncrease;
-	
 	public static void Init()
 	{
+		EconomyConfig.EnsureLoaded();
+		int HelmetStarting = EconomyConfig.HelmetStarting, ArmorStarting = EconomyConfig.ArmorStarting, OrnamentStarting = EconomyConfig.OrnamentStarting;
+		int HelmetCombat = EconomyConfig.HelmetCombat, ArmorCombat = EconomyConfig.ArmorCombat, OrnamentCombat = EconomyConfig.OrnamentCombat;
+		int HelmetIncrease = EconomyConfig.HelmetIncrease, ArmorIncrease = EconomyConfig.ArmorIncrease, OrnamentIncrease = EconomyConfig.OrnamentIncrease;
+		int currentHelmetAdd = 0, currentArmorAdd = 0, currentOrnamentAdd = 0, currentHelmetCombatAdd = 0, currentArmorCombatAdd = 0, currentOrnamentCombatAdd = 0;
+		int currentHelmetIncrease = HelmetIncrease, currentArmorIncrease = ArmorIncrease, currentOrnamentIncrease = OrnamentIncrease;
+
 		helmets = new List<int[]>();
 		armors = new List<int[]>();
 		ornaments = new List<int[]>();

@@ -6,38 +6,12 @@ public static class UpgradeController
 {
 	private static int GetCrystalBreak(int stars)
 	{
-		switch (stars)
-		{
-			case 2:
-				return 20;
-
-			case 3:
-				return 30;
-
-			case 4:
-				return 40;
-
-			default:
-				return 10;
-		}
+		return EconomyConfig.GetBreakthrough(stars).crystal;
 	}
 
 	private static int GetLevelBreak(int stars)
 	{
-		switch (stars)
-		{
-			case 2:
-				return 15;
-
-			case 3:
-				return 20;
-
-			case 4:
-				return 25;
-
-			default:
-				return 10;
-		}
+		return EconomyConfig.GetBreakthrough(stars).teamLevel;
 	}
 
 	public static bool CanImproveWeapon(PlayerData hero)
@@ -103,10 +77,10 @@ public static class UpgradeController
 			{
 				hero.upgradeData.weaponCanBk = true;
 
-				if (DataCenter.Save().GetTeamData().teamLevel >= GetLevelBreak(hero.weaponLevel))
+				if (DataCenter.Save().GetTeamData().teamLevel >= GetLevelBreak(hero.weaponStar))
 				{
 					hero.upgradeData.weaponBreakCostMoney = UpgradeCalcTest.upgrades[hero.weaponLevel + (hero.weaponStar - 1)][0];
-					hero.upgradeData.weaponUBreakCostCrystal = GetCrystalBreak(hero.weaponLevel);
+					hero.upgradeData.weaponUBreakCostCrystal = GetCrystalBreak(hero.weaponStar);
 				}
 				else
 				{
@@ -142,10 +116,10 @@ public static class UpgradeController
 			{
 				hero.upgradeData.skillCanBk = true;
 
-				if (DataCenter.Save().GetTeamData().teamLevel >= GetLevelBreak(hero.skillLevel))
+				if (DataCenter.Save().GetTeamData().teamLevel >= GetLevelBreak(hero.skillStar))
 				{
 					hero.upgradeData.skillBreakCostMoney = UpgradeCalcTest.upgrades[hero.skillLevel + (hero.skillStar - 1)][1];
-					hero.upgradeData.skillBreakCostCrystal = GetCrystalBreak(hero.skillLevel);
+					hero.upgradeData.skillBreakCostCrystal = GetCrystalBreak(hero.skillStar);
 				}
 				else
 				{

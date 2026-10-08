@@ -4,27 +4,28 @@ using UnityEngine;
 
 public static class LevelCalcTest
 {
-	private const int CoinsStarting = 1500, XPStarting = 510, CoinsStartIncreasing = 10, XPStartIncreasing = 280, CoinsIncrease = 5, XPIncrease = 20, CombatStarting = 350, CombatStartIncreasing = 40, CombatIncrease = 20;
-
-	private static int currentCoinAdd, currentXPAdd, currentCombatAdd;
 
 	public static List<int[]> LevelRewards = new List<int[]>();
 
 	public static void Init()
 	{
-		for (int i = 0; i < 150; i++)
+		EconomyConfig.EnsureLoaded();
+		LevelRewards.Clear();
+		int currentCoinAdd = 0, currentXPAdd = 0, currentCombatAdd = 0;
+
+		for (int i = 0; i < EconomyConfig.StageRewardRows; i++)
 		{
 			if (i == 0)
 			{
-				LevelRewards.Add(new int[3] { CoinsStarting, XPStarting, CombatStarting } );
+				LevelRewards.Add(new int[3] { EconomyConfig.CoinsStarting, EconomyConfig.StageXPStarting, EconomyConfig.StageCombatStarting } );
 				continue;
 			}
 
-			currentCoinAdd += CoinsStartIncreasing + (CoinsIncrease * (i - 1));
-			currentXPAdd += XPStartIncreasing + (XPIncrease * (i - 1));
-			currentCombatAdd += CombatStartIncreasing + (CombatIncrease * (i - 1));
+			currentCoinAdd += EconomyConfig.CoinsStartIncreasing + (EconomyConfig.CoinsIncrease * (i - 1));
+			currentXPAdd += EconomyConfig.StageXPStartIncreasing + (EconomyConfig.StageXPIncrease * (i - 1));
+			currentCombatAdd += EconomyConfig.StageCombatStartIncreasing + (EconomyConfig.StageCombatIncrease * (i - 1));
 
-			LevelRewards.Add(new int[3] { CoinsStarting + currentCoinAdd,  XPStarting + currentXPAdd, CombatStarting + currentCombatAdd } );
+			LevelRewards.Add(new int[3] { EconomyConfig.CoinsStarting + currentCoinAdd, EconomyConfig.StageXPStarting + currentXPAdd, EconomyConfig.StageCombatStarting + currentCombatAdd } );
 		}
 	}
 }

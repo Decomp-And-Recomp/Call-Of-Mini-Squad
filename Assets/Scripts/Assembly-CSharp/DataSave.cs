@@ -442,6 +442,13 @@ public class DataSave
 		m_heroes.Add(data);
 	}
 
+	public void SortHeroes(System.Func<PlayerData, int> orderKey)
+	{
+		List<PlayerData> sorted = new List<PlayerData>(System.Linq.Enumerable.OrderBy(m_heroes, orderKey));
+		m_heroes.Clear();
+		m_heroes.AddRange(sorted);
+	}
+
 	public void RemoveHero(PlayerData data)
 	{
 		m_heroes.Remove(data);

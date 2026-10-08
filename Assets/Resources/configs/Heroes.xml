@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Heroes><!--characterType:角色索引 weaponType:使用武器索引  equipAdditionPercent:装备属性加成修正值 name:名字 profession：职业名称 modelFileName:文件名称-->
+<Heroes><!--Unlock: order=position in the hero list, state=Available/Purchase/Locked, startSite=starting team slot, teamLevel=level that turns Locked into Purchase, costType=Money/Crystal, cost=unlock price.-->
 	<ResurgenceCost>
       <Phase index="0" costCrystal ="0"/>
       <Phase index="1" costCrystal ="30"/>
@@ -9,74 +9,92 @@
 	</ResurgenceCost>
   <Hero index = "0" characterType = "0" weaponType = "0" equipAdditionPercent = "0.54" name = "Mike" profession = "Baseman" modelFileName = "Avatar_Mike_L" iconFileName = "Mike">
     <Property hp = "810" moveSpeed = "5.7" hitRate = "90" proCritical = "20" critDamage = "1.5" dodge = "0" />
+    <Unlock order="0" state="Available" startSite="0" />
     <Description content = "The best fourth hitter in the Major league, he can even use the Remington Pipe to hit a home run." />
   </Hero>
   <Hero index="1" characterType="1" weaponType="1" equipAdditionPercent="0.61" name="Chris" profession="S.W.A.T" modelFileName="Chris" iconFileName="Chris" >
     <Property hp="918" moveSpeed="5.2" hitRate="85" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="1" state="Available" startSite="1" />
     <Description content = "The elite member of the SWAT and has a powerful body, sweeping away all the barriers in front of him and continues to investigate the source of the biohazard." />
   </Hero>
   <Hero index="2" characterType="2" weaponType="2" equipAdditionPercent="0.61" name="Lili" profession="Nurse" modelFileName="New-Lili" iconFileName="Lili" >
     <Property hp="916" moveSpeed="5.4" hitRate="90" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="9" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "An intern nurse just graduated from the school tenderly takes care of each survivors and is an indispensable lifeline in the team." />
   </Hero>
   <Hero index="3" characterType="3" weaponType="3" equipAdditionPercent="0.58" name="Vasily" profession="Special Troop" modelFileName="Vasily" iconFileName="Vasily" >
     <Property hp="864" moveSpeed="5" hitRate="85" proCritical="10" critDamage="2.25" dodge="0" />
+    <Unlock order="4" state="Locked" teamLevel="30" costType="Money" cost="30000" />
     <Description content = "A ruthless sniper, also known as the Death of the battlefield, always carries the deadly automatic firepower." />
   </Hero>
   <Hero index="4" characterType="4" weaponType="4" equipAdditionPercent="0.76" name="Claire" profession="Policewoman" modelFileName="Claire" iconFileName="Claire" >
     <Property hp="1146" moveSpeed="5" hitRate="65" proCritical="15" critDamage="2" dodge="5"  />
+    <Unlock order="15" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "A sexy policewoman likes the splendid fireworks. Firing all bullet could give her the most pleasure." />
   </Hero>
   <Hero index="5" characterType="5" weaponType="5" equipAdditionPercent="1.15" name="Fire Dragon" profession="Ninja" modelFileName="Fire_dragon" iconFileName="Fire dragon" >
     <Property hp="1728" moveSpeed="6.2" hitRate="85" proCritical="15" critDamage="1.5" dodge="10" />
+    <Unlock order="16" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "A member of the 'Red', which is a government's secret fight organization, and also a sword master can kill the target silently." />
   </Hero>
   <Hero index="6" characterType="6" weaponType="6" equipAdditionPercent="1.01" name="Zero" profession="Ninja" modelFileName="Zero" iconFileName="Zero" >
     <Property hp="1512" moveSpeed="5.5" hitRate="75" proCritical="15" critDamage="2" dodge="10" />
+    <Unlock order="10" state="Purchase" costType="Crystal" cost="399" />
     <Description content = "He is a ninja from Koga and comes here to find his friend Fire Dragon is also good at powerful and secret Ninpo." />
   </Hero>
   <Hero index="7" characterType="7" weaponType="7" equipAdditionPercent="0.65" name="Arnoud" profession="Marine" modelFileName="Arnoud" iconFileName="Arnoud" >
     <Property hp="972" moveSpeed="5" hitRate="65" proCritical="10" critDamage="2.5" dodge="0" />
+    <Unlock order="3" state="Locked" teamLevel="20" costType="Money" cost="20000" />
     <Description content = "Marine fighter likes to fight against enemies alone and carries various types of heavy weapons and is also known as the God of War in the frontline." />
   </Hero>
   <Hero index="8" characterType="8" weaponType="8" equipAdditionPercent="1.30" name="X-John-X" profession="Super warrior" modelFileName="X-john-X" iconFileName="X-john-X" >
     <Property hp="1944" moveSpeed="5" hitRate="75" proCritical="10" critDamage="2" dodge="0" />
+    <Unlock order="17" state="Purchase" costType="Crystal" cost="449" />
     <Description content = "Super warriors affliated to Space agency's Sagittarius Plan uses laser weapon and also carries the future tech high energy particle gun." />
   </Hero>
   <Hero index="9" characterType="9" weaponType="9" equipAdditionPercent="0.58" name="Clint" profession="Cowboy" modelFileName="New-Clint" iconFileName="Clint" >
     <Property hp="864" moveSpeed="5.5" hitRate="85" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="2" state="Locked" teamLevel="10" costType="Money" cost="10000" />
     <Description content = "Being an advocator of the Dallas pinioneer spirit, Clint is able to take out the bullets from the clip at an unimaginable fast speed." />
   </Hero>
   <Hero index="10" characterType="10" weaponType="10" equipAdditionPercent="0.66" name="Eva" profession="Researcher" modelFileName="Eva" iconFileName="Eva" >
     <Property hp="993" moveSpeed="5.2" hitRate="90" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="7" state="Purchase" costType="Crystal" cost="149" />
     <Description content = "Affliated to the No.3 biochemistry institute of the company, he is also a spy and carries unknown biochemical equipment." />
   </Hero>
   <Hero index="11" characterType="11" weaponType="11" equipAdditionPercent="0.87" name="Jason" profession="Killer" modelFileName="New-Jason" iconFileName="Jason" >
     <Property hp="1309" moveSpeed="5.8" hitRate="75" proCritical="25" critDamage="1.5" dodge="0" />
+    <Unlock order="6" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "Being a notorious killer in Dallas, he is very danageous to the public with modified landmine and Remington Pipe." />
   </Hero>
   <Hero index="12" characterType="12" weaponType="12" equipAdditionPercent="0.76" name="Tanya" profession="Spy" modelFileName="Tanya" iconFileName="Tanya" >
     <Property hp="1146" moveSpeed="5.8" hitRate="70" proCritical="15" critDamage="2" dodge="15" />
+    <Unlock order="11" state="Purchase" costType="Crystal" cost="149" />
     <Description content = "Through the genetic enhancement, he is raised to execute the special mission. With the help of AI chip planted in his brain, he can control strong firepower to cover the targeted area." />
   </Hero>
   <Hero index="13" characterType="13" weaponType="13" equipAdditionPercent="1.06" name="Bourne" profession="Agent" modelFileName="New-Bourne" iconFileName="Bourne" >
     <Property hp="1590" moveSpeed="5.5" hitRate="75" proCritical="20" critDamage="1.5" dodge="0" />
+    <Unlock order="5" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "Once an ace agent for the execution of Black Ice project, he lost most of his memory after suffered an accident during the mission,but the part of proficiently operating guns has been kept." />
   </Hero>
   <Hero index="14" characterType="14" weaponType="14" equipAdditionPercent="1.37" name="Rock" profession="Footballer" modelFileName="New-Rock" iconFileName="Rock" >
     <Property hp="2058" moveSpeed="4.6" hitRate="85" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="8" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "He was a superstar in the Super Bowl and a solid protector for the quarterback. During the way home, he encountered the biochemistry incident, he decisively takes the Gatling to fight for the survivors." />
   </Hero>
   <Hero index="15" characterType="15" weaponType="15" equipAdditionPercent="1.06" name="Wesker" profession="Delta Force" modelFileName="Wesker" iconFileName="Wesker" >
     <Property hp="1590" moveSpeed="5.2" hitRate="85" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="12" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "Being an elite of the Delta Force, he provides reliable firesupport to teammates. But his chatty character makes people not only delightful but also annoying. As a mechanical genius, he likes to make different bombs." />
   </Hero>
   <Hero index="16" characterType="16" weaponType="16" equipAdditionPercent="0.87" name="Oppenheimer" profession="Area51 Doctor" modelFileName="New-Oppenheimer" iconFileName="Oppenheimer" >
     <Property hp="1309" moveSpeed="5.2" hitRate="75" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="14" state="Purchase" costType="Money" cost="75000" />
     <Description content = "The successor of R.Oppenheimer and has an IQ over 200. He is obsessed with Ultra-low temperature phenomenon and likes to freeze the object by using self-made freezing scattergun and freezing device." />
   </Hero>
   <Hero index="17" characterType="17" weaponType="17" equipAdditionPercent="1.3" name="Shepard" profession="Starship Trooper" modelFileName="Shepard" iconFileName="Shepard" >
     <Property hp="1944" moveSpeed="5.5" hitRate="75" proCritical="10" critDamage="1.5" dodge="0" />
+    <Unlock order="13" state="Purchase" costType="Crystal" cost="299" />
     <Description content = "As a future star warrior in the next 50 years, he came back from future to the present world after encountered a singular point in the cruising. He carries advanced high-energy weapons." />
   </Hero>
 </Heroes>

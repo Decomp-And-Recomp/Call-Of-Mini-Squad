@@ -31,8 +31,8 @@ public static class BattleResultController
 
 		if (newStars == 3 && oldStars < 3)
 		{
-			DataCenter.Save().selectLevelDropData.extraCrystal = 5;
-			DataCenter.Save().Crystal += 5;
+			DataCenter.Save().selectLevelDropData.extraCrystal = EconomyConfig.FirstThreeStarCrystals;
+			DataCenter.Save().Crystal += EconomyConfig.FirstThreeStarCrystals;
 		}
 		else
 		{
@@ -45,8 +45,8 @@ public static class BattleResultController
 
 		int[] baseRewards = new int[2]
 		{
-			LevelCalcTest.LevelRewards[rewardIndex][0] * (DataCenter.State().battleStars == 3 ? 2 : 1),
-			LevelCalcTest.LevelRewards[rewardIndex][1] * (DataCenter.State().battleStars == 3 ? 2 : 1),
+			LevelCalcTest.LevelRewards[rewardIndex][0] * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
+			LevelCalcTest.LevelRewards[rewardIndex][1] * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
 		};
 
 		DataCenter.Save().Money += baseRewards[0];
@@ -64,7 +64,7 @@ public static class BattleResultController
 
 	public static int GetExtraCrystals()
 	{
-		return 5;
+		return EconomyConfig.FirstThreeStarCrystals;
 		//LevelDropData drop = DataCenter.Save().selectLevelDropData;
 		//return (drop != null) ? drop.extraCrystal : 0;
 	}

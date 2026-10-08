@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Team pricing and unlock requirements. -->
+<Team maxLevel="50">
+    <!-- Team slots in order. state: Available (open from the start) or Purchase. cost is in crystals. -->
+    <Sites>
+        <Site index="0" state="Available" cost="0" />
+        <Site index="1" state="Available" cost="0" />
+        <Site index="2" state="Purchase" cost="150" />
+        <Site index="3" state="Purchase" cost="300" />
+        <Site index="4" state="Purchase" cost="300" />
+    </Sites>
+    <!-- Talents (genius) tree. unlockTeamLevel: team level that unlocks the talents and starts granting a point per level. resetCostCrystal: price of a talent reset. extraPointCostCrystal / extraPointMax: buying extra talent points. -->
+    <Talents unlockTeamLevel="10" resetCostCrystal="20" extraPointCostCrystal="10" extraPointMax="50" />
+    <!-- Evolution. unlockTeamLevel: team level that opens evolution. cost/costType: price per evolution level. -->
+    <Evolution unlockTeamLevel="15" maxLevel="25" costType="Money" cost="30000" />
+</Team>

@@ -7,6 +7,7 @@ public static class HeroListController
 {
 	public static void Refresh()
 	{
+		EconomyConfig.ApplyToSave();
 		UpgradeController.RefreshWeapons();
 		UpgradeController.RefreshSkills();
 		UpgradeController.RefreshEquipment();
