@@ -33,9 +33,12 @@ namespace CoMDS2
 			m_stoppingDistance = dis;
 		}
 
+		private const float MaxSeekTime = 1.5f;
+
 		protected override void OnEnter()
 		{
 			base.OnEnter();
+			m_timer = 0f;
 		}
 
 		protected override void OnExit()
@@ -67,10 +70,16 @@ namespace CoMDS2
 			{
 				pathFinding.SetNavDesination(m_target.GetTransform().position);
 			}
+			m_timer += deltaTime;
 			float sqrMagnitude = (m_target.GetTransform().position - m_activeObject.GetTransform().position).sqrMagnitude;
-			if (sqrMagnitude < m_stoppingDistance * m_stoppingDistance)
+			if (sqrMagnitude < m_stoppingDistance * m_stoppingDistance || m_timer >= MaxSeekTime)
 			{
-				player2.GetTransform().forward = m_target.GetTransform().position - player2.GetTransform().position;
+				Vector3 toTarget = m_target.GetTransform().position - player2.GetTransform().position;
+				toTarget.y = 0f;
+				if (toTarget.sqrMagnitude > 0.0001f)
+				{
+					player2.GetTransform().forward = toTarget;
+				}
 				player2.UseSkill(0);
 			}
 		}
