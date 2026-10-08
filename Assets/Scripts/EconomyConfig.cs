@@ -67,6 +67,8 @@ public static class EconomyConfig
 	// Rewards.xml config values
 	public static int ThreeStarMultiplier = 2;
 	public static int FirstThreeStarCrystals = 5;
+	public static int TutorialRewardMoney = 1000;
+	public static int TutorialRewardCrystals = 50;
 	public static int StageRewardRows = 150;
 	public static int CoinsStarting = 1500, CoinsStartIncreasing = 10, CoinsIncrease = 5;
 	public static int StageXPStarting = 510, StageXPStartIncreasing = 280, StageXPIncrease = 20;
@@ -407,6 +409,12 @@ public static class EconomyConfig
 		{
 			ThreeStarMultiplier = Int(stars, "threeStarMultiplier", ThreeStarMultiplier);
 			FirstThreeStarCrystals = Int(stars, "firstThreeStarCrystals", FirstThreeStarCrystals);
+		}
+		XmlElement tutorial = root.SelectSingleNode("Tutorial") as XmlElement;
+		if (tutorial != null)
+		{
+			TutorialRewardMoney = Int(tutorial, "money", TutorialRewardMoney);
+			TutorialRewardCrystals = Int(tutorial, "crystal", TutorialRewardCrystals);
 		}
 		XmlElement stage = root.SelectSingleNode("StageRewards") as XmlElement;
 		if (stage != null)

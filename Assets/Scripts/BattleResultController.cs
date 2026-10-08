@@ -64,6 +64,10 @@ public static class BattleResultController
 
 	public static int GetExtraCrystals()
 	{
+		if (!DataCenter.Save().BattleTutorialFinished)
+		{
+			return EconomyConfig.TutorialRewardCrystals;
+		}
 		return EconomyConfig.FirstThreeStarCrystals;
 		//LevelDropData drop = DataCenter.Save().selectLevelDropData;
 		//return (drop != null) ? drop.extraCrystal : 0;

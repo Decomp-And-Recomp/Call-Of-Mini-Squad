@@ -4,6 +4,9 @@
     <!-- Winning with 3 stars multiplies money and XP by threeStarMultiplier. firstThreeStarCrystals: crystals for the first 3-star clear of a stage. -->
     <Stars threeStarMultiplier="2" firstThreeStarCrystals="5" />
 
+    <!-- Reward payout for finishing the tutorial map: money, and tcrystals as the 3-star bonus. -->
+    <Tutorial money="1000" crystal="50" />
+
     <!-- Per-stage rewards (one row per stage). Row 0 = *Starting. Row n adds *StartIncreasing + *Increase * (n - 1) on top of the previous row. combat*: recommended team combat shown for the stage. -->
     <StageRewards rows="150" coinsStarting="1500" coinsStartIncreasing="10" coinsIncrease="5" xpStarting="510" xpStartIncreasing="280" xpIncrease="20" combatStarting="350" combatStartIncreasing="40" combatIncrease="20" />
 

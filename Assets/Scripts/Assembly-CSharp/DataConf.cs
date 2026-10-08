@@ -3013,8 +3013,8 @@ public class DataConf
 			DataCenter.Save().selectLevelDropData = null;
 			DataCenter.Save().selectLevelDropData = new LevelDropData();
 			DataCenter.Save().selectLevelDropData.exp = 0;
-			DataCenter.Save().selectLevelDropData.money = 1000;
-			DataCenter.Save().selectLevelDropData.extraCrystal = 50;
+			DataCenter.Save().selectLevelDropData.money = EconomyConfig.TutorialRewardMoney;
+			DataCenter.Save().selectLevelDropData.extraCrystal = EconomyConfig.TutorialRewardCrystals;
 		}
 		else
 		{

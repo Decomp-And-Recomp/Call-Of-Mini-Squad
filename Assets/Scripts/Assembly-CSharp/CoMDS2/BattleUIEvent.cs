@@ -2459,6 +2459,11 @@ namespace CoMDS2
 			if (DataCenter.Save().bNewUser)
 			{
 				DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
+				if (DataCenter.State().battleResult == Defined.BattleResult.Win)
+				{
+					DataCenter.Save().Money += EconomyConfig.TutorialRewardMoney;
+					DataCenter.Save().Crystal += EconomyConfig.TutorialRewardCrystals;
+				}
 				DataCenter.Save().BattleTutorialFinished = true;
 				DataCenter.Save().bNewUser = false;
 				DataCenter.Save().MigrateTutorialDummyTeamSites();
