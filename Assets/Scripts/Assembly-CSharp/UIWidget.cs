@@ -1005,18 +1005,11 @@ public class UIWidget : UIRect
 		if (NGUITools.GetActive(this))
 		{
 			mChanged = true;
-#if UNITY_EDITOR
-			NGUITools.SetDirty(this);
-#endif
 			// If we're in the editor, update the panel right away so its geometry gets updated.
 			if (panel != null && enabled && NGUITools.GetActive(gameObject) && !mPlayMode)
 			{
 				SetDirty();
 				CheckLayer();
-#if UNITY_EDITOR
-				// Mark the panel as dirty so it gets updated
-				if (material != null) NGUITools.SetDirty(panel.gameObject);
-#endif
 			}
 		}
 	}

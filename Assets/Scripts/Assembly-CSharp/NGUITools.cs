@@ -642,18 +642,19 @@ static public class NGUITools
 #if UNITY_2018_3_OR_NEWER
 		if (obj)
 		{
+			if ((obj.hideFlags & HideFlags.DontSaveInEditor) != 0) return;
+
+			GameObject go = obj as GameObject;
+			if (go == null && obj is Component) go = ((Component)obj).gameObject;
+			if (go != null && (go.hideFlags & HideFlags.DontSaveInEditor) != 0) return;
+
 			UnityEditor.EditorUtility.SetDirty(obj);
 
 			if (!UnityEditor.AssetDatabase.Contains(obj) && !Application.isPlaying)
 			{
-				if (obj is Component)
+				if (go != null && go.scene.IsValid() && go.scene.isLoaded)
 				{
-					var component = (Component)obj;
-					UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(component.gameObject.scene);
-				}
-				else if (!(obj is UnityEditor.EditorWindow || obj is ScriptableObject))
-				{
-					UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+					UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(go.scene);
 				}
 			}
 		}
