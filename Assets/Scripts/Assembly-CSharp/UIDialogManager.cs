@@ -111,20 +111,6 @@ public class UIDialogManager : MonoBehaviour
 			return;
 		}
 		paused = pauseStatus;
-		if (paused)
-		{
-			pausedTime = Time.realtimeSinceStartup;
-			return;
-		}
-		if (Time.realtimeSinceStartup - pausedTime >= 10f && UIConstant.bNeedLoseConnect)
-		{
-			if (GameBattle.m_instance != null)
-			{
-				GameBattle.m_instance.OnBreakOff();
-			}
-			DataCenter.State().ResetData(false);
-			Application.LoadLevel("UICheckUpdate");
-		}
 		pausedTime = Time.realtimeSinceStartup;
 	}
 
