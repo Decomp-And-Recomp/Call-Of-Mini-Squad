@@ -3004,7 +3004,7 @@ public class DataConf
 		{
 		}
 		DataCenter.State().selectLevelMode = levelMode;
-		DataCenter.State().selectAreaNode = selectIndex;
+		DataCenter.State().selectAreaNode = ((selectIndex == -1) ? 0 : selectIndex);
 		if (selectIndex == -1)
 		{
 			m_selectedGameLevelData = new GameLevelData();
