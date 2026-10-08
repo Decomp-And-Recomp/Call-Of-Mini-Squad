@@ -103,7 +103,7 @@ namespace CoMDS2
 				{
 					base.animName = ((Enemy)m_activeObject).GetAnimationName("DeathViolent");
 				}
-				else
+				if (string.IsNullOrEmpty(base.animName) || !bViolent)
 				{
 					base.animName = ((Enemy)m_activeObject).GetAnimationName("Death");
 				}
