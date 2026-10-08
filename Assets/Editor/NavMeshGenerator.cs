@@ -82,12 +82,61 @@ public class NavMeshGenerator : Editor
 			}
 		}
 
-		UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
+		List<GameObject> disabledSpawnPoints = DisablePlayerSpawnPoints();
 
-		foreach (GameObject generatedObject in generatedObjects)
+		try
 		{
-			DestroyImmediate(generatedObject);
+			UnityEditor.AI.NavMeshBuilder.BuildNavMesh();
 		}
+		finally
+		{
+			foreach (GameObject spawnPoint in disabledSpawnPoints)
+			{
+				if (spawnPoint != null)
+				{
+					spawnPoint.SetActive(true);
+				}
+			}
+
+			foreach (GameObject generatedObject in generatedObjects)
+			{
+				DestroyImmediate(generatedObject);
+			}
+		}
+	}
+
+	private static List<GameObject> DisablePlayerSpawnPoints()
+	{
+		List<GameObject> disabled = new List<GameObject>();
+
+		for (int i = 0; i < EditorSceneManager.sceneCount; i++)
+		{
+			UnityEngine.SceneManagement.Scene scene = EditorSceneManager.GetSceneAt(i);
+			if (!scene.isLoaded)
+			{
+				continue;
+			}
+
+			foreach (GameObject root in scene.GetRootGameObjects())
+			{
+				foreach (Transform transform in root.GetComponentsInChildren<Transform>(true))
+				{
+					GameObject go = transform.gameObject;
+					if (go.activeSelf && (go.tag == "PlayerSpawnPoint" || go.name == "PlayerSpawnPoint"))
+					{
+						go.SetActive(false);
+						disabled.Add(go);
+					}
+				}
+			}
+		}
+
+		if (disabled.Count == 0)
+		{
+			Debug.LogWarning("NavMeshGenerator: no PlayerSpawnPoint found in " + EditorSceneManager.GetActiveScene().name + ".");
+		}
+
+		return disabled;
 	}
 
 	private static void SetNavStatic(GameObject root, bool isStatic)

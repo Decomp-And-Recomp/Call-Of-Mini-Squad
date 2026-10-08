@@ -16,8 +16,15 @@ public class AutomaticBaker : Editor
 
 		assetsInQueue = (from asset in AssetDatabase.FindAssets("MAP t:SceneAsset") where (temp = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(asset))).name != "NEW MAP" && temp.name != "PVPMAP" select AssetDatabase.GUIDToAssetPath(asset)).ToList();
 
+		if (assetsInQueue.Count == 0)
+		{
+			return;
+		}
+
+		building = false;
 		NextScene();
 
+		EditorApplication.update -= Update;
 		EditorApplication.update += Update;
 	}
 
@@ -49,6 +56,13 @@ public class AutomaticBaker : Editor
 			assetsInQueue.RemoveAt(0);
 
 			building = false;
+
+			if (assetsInQueue.Count == 0)
+			{
+				EditorApplication.update -= Update;
+				Debug.Log("Nav Baker: finished baking all scenes.");
+				return;
+			}
 
 			NextScene();
 		}
