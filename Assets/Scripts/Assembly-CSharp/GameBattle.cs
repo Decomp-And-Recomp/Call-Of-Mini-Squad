@@ -730,6 +730,28 @@ public class GameBattle : MonoBehaviour
 		{
 			UpdateScene(Time.deltaTime);
 		}
+		else if (GameState == State.Win || GameState == State.DialogStart || GameState == State.DialogEnd)
+		{
+			UpdateDyingEnemies(Time.deltaTime);
+		}
+	}
+
+	private void UpdateDyingEnemies(float deltaTime)
+	{
+		for (int i = 0; i < m_cliqueComputerList.Count; i++)
+		{
+			DS2ActiveObject obj = m_cliqueComputerList[i];
+			if (obj.objectType != Defined.OBJECT_TYPE.OBJECT_TYPE_ENEMY || obj.Alive())
+			{
+				continue;
+			}
+			AIState state = obj.GetCurrentAIState();
+			if (state != null && state.name == "Death")
+			{
+				obj.Update(deltaTime);
+			}
+		}
+		DeleteObjectsFromList();
 	}
 
 	public void OnDestroy()
