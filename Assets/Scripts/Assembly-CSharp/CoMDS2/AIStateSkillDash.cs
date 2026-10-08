@@ -38,6 +38,12 @@ namespace CoMDS2
 
 		private string m_animChargeLower;
 
+		private bool m_lockedInput;
+
+		private bool m_slowMotion;
+
+		private UnityEngine.AI.NavMeshAgent m_dashAgent;
+
 		public AIStateSkillDash(Character obj, string name, Controller controller = Controller.System)
 			: base(obj, name, controller)
 		{
@@ -65,8 +71,12 @@ namespace CoMDS2
 			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER && ((Player)m_character).CurrentController)
 			{
 				GameBattle.s_bInputLocked = true;
+				m_lockedInput = true;
 			}
 			m_phase = DashPhase.Dash;
+			m_timer = 0f;
+			UnityEngine.AI.NavMeshAgent agent = m_character.GetNavMeshAgent();
+			m_dashAgent = (agent != null && agent.enabled && agent.isOnNavMesh) ? agent : null;
 			m_character.AnimationStop(m_activeObject.animUpperBody);
 			m_character.AnimationStop(m_activeObject.animLowerBody);
 			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY || m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER)
@@ -100,13 +110,24 @@ namespace CoMDS2
 		protected override void OnExit()
 		{
 			base.OnExit();
-			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER && ((Player)m_character).CurrentController && GameBattle.m_instance != null)
+			if (m_lockedInput)
 			{
 				GameBattle.s_bInputLocked = false;
+				m_lockedInput = false;
 			}
+			if (m_slowMotion)
+			{
+				Time.timeScale = 1f;
+				m_slowMotion = false;
+				if (GameBattle.m_instance != null)
+				{
+					GameBattle.m_instance.SetCameraZoomOut();
+				}
+			}
+			m_dashAgent = null;
 			m_character.SetAttackCollider(false, AttackCollider.AttackColliderType.Dash);
 			m_character.SetGodTime(0f);
-			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER || m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY)
+			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER ||m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY)
 			{
 				Player player = (Player)m_character;
 				if (player.CurrentController)
@@ -167,6 +188,7 @@ namespace CoMDS2
 					GameBattle.m_instance.SetCameraZoomOut();
 				}
 				Time.timeScale = 1f;
+				m_slowMotion = false;
 			}
 			else if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER)
 			{
@@ -174,6 +196,7 @@ namespace CoMDS2
 				if (player.CurrentController)
 				{
 					Time.timeScale = 0.1f;
+					m_slowMotion = true;
 				}
 			}
 		}
@@ -187,7 +210,11 @@ namespace CoMDS2
 			}
 			else if (GameBattle.m_instance != null)
 			{
-				if ((bool)m_characterController)
+				if (m_dashAgent != null && m_dashAgent.enabled && m_dashAgent.isOnNavMesh)
+				{
+					m_dashAgent.Move(m_direction.normalized * m_dashSpeed * deltaTime);
+				}
+				else if ((bool)m_characterController)
 				{
 					m_characterController.Move(m_direction.normalized * m_dashSpeed * deltaTime);
 				}
