@@ -3323,7 +3323,7 @@ public class DataConf
 	{
 		if (Util.s_debugBuild)
 		{
-			string text = FileUtil.LoadResourcesFile("Configs/SpwanInfos/" + SceneLoadingManager.s_currSceneName + "_si.xml");
+			string text = FileUtil.LoadResourcesFile("Configs/SpwanInfos/" + SceneLoadingManager.s_currSceneName + "_si");
 			if (text != null && text.Length > 0)
 			{
 				LoadEnemySpawnInfo(text);
