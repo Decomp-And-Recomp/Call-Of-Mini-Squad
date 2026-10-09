@@ -818,7 +818,7 @@ namespace CoMDS2
 					GetModelTransform().eulerAngles = new Vector3(0f, m_playerRotateAngle, 0f);
 					FaceDirection = GetTransform().forward;
 				}
-				if (!m_fire && Mathf.Abs(m_playerRotateAngleMark - num) < 10f)
+				if (!m_fire && Mathf.Abs(Mathf.DeltaAngle(m_playerRotateAngleMark, num)) < 10f)
 				{
 					SetFire(true, fireDirection);
 				}
@@ -838,6 +838,14 @@ namespace CoMDS2
 				{
 					SetFire(false, m_fireDirection);
 				}
+			}
+		}
+
+		public void ResumeHeldFireAfterReload()
+		{
+			if (CurrentController && !AutoControl && !HalfAutoControl && FireKeyDown && !m_fire && Alive())
+			{
+				SetFire(true, FaceDirection);
 			}
 		}
 

@@ -42,6 +42,11 @@ namespace CoMDS2
 		protected override void OnExit()
 		{
 			m_character.isInReload = false;
+			Player player = m_character as Player;
+			if (player != null && m_character.m_weapon != null && !m_character.m_weapon.NeedReload())
+			{
+				player.ResumeHeldFireAfterReload();
+			}
 		}
 
 		protected override void OnUpdate(float deltaTime)
