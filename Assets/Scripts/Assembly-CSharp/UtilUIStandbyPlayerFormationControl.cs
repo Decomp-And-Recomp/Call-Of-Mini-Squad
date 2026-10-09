@@ -26,15 +26,47 @@ public class UtilUIStandbyPlayerFormationControl : UIDragDropItem
 		_releasedEvent = _release;
 	}
 
+	private bool mScrollGesture;
+
 	protected override void Start()
 	{
 		base.Start();
 		orignalPos = base.transform.localPosition;
 		nowMousePos = orignalPos;
+		pressAndHoldDelay = 0.25f;
+	}
+
+	protected override void Update()
+	{
+		if (!mScrollGesture)
+		{
+			base.Update();
+		}
+	}
+
+	protected override void OnDragStart()
+	{
+		if (!interactable || !canBeDragged || !mPressed || mDragging || !enabled || mTouch != UICamera.currentTouch)
+		{
+			return;
+		}
+		Vector2 delta = mTouch.totalDelta;
+		if (Mathf.Abs(delta.y) >= Mathf.Abs(delta.x))
+		{
+			StartDragging();
+		}
+		else
+		{
+			mScrollGesture = true;
+		}
 	}
 
 	protected override void OnDragDropStart()
 	{
+		if (mDragScrollView != null && mDragScrollView.scrollView != null)
+		{
+			mDragScrollView.scrollView.Press(false);
+		}
 		base.OnDragDropStart();
 		if (_startEvent != null)
 		{
@@ -48,17 +80,13 @@ public class UtilUIStandbyPlayerFormationControl : UIDragDropItem
 
 	protected override void OnDragDropMove(Vector2 delta)
 	{
-		GameObject hoveredObject = UICamera.hoveredObject;
-		if (hoveredObject != null)
+		if (_movedEvent != null)
 		{
-			if (_movedEvent != null)
-			{
-				_movedEvent(hoveredObject, delta);
-			}
-			else
-			{
-				UIUtil.PDebug("Delegate Event Is NULL!!!", "1-4");
-			}
+			_movedEvent(UICamera.hoveredObject, delta);
+		}
+		else
+		{
+			UIUtil.PDebug("Delegate Event Is NULL!!!", "1-4");
 		}
 	}
 
@@ -75,8 +103,12 @@ public class UtilUIStandbyPlayerFormationControl : UIDragDropItem
 		base.OnDragDropRelease(surface);
 	}
 
-	protected new void OnPress(bool isPressed)
+	protected override void OnPress(bool isPressed)
 	{
+		if (isPressed)
+		{
+			mScrollGesture = false;
+		}
 		base.OnPress(isPressed);
 		if (_startEvent != null)
 		{
@@ -85,6 +117,10 @@ public class UtilUIStandbyPlayerFormationControl : UIDragDropItem
 		else
 		{
 			UIUtil.PDebug("Delegate Event Is NULL!!!", "1-4");
+		}
+		if (!isPressed && mDragging)
+		{
+			StopDragging(UICamera.hoveredObject);
 		}
 	}
 }

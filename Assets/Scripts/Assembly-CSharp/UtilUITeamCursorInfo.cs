@@ -24,6 +24,7 @@ public class UtilUITeamCursorInfo : MonoBehaviour
 		mBounds = NGUIMath.CalculateAbsoluteWidgetBounds(base.transform);
 		for (int i = 0; i < targetBounds.Length; i++)
 		{
+			targetBounds[i] = NGUIMath.CalculateAbsoluteWidgetBounds(targets[i].transform);
 			if (mBounds.Intersects(targetBounds[i]))
 			{
 				result = i;

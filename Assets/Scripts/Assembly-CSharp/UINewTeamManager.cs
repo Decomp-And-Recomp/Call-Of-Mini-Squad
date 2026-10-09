@@ -626,6 +626,15 @@ public class UINewTeamManager : MonoBehaviour
 
 	protected void UpdateCursorPosition(Vector3 touchPos)
 	{
+		Camera camera = NGUITools.FindCameraForLayer(cursorGO.layer);
+		Transform parent = cursorGO.transform.parent;
+		if (camera != null && parent != null)
+		{
+			Vector3 local = parent.InverseTransformPoint(camera.ScreenToWorldPoint(touchPos));
+			local.z = cursorGO.transform.localPosition.z;
+			cursorGO.transform.localPosition = local;
+			return;
+		}
 		Vector3 localPosition = Util.ScreenPointToNGUIForAnroid(touchPos);
 		cursorGO.transform.localPosition = localPosition;
 	}
@@ -666,11 +675,6 @@ public class UINewTeamManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (pressTime > 0f && Time.time - pressTime > 0.1f)
-		{
-			HandleStandbyPlayerFormationControlDragStartEvent(gPlayerInfo);
-			pressTime = -1f;
-		}
 	}
 
 	protected void HandleStandbyPlayerFormationControlPressEvent(UtilUIStandbyPlayersInfo.PLAYERINFO playerInfo, bool isPressed)
@@ -747,8 +751,12 @@ public class UINewTeamManager : MonoBehaviour
 		{
 			return;
 		}
-		cursorGO.SetActive(false);
+		if (UICamera.currentTouch != null)
+		{
+			UpdateCursorPosition(UICamera.currentTouch.pos);
+		}
 		int num = cursorInfo.CrashDetectionIndex();
+		cursorGO.SetActive(false);
 		if (UIBASECOURSEINFO.TutorialInProgress)
 		{
 			if (num == 1)
