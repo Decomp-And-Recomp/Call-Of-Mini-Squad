@@ -84,7 +84,14 @@ public static class Save
 
 		try
 		{
-			string json = JsonConvert.SerializeObject(saveInstance = Saver.Save());
+			SaveData snapshot = Saver.Save();
+			string problem = FindMissingData(snapshot);
+			if (problem != null)
+			{
+				Debug.LogError("Write skipped — game data is not loaded (" + problem + "). Keeping the existing save.");
+				return;
+			}
+			string json = JsonConvert.SerializeObject(saveInstance = snapshot);
 			byte[] encrypted = SaveCrypto.Encrypt(json);
 			WriteDurable(TempPath, encrypted);
 
@@ -178,6 +185,12 @@ public static class Save
 					Debug.LogError("Decrypt of " + path + " failed (" + decryptException.Message + ") and plaintext fallback also returned null.");
 					return false;
 				}
+				string plaintextProblem = FindMissingData(plaintextData);
+				if (plaintextProblem != null)
+				{
+					Debug.LogError("Plaintext save " + path + " is missing data (" + plaintextProblem + ").");
+					return false;
+				}
 				Loader.Load(saveInstance = plaintextData);
 				return true;
 			}
@@ -188,6 +201,12 @@ public static class Save
 				Debug.LogError("Deserialization of " + path + " returned null.");
 				return false;
 			}
+			string dataProblem = FindMissingData(data);
+			if (dataProblem != null)
+			{
+				Debug.LogError("Save " + path + " is missing data (" + dataProblem + ").");
+				return false;
+			}
 			Loader.Load(saveInstance = data);
 			return true;
 		}
@@ -196,6 +215,15 @@ public static class Save
 			Debug.LogError("Load from " + path + " failed: " + e.Message);
 			return false;
 		}
+	}
+
+	private static string FindMissingData(SaveData data)
+	{
+		if (data.currency == null) return "currency";
+		if (data.teamSave == null || data.teamSave.teamData == null) return "team";
+		if (data.heroes == null || data.heroes.Count == 0) return "heroes";
+		if (data.worldNodes == null || data.worldNodes.Count == 0) return "world progress";
+		return null;
 	}
 
 	public static void Create()
