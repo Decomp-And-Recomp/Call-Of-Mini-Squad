@@ -111,11 +111,11 @@ public class UtilUIAchievementInfo : MonoBehaviour
 		SetClaimBtnVisable(true);
 		switch (state)
 		{
+		case 2:
 		case 3:
 			SetClaimBtnVisable(false);
 			break;
 		case 1:
-		case 2:
 			break;
 		default:
 			SetClaimBtnEnable(false);

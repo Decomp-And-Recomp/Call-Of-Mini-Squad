@@ -121,6 +121,10 @@ public class UINewAchievementManage : MonoBehaviour
 		{
 			if (data.bDaily)
 			{
+				if (data.state == 2)
+				{
+					continue;
+				}
 				SerializeItem(dailyIndex++, data.id, data, autoCreate[0]);
 				UpdateItemUI(data.id);
 				continue;
@@ -275,10 +279,12 @@ public class UINewAchievementManage : MonoBehaviour
 			ACHIEVEMENTITEMINFO aCHIEVEMENTITEMINFO = dictAchievementInfo[text];
             if (UIConstant.gDictAchievementData.ContainsKey(text))
             {
+                AchievementTracker.RefreshAllProgress();
                 AchievementData data = UIConstant.gDictAchievementData[text];
                 if (data.state != 1)
                 {
                     UIDialogManager.Instance.ShowDriftMsgInfoUI("Unable to claim.");
+                    InitAchievement(UIConstant.gDictAchievementData);
                     return;
                 }
                 DataCenter.Save().Money += data.money;
