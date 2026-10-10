@@ -113,6 +113,7 @@ public class UtilUITeamBonusTalent : MonoBehaviour
 		UpdateItemState(info);
 		info.ui.UpdateLV(info.teamAttributeData.level + "/" + info.teamAttributeData.maxLevel);
 		info.ui.UpdateIcon(UIUtil.GetEquipTextureMaterial(info.teamAttributeConf.iconFileName).mainTexture);
+		UpdateLineLockedTag(info);
 	}
 
 	public void UpdateItemState(ITEMINFO info)
@@ -192,14 +193,18 @@ public class UtilUITeamBonusTalent : MonoBehaviour
 	{
 		if (info.teamAttributeData.index % 5 == 0)
 		{
-			SetTreeLockedStateVisable(info.teamAttributeData.index / 5, info.teamAttributeData.state == Defined.ItemState.Locked, info.teamAttributeData.unlockLevel);
+			SetTreeLockedStateVisable(info.teamAttributeData.index / 5, info.teamAttributeData.state == Defined.ItemState.Locked, info.teamAttributeData.unlockPoint);
 		}
 	}
 
-	public void SetTreeLockedStateVisable(int index, bool bShow, int level)
+	public void SetTreeLockedStateVisable(int index, bool bShow, int points)
 	{
+		if (m_arrTreeLinesLockedStateGO == null || index < 0 || index >= m_arrTreeLinesLockedStateGO.Length || m_arrTreeLinesLockedStateGO[index] == null)
+		{
+			return;
+		}
 		m_arrTreeLinesLockedStateGO[index].SetActive(bShow);
-		m_arrTreeLinesLockedStateGO[index].transform.Find("Label").GetComponent<UILabel>().text = "UNLOCK AT TEAM LEVEL " + level;
+		m_arrTreeLinesLockedStateGO[index].transform.Find("Label").GetComponent<UILabel>().text = "ASSIGN " + points + " POINTS TO UNLOCK";
 	}
 
 	public void UpdateResetBtnInfo(DataSave.TeamAttributeSaveData data)
