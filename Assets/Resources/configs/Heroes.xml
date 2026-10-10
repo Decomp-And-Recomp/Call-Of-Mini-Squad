@@ -46,7 +46,7 @@ How to add a new hero into this config:
 	</Hero>
 	<Hero index="2" characterType="2" weaponType="2" equipAdditionPercent="0.61" name="Lili" profession="Nurse" modelFileName="New-Lili" iconFileName="Lili" >
 		<Property hp="916" moveSpeed="5.4" hitRate="90" proCritical="10" critDamage="1.5" dodge="0" />
-		<Unlock order="9" state="Purchase" costType="Crystal" cost="299" />
+		<Unlock order="9" state="Purchase" costType="Crystal" cost="149" />
 		<Description content = "An intern nurse just graduated from the school tenderly takes care of each survivors and is an indispensable lifeline in the team." />
 	</Hero>
 	<Hero index="3" characterType="3" weaponType="3" equipAdditionPercent="0.58" name="Vasily" profession="Special Troop" modelFileName="Vasily" iconFileName="Vasily" >
@@ -66,7 +66,7 @@ How to add a new hero into this config:
 	</Hero>
 	<Hero index="6" characterType="6" weaponType="6" equipAdditionPercent="1.01" name="Zero" profession="Ninja" modelFileName="Zero" iconFileName="Zero" >
 		<Property hp="1512" moveSpeed="5.5" hitRate="75" proCritical="15" critDamage="2" dodge="10" />
-		<Unlock order="10" state="Purchase" costType="Crystal" cost="399" />
+		<Unlock order="10" state="Purchase" costType="Crystal" cost="449" />
 		<Description content = "He is a ninja from Koga and comes here to find his friend Fire Dragon is also good at powerful and secret Ninpo." />
 	</Hero>
 	<Hero index="7" characterType="7" weaponType="7" equipAdditionPercent="0.65" name="Arnoud" profession="Marine" modelFileName="Arnoud" iconFileName="Arnoud" >
