@@ -329,6 +329,25 @@ namespace CoMDS2
 			neareastDistanceFromTeammember = float.MaxValue;
 		}
 
+		private bool IsMovingTowardTeammates(Vector3 move_dir)
+		{
+			Vector3 position = GetTransform().position;
+			Vector3 lhs = Vector3.zero;
+			float num = 0f;
+			DS2ActiveObject[] playerAliveList = GameBattle.m_instance.GetPlayerAliveList();
+			foreach (DS2ActiveObject dS2ActiveObject in playerAliveList)
+			{
+				Vector3 vector = dS2ActiveObject.GetTransform().position - position;
+				vector.y = 0f;
+				if (vector.sqrMagnitude > num)
+				{
+					num = vector.sqrMagnitude;
+					lhs = vector;
+				}
+			}
+			return num > 0f && Vector3.Dot(lhs.normalized, move_dir.normalized) > 0f;
+		}
+
 		public void UpdateInput(float left_wparam, float left_lparam, float right_wparam, float right_lparam)
 		{
 			if (base.isStuck)
@@ -510,7 +529,7 @@ namespace CoMDS2
 
 		private void Move(Vector3 move_dir)
 		{
-			if (!m_stayToWait)
+			if (!m_stayToWait || IsMovingTowardTeammates(move_dir))
 			{
 				CharacterController component = GetGameObject().GetComponent<CharacterController>();
 				if (component != null)
