@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Effect> line is one visual effect (muzzle flash, hit spark, and so on).
+- Other files (Bullet.xml, Weapons.xml) use the index number.
+- fileName = the effect prefab. 
+- animType = 0 particle, 1 animation, 2 animator, 3 mixed.
+- playTime = how many seconds it plays. 
+- bufferNum = how many copies are made ready before the fight.
+
+How to add a new effect into this config:
+  1. Copy the last <Effect ... /> line and paste it at the END of the list.
+  2. Set index to the next number (last index + 1). The game finds effects by their place in the list.
+  3. Set fileName, animType, playTime and bufferNum.
+-->
 <!-- effect Data -->
-<Effects><!--index:索引 fileNmae:文件名 animType:是否是模型动画(0粒子，1 animation, 2 animator 3 combie) playTime:特效播放时间 bufferNum:场景中的缓存数量 -->
+<Effects>
+	<!--index:索引 fileNmae:文件名 animType:是否是模型动画(0粒子，1 animation, 2 animator 3 combie) playTime:特效播放时间 bufferNum:场景中的缓存数量 -->
 	<Effect index = "0" fileName = "mp5_attack" animType ="0" playTime = "1.0" bufferNum = "5" />
 	<Effect index = "1" fileName = "ShotGun_01_attack" animType ="0" playTime = "1.0" bufferNum = "5" />
 	<Effect index = "2" fileName = "Pistol_01_Attack" animType ="0" playTime = "0.3" bufferNum = "10" />
@@ -39,16 +54,16 @@
 	<Effect index = "35" fileName = "monsters_06" animType ="3" playTime = "30.0" bufferNum = "5" />
 	<Effect index = "36" fileName = "monsters_15" animType ="3" playTime = "-1" bufferNum = "5" />
 	<Effect index = "37" fileName = "monsters_10" animType ="3" playTime = "-1" bufferNum = "5" />
-  <Effect index = "38" fileName = "DeathLight_Attack_2_G_Attack" animType = "0" playTime = "1.0" bufferNum = "5" />
-  <Effect index = "39" fileName = "Burst_B_01" animType ="3" playTime = "5" bufferNum = "5" />
-  <Effect index = "40" fileName = "Burst_D_01" animType ="3" playTime = "5" bufferNum = "5" />
-  <Effect index = "41" fileName = "pest_Attack_Attack" animType = "0" playTime = "1.0" bufferNum = "10" />
-  <Effect index = "42" fileName = "Eva_Pollution" animType = "0" playTime = "99.0" bufferNum = "10" />
-  <Effect index = "43" fileName = "High-energy magnetic field_End_B" animType = "0" playTime = "1.0" bufferNum = "1" />
-  <Effect index = "44" fileName = "Pistol_Love_Attack" animType = "0" playTime = "3.0" bufferNum = "1" />
-  <Effect index = "45" fileName = "monsters_Vampire_0" animType = "3" playTime = "2.0" bufferNum = "10" />
-  <Effect index = "46" fileName = "Gold_jet" animType = "0" playTime = "0.7" bufferNum = "1" />
-  <Effect index = "47" fileName = "Zombie_Pestilence_L_hit" animType ="0" playTime = "3.0" bufferNum = "5" />
+	<Effect index = "38" fileName = "DeathLight_Attack_2_G_Attack" animType = "0" playTime = "1.0" bufferNum = "5" />
+	<Effect index = "39" fileName = "Burst_B_01" animType ="3" playTime = "5" bufferNum = "5" />
+	<Effect index = "40" fileName = "Burst_D_01" animType ="3" playTime = "5" bufferNum = "5" />
+	<Effect index = "41" fileName = "pest_Attack_Attack" animType = "0" playTime = "1.0" bufferNum = "10" />
+	<Effect index = "42" fileName = "Eva_Pollution" animType = "0" playTime = "99.0" bufferNum = "10" />
+	<Effect index = "43" fileName = "High-energy magnetic field_End_B" animType = "0" playTime = "1.0" bufferNum = "1" />
+	<Effect index = "44" fileName = "Pistol_Love_Attack" animType = "0" playTime = "3.0" bufferNum = "1" />
+	<Effect index = "45" fileName = "monsters_Vampire_0" animType = "3" playTime = "2.0" bufferNum = "10" />
+	<Effect index = "46" fileName = "Gold_jet" animType = "0" playTime = "0.7" bufferNum = "1" />
+	<Effect index = "47" fileName = "Zombie_Pestilence_L_hit" animType ="0" playTime = "3.0" bufferNum = "5" />
 	<Effect index = "48" fileName = "Leakage_Attack" animType = "0" playTime = "1.0" bufferNum = "10" />
 	<Effect index = "49" fileName = "laceration_DOT" animType = "0" playTime = "-1" bufferNum = "5" />
 	<Effect index = "50" fileName = "Bloodthirst" animType = "0" playTime = "2.5" bufferNum = "5" />

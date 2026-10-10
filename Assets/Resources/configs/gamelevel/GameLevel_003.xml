@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<GameLevel><!--LevelMode:游戏模式(0普通 1困难 2地狱) id:对应的场景文件名 name:场景名 battleMode:关卡类型(0:普通 1:BOSS 2:遭遇战) enenyTeamID:遭遇战对应敌人队伍的配置表(如果不是遭遇战不要有此字段)-->
+<!--
+How does this config work:
+- This is one location on the map. SelectGameLevel.xml lists all locations.
+- Each <LevelMode> is one difficulty: mode 0 = normal, 1 = hard, 2 = hell. 
+- bgm = background music.
+- Each <LevelNode> is one stage.
+- id = the scene file to load. name = text on the map. 
+- mapNodePosX / mapNodePosY = place on the map.
+- level = how strong the zombies are.
+- battleMode = 0 normal, 1 boss, 2 encounter. Encounter is a fight against a squad of heroes using the unfinished PvP mode. No stage uses it and it doesn't fully work, so don’t use it.
+- title and description = text shown before the stage.
+- DialogStart / DialogEnd = talk before and after the stage. 
+- PlayerID = the hero index from Heroes.xml who says the line.
+
+How to add a new stage into this config:
+  1. Copy a whole <LevelNode> block (start tag to end tag) inside the right <LevelMode>.
+  2. Set index to the next number in that mode.
+  3. Set id to a scene that is in the build, and change name, position, level and text.
+  4. For an encounter stage (battleMode="2"), add enenyTeamID="(file name in encounterenemyteam)". Do not add enenyTeamID to other stages.
+  For Your Information: enenyTeamID is spelled like this in the code, so do not fix the spelling.
+
+How to add a new location into the game:
+- Copy this whole file, name it GameLevel_005.xml (next number), change the stages, then add a line for it in SelectGameLevel.xml.
+-->
+<GameLevel>
+	<!--LevelMode:游戏模式(0普通 1困难 2地狱) id:对应的场景文件名 name:场景名 battleMode:关卡类型(0:普通 1:BOSS 2:遭遇战) enenyTeamID:遭遇战对应敌人队伍的配置表(如果不是遭遇战不要有此字段)-->
 	<LevelMode mode = "0" bgm = "BGM_Channel">
 		<LevelNode index="0" id="MAP3-1-2-1" name = "STAGE 3-1" mapNodePosX="-530.0" mapNodePosY="77.0" depth="3" mode="0" level="445" battleMode="0" title = "Come With Me" description = "Find a way out! Now we can only walk in this disgusting sewer defensing hidden dangers all the time." >
 			<DialogStart>

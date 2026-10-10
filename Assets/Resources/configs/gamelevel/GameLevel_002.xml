@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<GameLevel><!--LevelMode:游戏模式(0普通 1困难 2地狱) id:对应的场景文件名 name:场景名 battleMode:关卡类型(0:普通 1:BOSS 2:遭遇战) enenyTeamID:遭遇战对应敌人队伍的配置表(如果不是遭遇战不要有此字段)-->
+<!--
+How does this config work:
+- This is one location on the map. SelectGameLevel.xml lists all locations.
+- Each <LevelMode> is one difficulty: mode 0 = normal, 1 = hard, 2 = hell. 
+- bgm = background music.
+- Each <LevelNode> is one stage.
+- id = the scene file to load. name = text on the map. 
+- mapNodePosX / mapNodePosY = place on the map.
+- level = how strong the zombies are.
+- battleMode = 0 normal, 1 boss, 2 encounter. Encounter is a fight against a squad of heroes using the unfinished PvP mode. No stage uses it and it doesn't fully work, so don’t use it.
+- title and description = text shown before the stage.
+- DialogStart / DialogEnd = talk before and after the stage. 
+- PlayerID = the hero index from Heroes.xml who says the line.
+
+How to add a new stage into this config:
+  1. Copy a whole <LevelNode> block (start tag to end tag) inside the right <LevelMode>.
+  2. Set index to the next number in that mode.
+  3. Set id to a scene that is in the build, and change name, position, level and text.
+  4. For an encounter stage (battleMode="2"), add enenyTeamID="(file name in encounterenemyteam)". Do not add enenyTeamID to other stages.
+  For Your Information: enenyTeamID is spelled like this in the code, so do not fix the spelling.
+
+How to add a new location into the game:
+- Copy this whole file, name it GameLevel_005.xml (next number), change the stages, then add a line for it in SelectGameLevel.xml.
+-->
+<GameLevel>
+	<!--LevelMode:游戏模式(0普通 1困难 2地狱) id:对应的场景文件名 name:场景名 battleMode:关卡类型(0:普通 1:BOSS 2:遭遇战) enenyTeamID:遭遇战对应敌人队伍的配置表(如果不是遭遇战不要有此字段)-->
 	<LevelMode mode = "0" bgm = "BGM_Laboratory">
 		<LevelNode index="0" id="MAP2-1-2-1" name = "STAGE 2-1" mapNodePosX="-393.0" mapNodePosY="-222.0" depth="3" mode="0" level="121" battleMode="0" title = "Safe Camp" description = "Entering into the medical control center, the heaven like place seems to keep some unknown secrets. " >
 			<DialogStart>
-     			<Part PlayerID = "10" dialog = "Hi, guys! My name is Eva and I am a researcher here."/>
+				<Part PlayerID = "10" dialog = "Hi, guys! My name is Eva and I am a researcher here."/>
 				<Part PlayerID = "0" dialog = "Thanks for saving me!"/>
 				<Part PlayerID = "10" dialog = "This place has hot water, you can take a bath here, but do not go away."/>
 				<Part PlayerID = "2" dialog = "Great! I can take a shower."/>
@@ -16,8 +41,8 @@
 			</DialogEnd>
 		</LevelNode>
 		<LevelNode index="1" id="MAP2-1-2-2" name = "STAGE 2-2" mapNodePosX="-376.0" mapNodePosY="-133.0" depth="3" mode="0" level="133" battleMode="0" title = "Secrets" description = "Mike finds that Eva has always been in the lab and doesn't allow anyone to come in. So out of the curiosity..." >
-		    <DialogStart>
-     			<Part PlayerID = "2" dialog = "Mike, have you noticed Eva is always hiding in the lab, it's weird right?"/>
+			<DialogStart>
+				<Part PlayerID = "2" dialog = "Mike, have you noticed Eva is always hiding in the lab, it's weird right?"/>
 				<Part PlayerID = "0" dialog = "Yes, I feel a little bit, and she also asks us to clear up zombies. It shouldn't have so many zombies here."/>
 				<Part PlayerID = "2" dialog = "Shall we go to have a check or I cannot sleep well."/>
 				<Part PlayerID = "0" dialog = "OK, let's go……damn it, why so many zombies here?"/>
@@ -31,8 +56,8 @@
 			</DialogEnd>
 		</LevelNode>
 		<LevelNode index="2" id="MAP2-1-2-3" name = "STAGE 2-3" mapNodePosX="-356.0" mapNodePosY="-64.0" depth="3" mode="0" level="146" battleMode="0" title = "The Walking Dead" description = "With the revelation of secrets, the road in front us is a way paved by the walking dead." >
-		    <DialogStart>
-     			<Part PlayerID = "10" dialog = "So you guys know the reason now?"/>
+			<DialogStart>
+				<Part PlayerID = "10" dialog = "So you guys know the reason now?"/>
 				<Part PlayerID = "0" dialog = "We need to kill those zombies here."/>
 				<Part PlayerID = "10" dialog = "Whatever, but don't touch stuff here."/>
 				<Part PlayerID = "0" dialog = "Open the door."/>
@@ -44,8 +69,8 @@
 			</DialogEnd>
 		</LevelNode>
 		<LevelNode index="3" id="MAP2-1-2-4" name = "STAGE 2-4" mapNodePosX="-337.0" mapNodePosY="18.0" depth="3" mode="0" level="161" battleMode="0" title = "Sick" description = "When Mike and his friends are clearing the center, they get sick." >
-		    <DialogStart>
-     			<Part PlayerID = "0" dialog = "Lili, how about Chris and guys?"/>
+			<DialogStart>
+				<Part PlayerID = "0" dialog = "Lili, how about Chris and guys?"/>
 				<Part PlayerID = "2" dialog = "It doesn't go well, we might get infected."/>
 				<Part PlayerID = "10" dialog = "So let's isolate him first and people who have contacted him shall also be isolated."/>
 				<Part PlayerID = "2" dialog = "We need medicines now. We need to save him."/>
@@ -62,8 +87,8 @@
 			</DialogEnd>
 		</LevelNode>
 		<LevelNode index="4" id="MAP2-1-2-5" name = "STAGE 2-5" mapNodePosX="-324.0" mapNodePosY="134.0" depth="3" mode="0" level="180" battleMode="1" title = "Bleeding" description = "There are too many zombies in the room, try to attract some of them." >
-		    <DialogStart>
-     			<Part PlayerID = "5" dialog = "Too many here, we couldn't pass through."/>
+			<DialogStart>
+				<Part PlayerID = "5" dialog = "Too many here, we couldn't pass through."/>
 				<Part PlayerID = "0" dialog = "Figure it out."/>
 				<Part PlayerID = "10" dialog = "Zombies have a good nose so let's try to use blood to draw them away."/>
 				<Part PlayerID = "0" dialog = "Let's do it."/>
@@ -95,7 +120,7 @@
 		</LevelNode>
 		<LevelNode index="6" id="MAP2-1-3-1" name = "STAGE 2-7" mapNodePosX="-157.0" mapNodePosY="116.0" depth="1" mode="0" level="201" battleMode="0" title = "Water" description = "Water are muddy this morning. Vasily said the pipeline might be broken." >
 			<DialogStart>
-			<Part PlayerID = "6" dialog = "Guys, come to check the water here."/>
+				<Part PlayerID = "6" dialog = "Guys, come to check the water here."/>
 				<Part PlayerID = "2" dialog = "What about water? Why is it so muddy?"/>
 				<Part PlayerID = "3" dialog = "I guess the pipeline is broken."/>
 				<Part PlayerID = "10" dialog = "Let me check it first…… I find t water leakage along the way to the isolation room. So the broken pipeline might be there."/>
@@ -137,7 +162,7 @@
 		</LevelNode>
 		<LevelNode index="9" id="MAP2-1-3-4" name = "STAGE 2-10" mapNodePosX="-64.0" mapNodePosY="16.0" depth="3" mode="0" level="238" battleMode="1" title = "Surprise" description = "What arsenal brings to us is unexpected surprise." >
 			<DialogStart>
-			<Part PlayerID = "0" dialog = "OK guys, let's keep moving."/>
+				<Part PlayerID = "0" dialog = "OK guys, let's keep moving."/>
 				<Part PlayerID = "7" dialog = "Be careful guys, this is a new area we have never cleared before."/>
 				<Part PlayerID = "0" dialog = "After all, be careful. Arnoud, you show us the way."/>
 				<Part PlayerID = "6" dialog = "Be careful the zombie with the bag. It's a tough zombie, look the green glow around him."/>

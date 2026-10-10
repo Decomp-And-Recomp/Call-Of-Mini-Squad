@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Enemy> block is one type of zombie. The settings on <Enemies> at the top are for all zombies.
+- Number ranges are written as "minimum-maximum" values (example: damage="30-30" which means it will always do 30 damage).
+- Zombie behaviour (how it moves, its skills) is in the code, not in this file.
+
+How to edit the values of a zombie:
+- Edit the numbers (hp, moveSpeed, damage, and so on). 
+- Drops = what it drops when it dies.
+
+How to add a brand new zombie into this config:
+  - This needs code. The index must be a value in Enemy.EnemyType (Enemy.cs), and the zombie needs its own script.
+  1. Add the new type to Enemy.EnemyType in the code first.
+  2. Copy a whole <Enemy> block (start tag to end tag) and set index to the new type number.
+  3. Set name, modelName (the model prefab) and iconFileName.
+  4. Add an <Enemy name="modelName"> block in Animation.xml for its animations.
+  For Your Information: zombies 17 to 28 are the purple versions of other zombies. The game uses the stats of the normal zombie for them, so editing those lines does nothing.
+-->
 <!-- Enemies Data -->
 <!-- skillcdTime:每隔x秒尝试释放技能-->
 <!-- randomSkillInterval:随机释放技能的次数,经过此次数后将必然使用一次技能，再进入随机次数计算，但怪物登场第一次必然使用技能-->
 <!-- randomSkillOdds:随机使用技能的几率，不论使用与否都消耗一次随机次数-->
-<Enemies EliteHpMultiple = "5" BossHpMultiple = "10" skillcdTime="5-10" randomSkillInterval="3" randomSkillOdds="50"><!--index：索引 name：名称 hp：生命值 eliteScale:为精英时缩放 bossScale:为BOSS时缩放 moveSpeed：移动速度 level：级别 rank：星级 damage：攻击力 proCritical：暴击率 critDamage：暴击伤害 attackFrequence：攻击频率 proFirstAttackLose：第一次攻击等待 repelTime：击退效果时间 repelDis：击退距离 proStun：击晕概率 proResurge：死亡复活概率-->
+<Enemies EliteHpMultiple = "5" BossHpMultiple = "10" skillcdTime="5-10" randomSkillInterval="3" randomSkillOdds="50">
+	<!--index：索引 name：名称 hp：生命值 eliteScale:为精英时缩放 bossScale:为BOSS时缩放 moveSpeed：移动速度 level：级别 rank：星级 damage：攻击力 proCritical：暴击率 critDamage：暴击伤害 attackFrequence：攻击频率 proFirstAttackLose：第一次攻击等待 repelTime：击退效果时间 repelDis：击退距离 proStun：击晕概率 proResurge：死亡复活概率-->
 	<Enemy index = "0" name="Zombie" modelName = "Zombie" iconFileName = "Zombie_Normal_Green01" hp = "150" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "2.6" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "0.75" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
 		<Drops probability = "15" eruptProbability = "10" money = "10" increase = "0.2" />
 	</Enemy>
@@ -15,7 +34,8 @@
 	</Enemy>
 	<Enemy index = "3" name="Footballer" modelName = "Haoke_B" iconFileName = "Zombie_HaoKe02" hp = "1250" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "3.2" level = "1" rank = "0" damage = "40-40" proCritical = "10" critDamage = "2.0" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "6-6" proStun = "0" proResurge = "0">
 		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-		<Skills><!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
 			<Skill name = "Dash" type = "0" attackRange = "8" speed = "10" time = "3" damage = "150" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "Attack02_a" animProcess = "Attack02_b" animEnd = "Attack02_c1" />
 			<Skill name = "Jump" type = "1" attackRange = "25" speed = "5" time = "0" damage = "150" percentDamage = "0.1" repelDis = "4" repelTime = "0.2" animReady = "Attack04_a" animProcess = "Attack04_b" animEnd = "Attack04_e" />
 			<Skill name = "Throw" type = "2" attackRange = "8" speed = "10" time = "0" damage = "80" percentDamage = "0" repelDis = "4" repelTime = "0.2" animReady = "Attack03" animProcess = "" animEnd = "" />
@@ -23,7 +43,8 @@
 	</Enemy>
 	<Enemy index = "4" name="Wrestler" modelName = "Zombie_Wrestler" iconFileName = "Zombie_Wrestler01" hp = "363" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "30">
 		<Drops probability = "100" eruptProbability = "30" money = "35" increase = "2.5" />
-		<Skills><!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷 3抓取） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷 3抓取） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
 			<Skill name = "Jump" type = "1" attackRange = "6" speed = "5" time = "0" damage = "80" percentDamage = "0.05" repelDis = "4" repelTime = "0.2" animReady = "Skill01_A" animProcess = "Skill01_B" animEnd = "Skill01_C" />
 			<Skill name = "Grab" type = "3" attackRange = "6" speed = "7" time = "1.1" damage = "0" percentDamage = "-1" repelDis = "-1" repelTime = "-1" animReady = "Skill02_A" animProcess = "Skill02_C" animEnd = "Skill02_C" />
 			<Skill name = "Gnaw" type = "-1" attackRange = "-1" speed = "0.5" time = "3" damage = "15" percentDamage = "0.02" repelDis = "-1" repelTime = "-1" animReady = "Skill02_D" animProcess = "Skill02_D" animEnd = "Skill02_D" />
@@ -31,7 +52,8 @@
 	</Enemy>
 	<Enemy index = "5" name="Chef" modelName = "Boss_FatCook" iconFileName = "Zombie_FatCook01" hp = "200" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "2" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "0">
 		<Drops probability = "100" eruptProbability = "30" money = "55" increase = "2.5" />
-		<Skills><!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷 3抓取 4召唤） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷 3抓取 4召唤） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
 			<Skill name = "Summon" type = "4" attackRange = "3.2" speed = "0" time = "0" damage = "0" percentDamage = "0" repelDis = "0" repelTime = "0" animReady = "Skill02" animProcess = "" animEnd = "" />
 		</Skills>
 	</Enemy>
@@ -41,93 +63,93 @@
 	<Enemy index = "7" name="Police Zombie" modelName = "Zombie_Policeman_Shotgun" iconFileName = "Zombie_Policeman02" hp = "60" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "2.5" level = "1" rank = "0" damage = "10-10" proCritical = "10" critDamage = "1.5" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
 		<Drops probability = "20" eruptProbability = "15" money = "15" increase = "0.5" />
 	</Enemy>
-  <Enemy index = "8" name="Pestilence" modelName = "Zombie_Pestilence" iconFileName = "Zombie_Pestilence01" hp = "288" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "2" level = "1" rank = "0" damage = "40-40" proCritical = "10" critDamage = "1.5" attackFrequence = "1.6" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "30">
-    <Drops probability = "100" eruptProbability = "30" money = "45" increase = "2.5" />
-  </Enemy>
-  <Enemy index = "9" name="Shooter" modelName = "Zombie_Cowboy" iconFileName = "Zombie_Cowboy01" hp = "88" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "2.8" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "30">
-   <Drops probability = "100" eruptProbability = "30" money = "35" increase = "1.5" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Dash" type = "0" attackRange = "6" speed = "0" time = "0" damage = "80" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "" animEnd = "" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "10" name="Sickle Devil" modelName = "Zombie_Hook_Demon" iconFileName = "Zombie_Hook_Demon01" hp = "138" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "4.2" level = "1" rank = "0" damage = "30-30" proCritical = "20" critDamage = "2.0" attackFrequence = "0.75" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "30" money = "45" increase = "2.5" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Dash" type = "0" attackRange = "8" speed = "9" time = "3" damage = "100" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "Skill_A" animProcess = "Skill_B" animEnd = "Idle" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "11" name="Death Ray" modelName = "Zombie_Dead light" iconFileName = "Zombie_Dead light01" hp = "500" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
-   <Drops probability = "100" eruptProbability = "30" money = "75" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Dash" type = "0" attackRange = "8" speed = "0" time = "0" damage = "100" percentDamage = "0.05" repelDis = "0" repelTime = "0.2" animReady = "Skill_A" animProcess = "Skill_B" animEnd = "Idle" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "12" name="Pathogen" modelName = "Zombie_Spore" iconFileName = "Zombie_Spore01" hp = "1500" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "0" level = "1" rank = "0" damage = "30-30" proCritical = "25" critDamage = "2" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "0">
-   <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "SporeShoot" type = "2" attackRange = "15" speed = "0" time = "0" damage = "100" percentDamage = "0.10" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "" animEnd = "" />
-      <Skill name = "Spine" type = "0" attackRange = "15" speed = "1.5" time = "3" damage = "100" percentDamage = "0.10" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "skill03" animEnd = "Idle" />
-      <Skill name = "Teleport" type = "1" attackRange = "15" speed = "0" time = "0" damage = "150" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "skill04_1" animProcess = "skill04_2" animEnd = "skill04_3" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "13" name="Sharkman" modelName = "Zombie_Guter_Trennung" iconFileName = "Zombie_Guter_Trennung01" hp = "750" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "4" level = "1" rank = "0" damage = "50-50" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Frenzy" type = "1" attackRange = "5" speed = "7" time = "1" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill01_01" animProcess = "Skill01_02" animEnd = "Skill01_03" />
-      <Skill name = "Dash" type = "0" attackRange = "8" speed = "10" time = "0" damage = "150" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "Skill02_01" animProcess = "Skill02_02" animEnd = "Skill02_03" />
-      <Skill name = "Rotate" type = "2" attackRange = "5" speed = "7" time = "5" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill05_01" animProcess = "Skill05_02" animEnd = "Skill05_03" />
-      <Skill name = "Swim" type = "3" attackRange = "5" speed = "4.8" time = "5" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill03_01" animProcess = "Skill03_02" animEnd = "Skill03_03" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "14" name="Roadbuster" modelName = "Zombie_Butcher" iconFileName = "Zombie_Butcher" hp = "1000" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "4" level = "1" rank = "0" damage = "75-75" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "2-3" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Rotate" type = "1" attackRange = "5" speed = "6" time = "3" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "skill01_1" animProcess = "skill01_2" animEnd = "skill01_3" />
-      <Skill name = "Dash" type = "0" attackRange = "10" speed = "20" time = "8" damage = "100" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "skill02_1" animProcess = "skill02_2" animEnd = "skill02_3" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "15" name="Volcano" modelName = "Zombie_Blaze" iconFileName = "Zombie_Blaze01" hp = "1000" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "3.2" level = "1" rank = "0" damage = "75-75" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
-	<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Flame" type = "1" attackRange = "10" speed = "30" time = "120" damage = "150" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "skill02_a" animProcess = "skill02_b" animEnd = "skill02_c" />
-      <Skill name = "Burst" type = "0" attackRange = "10" speed = "10" time = "8" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "16" name="Electrified" modelName = "Zombie_PestilenceJar" iconFileName = "Zombie_PestilenceJar01" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3.2" level = "1" rank = "0" damage = "50-50" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "RoundShoot" type = "0" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
-      <Skill name = "RoundHomingShoot" type = "2" attackRange = "10" speed = "10" time = "6" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill02" animProcess = "" animEnd = "" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "29" name="GoldenGoblin" modelName = "Zombie_Clown_H" iconFileName = "Zombie_Normal_Green01" hp = "800" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "5.6" level = "1" rank = "0" damage = "0-0" proCritical = "10" critDamage = "1.5" attackFrequence = "0.75" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
-	<Drops probability = "100" eruptProbability = "100" money = "10" crystal = "10" increase = "0.2" />
-	<Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：停留时间 speed：逃跑时间 time：存在总时间 damage：何时开始逃跑 percentDamage： repelDis：  repelTime： animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Disappear" type = "0" attackRange = "5" speed = "7" time = "5" damage = "0" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill01_1" animProcess = "Skill01_2" animEnd = "Skill01_2" />
-      <Skill name = "BasicLogic" type = "1" attackRange = "3" speed = "3" time = "30" damage = "25" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "Skill02_01" animProcess = "Skill02_02" animEnd = "Skill02_03" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "30" name="Eva" modelName = "Zombie_Eva" iconFileName = "Eva" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "4" level = "1" rank = "0" damage = "20-20" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "Pollution Device" type = "2" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
-    </Skills>
-  </Enemy>
-  <Enemy index = "31" name="Shepard" modelName = "Zombie_Shepard" iconFileName = "Shepard" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3.5" level = "1" rank = "0" damage = "20-20" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
-    <Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
-    <Skills>
-      <!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
-      <Skill name = "High-Energy Magnetic Field" type = "2" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
-    </Skills>
-  </Enemy>
+	<Enemy index = "8" name="Pestilence" modelName = "Zombie_Pestilence" iconFileName = "Zombie_Pestilence01" hp = "288" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "2" level = "1" rank = "0" damage = "40-40" proCritical = "10" critDamage = "1.5" attackFrequence = "1.6" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "30">
+		<Drops probability = "100" eruptProbability = "30" money = "45" increase = "2.5" />
+	</Enemy>
+	<Enemy index = "9" name="Shooter" modelName = "Zombie_Cowboy" iconFileName = "Zombie_Cowboy01" hp = "88" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "2.8" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "30">
+		<Drops probability = "100" eruptProbability = "30" money = "35" increase = "1.5" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Dash" type = "0" attackRange = "6" speed = "0" time = "0" damage = "80" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "" animEnd = "" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "10" name="Sickle Devil" modelName = "Zombie_Hook_Demon" iconFileName = "Zombie_Hook_Demon01" hp = "138" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "4.2" level = "1" rank = "0" damage = "30-30" proCritical = "20" critDamage = "2.0" attackFrequence = "0.75" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "30" money = "45" increase = "2.5" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Dash" type = "0" attackRange = "8" speed = "9" time = "3" damage = "100" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "Skill_A" animProcess = "Skill_B" animEnd = "Idle" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "11" name="Death Ray" modelName = "Zombie_Dead light" iconFileName = "Zombie_Dead light01" hp = "500" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3" level = "1" rank = "0" damage = "30-30" proCritical = "10" critDamage = "1.5" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "30" money = "75" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Dash" type = "0" attackRange = "8" speed = "0" time = "0" damage = "100" percentDamage = "0.05" repelDis = "0" repelTime = "0.2" animReady = "Skill_A" animProcess = "Skill_B" animEnd = "Idle" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "12" name="Pathogen" modelName = "Zombie_Spore" iconFileName = "Zombie_Spore01" hp = "1500" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "0" level = "1" rank = "0" damage = "30-30" proCritical = "25" critDamage = "2" attackFrequence = "1.5" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "SporeShoot" type = "2" attackRange = "15" speed = "0" time = "0" damage = "100" percentDamage = "0.10" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "" animEnd = "" />
+			<Skill name = "Spine" type = "0" attackRange = "15" speed = "1.5" time = "3" damage = "100" percentDamage = "0.10" repelDis = "3" repelTime = "0.2" animReady = "" animProcess = "skill03" animEnd = "Idle" />
+			<Skill name = "Teleport" type = "1" attackRange = "15" speed = "0" time = "0" damage = "150" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "skill04_1" animProcess = "skill04_2" animEnd = "skill04_3" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "13" name="Sharkman" modelName = "Zombie_Guter_Trennung" iconFileName = "Zombie_Guter_Trennung01" hp = "750" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "4" level = "1" rank = "0" damage = "50-50" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "1-2" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Frenzy" type = "1" attackRange = "5" speed = "7" time = "1" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill01_01" animProcess = "Skill01_02" animEnd = "Skill01_03" />
+			<Skill name = "Dash" type = "0" attackRange = "8" speed = "10" time = "0" damage = "150" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "Skill02_01" animProcess = "Skill02_02" animEnd = "Skill02_03" />
+			<Skill name = "Rotate" type = "2" attackRange = "5" speed = "7" time = "5" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill05_01" animProcess = "Skill05_02" animEnd = "Skill05_03" />
+			<Skill name = "Swim" type = "3" attackRange = "5" speed = "4.8" time = "5" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill03_01" animProcess = "Skill03_02" animEnd = "Skill03_03" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "14" name="Roadbuster" modelName = "Zombie_Butcher" iconFileName = "Zombie_Butcher" hp = "1000" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "4" level = "1" rank = "0" damage = "75-75" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "2-3" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Rotate" type = "1" attackRange = "5" speed = "6" time = "3" damage = "150" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "skill01_1" animProcess = "skill01_2" animEnd = "skill01_3" />
+			<Skill name = "Dash" type = "0" attackRange = "10" speed = "20" time = "8" damage = "100" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "skill02_1" animProcess = "skill02_2" animEnd = "skill02_3" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "15" name="Volcano" modelName = "Zombie_Blaze" iconFileName = "Zombie_Blaze01" hp = "1000" eliteScale = "1.0" bossScale = "1.3" moveSpeed = "3.2" level = "1" rank = "0" damage = "75-75" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Flame" type = "1" attackRange = "10" speed = "30" time = "120" damage = "150" percentDamage = "0" repelDis = "3" repelTime = "0.2" animReady = "skill02_a" animProcess = "skill02_b" animEnd = "skill02_c" />
+			<Skill name = "Burst" type = "0" attackRange = "10" speed = "10" time = "8" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "16" name="Electrified" modelName = "Zombie_PestilenceJar" iconFileName = "Zombie_PestilenceJar01" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3.2" level = "1" rank = "0" damage = "50-50" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "RoundShoot" type = "0" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
+			<Skill name = "RoundHomingShoot" type = "2" attackRange = "10" speed = "10" time = "6" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill02" animProcess = "" animEnd = "" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "29" name="GoldenGoblin" modelName = "Zombie_Clown_H" iconFileName = "Zombie_Normal_Green01" hp = "800" eliteScale = "2.0" bossScale = "2.25" moveSpeed = "5.6" level = "1" rank = "0" damage = "0-0" proCritical = "10" critDamage = "1.5" attackFrequence = "0.75" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "0-0" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "100" money = "10" crystal = "10" increase = "0.2" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：停留时间 speed：逃跑时间 time：存在总时间 damage：何时开始逃跑 percentDamage： repelDis：  repelTime： animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Disappear" type = "0" attackRange = "5" speed = "7" time = "5" damage = "0" percentDamage = "0" repelDis = "6" repelTime = "0.2" animReady = "Skill01_1" animProcess = "Skill01_2" animEnd = "Skill01_2" />
+			<Skill name = "BasicLogic" type = "1" attackRange = "3" speed = "3" time = "30" damage = "25" percentDamage = "0.1" repelDis = "6" repelTime = "0.2" animReady = "Skill02_01" animProcess = "Skill02_02" animEnd = "Skill02_03" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "30" name="Eva" modelName = "Zombie_Eva" iconFileName = "Eva" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "4" level = "1" rank = "0" damage = "20-20" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "Pollution Device" type = "2" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
+		</Skills>
+	</Enemy>
+	<Enemy index = "31" name="Shepard" modelName = "Zombie_Shepard" iconFileName = "Shepard" hp = "1000" eliteScale = "1.3" bossScale = "1.5" moveSpeed = "3.5" level = "1" rank = "0" damage = "20-20" proCritical = "25" critDamage = "2" attackFrequence = "2" proFirstAttackLose = "0" repelTime = "0.2" repelDis = "3-3" proStun = "0" proResurge = "0">
+		<Drops probability = "100" eruptProbability = "50" money = "150" increase = "3.0" />
+		<Skills>
+			<!--技能列表 name：技能名称 type：技能类型（0冲撞 1跳跃 2投掷） attackRange：攻击距离 speed：速度 time：持续时间 damage：伤害 percentDamage：伤害百分比加成 repelDis：造成击退距离  repelTime：击退时间 animReady：起始动画 animProcess：过程动画 animEnd：结束动画-->
+			<Skill name = "High-Energy Magnetic Field" type = "2" attackRange = "10" speed = "8" time = "0" damage = "100" percentDamage = "0.1" repelDis = "3" repelTime = "0.2" animReady = "skill01" animProcess = "" animEnd = "" />
+		</Skills>
+	</Enemy>
 </Enemies>

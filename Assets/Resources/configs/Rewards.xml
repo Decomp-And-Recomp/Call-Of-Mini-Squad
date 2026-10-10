@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Battle rewards and team experience curves. -->
+<!--
+How does this config work:
+- Gold and XP from stages, and XP needed for each team level.
+- The game makes the full tables from these few numbers when it starts.
+- If a value is missing, the game uses its own default number.
+
+How to change the values in the config:
+- To give more gold, raise coinsStarting (first stage) or coinsIncrease (how fast it grows).
+- To make leveling slower, raise the xp values in TeamExperience.
+- Tutorial = gold and tcrystals given for finishing the tutorial map. Default is currently 1000 gold and 50 tcrystals.
+- StageRewards rows = how many stages get a reward. Make it bigger if you add more locations.
+- TeamExperience makes one value for every team level, up to maxLevel in Team.xml.
+-->
 <Rewards>
-    <!-- Winning with 3 stars multiplies money and XP by threeStarMultiplier. firstThreeStarCrystals: crystals for the first 3-star clear of a stage. -->
-    <Stars threeStarMultiplier="2" firstThreeStarCrystals="5" />
+	<!-- Winning with 3 stars multiplies gold and XP by threeStarMultiplier. firstThreeStarCrystals: tcrystals for the first 3-star clear of a stage. -->
+	<Stars threeStarMultiplier="2" firstThreeStarCrystals="5" />
 
-    <!-- Reward payout for finishing the tutorial map: money, and tcrystals as the 3-star bonus. -->
-    <Tutorial money="1000" crystal="50" />
+	<!-- Reward payout for finishing the tutorial map: gold, and tcrystals as the 3-star bonus. -->
+	<Tutorial money="1000" crystal="50" />
 
-    <!-- Per-stage rewards (one row per stage). Row 0 = *Starting. Row n adds *StartIncreasing + *Increase * (n - 1) on top of the previous row. combat*: recommended team combat shown for the stage. -->
-    <StageRewards rows="150" coinsStarting="1500" coinsStartIncreasing="10" coinsIncrease="5" xpStarting="510" xpStartIncreasing="280" xpIncrease="20" combatStarting="350" combatStartIncreasing="40" combatIncrease="20" />
+	<!-- Rewards for each stage. You only set the first stage and how fast it grows, and the game works out the rest. 
+	- coinsStarting / xpStarting = gold and XP from the first stage. 
+	- coinsStartIncreasing / xpStartIncreasing = how much more the second stage gives. 
+	- coinsIncrease / xpIncrease = how much bigger that jump gets for each stage after that. 
+	- combatStarting / combatStartIncreasing / combatIncrease = the same, but for the recommended team power shown on the stage. 
+	- rows = how many stages get a reward (150 is enough for all 4 locations on every difficulty). -->
+	<StageRewards rows="150" coinsStarting="1500" coinsStartIncreasing="10" coinsIncrease="5" xpStarting="510" xpStartIncreasing="280" xpIncrease="20" combatStarting="350" combatStartIncreasing="40" combatIncrease="20" />
 
-    <!-- XP needed per team level. Row 0 = xpStarting. Row n adds xpStartIncreasing + xpIncrease * (n - 1), and xpIncrease grows by xpIncreaseGrowth every row. -->
-    <TeamExperience rows="100" xpStarting="510" xpStartIncreasing="240" xpIncrease="240" xpIncreaseGrowth="30" />
+	<!-- XP needed to level up the team. Level 1 needs xpStarting. Each level after that needs more XP than the one before, and the jump gets a little bigger every level (xpIncreaseGrowth). It goes up to maxLevel in Team.xml by itself. -->
+	<TeamExperience xpStarting="510" xpStartIncreasing="240" xpIncrease="240" xpIncreaseGrowth="30" />
 </Rewards>

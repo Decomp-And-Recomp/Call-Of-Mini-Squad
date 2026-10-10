@@ -73,7 +73,6 @@ public static class EconomyConfig
 	public static int CoinsStarting = 1500, CoinsStartIncreasing = 10, CoinsIncrease = 5;
 	public static int StageXPStarting = 510, StageXPStartIncreasing = 280, StageXPIncrease = 20;
 	public static int StageCombatStarting = 350, StageCombatStartIncreasing = 40, StageCombatIncrease = 20;
-	public static int TeamXPRows = 100;
 	public static int TeamXPStarting = 510, TeamXPStartIncreasing = 240, TeamXPIncrease = 240, TeamXPIncreaseGrowth = 30;
 
 	static EconomyConfig()
@@ -433,7 +432,6 @@ public static class EconomyConfig
 		XmlElement experience = root.SelectSingleNode("TeamExperience") as XmlElement;
 		if (experience != null)
 		{
-			TeamXPRows = Int(experience, "rows", TeamXPRows);
 			TeamXPStarting = Int(experience, "xpStarting", TeamXPStarting);
 			TeamXPStartIncreasing = Int(experience, "xpStartIncreasing", TeamXPStartIncreasing);
 			TeamXPIncrease = Int(experience, "xpIncrease", TeamXPIncrease);

@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- This is the big map. Every <GameLevelNode> is one location.
+- gameLevelID = the stage file for that location (in this same folder).
+- mapFileName = the map picture. mapIconName = the location icon. mapNodePosX / mapNodePosY = place on the map.
+
+How to add a new location into this config:
+  1. Make the stage file first (copy GameLevel_004.xml as GameLevel_005.xml and edit it).
+  2. Copy the last <GameLevelNode ... /> line and paste it at the end.
+  3. Set index to the next number, and gameLevelID to the new file name (without .xml).
+  4. Set name, mapFileName, mapIconName and the position.
+-->
 <!-- SelectGameLevel Data 一级地图界面配置-->
 <SelectGameLevel><!--index:索引 gameLevelID:对应二级地图关卡配置表的名称 mapNodePosX，mapNodePosY:关卡节点在一级级地图上的显示位置-->
 	<GameLevelNode index = "0" gameLevelID = "GameLevel_001" name = "Robin Wood Street" mapFileName = "pic_bg004" mapNodePosX = "-725" mapNodePosY = "220" mapIconName= "pic_decal156" />

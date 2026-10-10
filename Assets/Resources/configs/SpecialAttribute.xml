@@ -1,98 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Attribute> block is one special power a zombie can have (strong, fast, dodge, and so on).
+- Spawn info files use the index to give these powers to zombies.
+- <SpecialEffect type> = an effect index from SpecialAttributeEffect.xml.
+
+How to edit the values of an attribute:
+- Edit the numbers. Keep the same attribute names: each index reads its own attribute names, and a missing one can stop the file from loading.
+
+How to add a brand new attribute:
+- This needs code. The index must be a value in SpecialAttribute.AttributeType, and the attribute needs its own class and load code in DataConf.cs (LoadSpecialAttributeData).
+  For Your Information: index 0 means "random". Random picks from 1 to 32, so a new index will not be picked at random unless that code is changed too.
+-->
 <!--index:索引(0号是随机) name:名字 triggerType:触发类型(0:一次性 1:总是按一定频率执行 2:被击中 3:攻击) frequency:频率 damage:伤害加成 proCrit:暴击率加成 crit:暴击伤害加成-->
 <!--attFrequency:攻击频率加成(倍数) hpMax:生命值上限加成(倍数) accumulate:累加上限 probability:触发概率 reduceAtt:降低攻击力-->
 <!--SpecialEffect type:对应SpecialEffect表里的索引 bufferCount:预加载数量-1为最大敌人数-->
 <SpecialAttribute>
-	<Attribute index = "1" name = "Sturdy" damage = "0.25" description = "aaaaaaaabbbbbbccccccccccc"><!--强壮-->
+	<Attribute index = "1" name = "Sturdy" damage = "0.25" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--强壮-->
 		<SpecialEffect type = "0" bufferCount = "1" />
 		<SpecialEffect type = "26" bufferCount = "-1" />
 	</Attribute>
-	<Attribute index = "2" name = "Mania" proCrit = "25" critDamage = "0.5" description = "aaaaaaaabbbbbbccccccccccc"><!--狂躁-->
+	<Attribute index = "2" name = "Mania" proCrit = "25" critDamage = "0.5" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--狂躁-->
 		<SpecialEffect type = "1" bufferCount = "1" />
 		<SpecialEffect type = "25" bufferCount = "-1" />
 	</Attribute>
-	<Attribute index = "3" name = "Swift" attFrequency = "1.5" addMoveSpeedPercent = "0.0" description = "aaaaaaaabbbbbbccccccccccc"><!--迅速-->
+	<Attribute index = "3" name = "Swift" attFrequency = "1.5" addMoveSpeedPercent = "0.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--迅速-->
 		<SpecialEffect type = "2" bufferCount = "1" />
 		<SpecialEffect type = "23" bufferCount = "-1" />
 	</Attribute>
-	<Attribute index = "4" name = "Dodge" proDodge = "30" description = "aaaaaaaabbbbbbccccccccccc"><!--回避-->
+	<Attribute index = "4" name = "Dodge" proDodge = "30" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--回避-->
 		<SpecialEffect type = "3" bufferCount = "1" />
 		<SpecialEffect type = "24" bufferCount = "-1" />
 	</Attribute>
-	<Attribute index = "5" name = "Rot" reduceHpPercent = "0.01" frequency = "1.0" description = "aaaaaaaabbbbbbccccccccccc"><!--腐败-->
+	<Attribute index = "5" name = "Rot" reduceHpPercent = "0.01" frequency = "1.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--腐败-->
 		<SpecialEffect type = "4" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "6" name = "Stiffness" reduceDamage = "0.6" description = "aaaaaaaabbbbbbccccccccccc"><!--硬化-->
+	<Attribute index = "6" name = "Stiffness" reduceDamage = "0.6" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--硬化-->
 	</Attribute>
-	<Attribute index = "7" name = "Freeze" probability = "20" reduceSpeed = "0.0" frozenTime = "2.0" description = "aaaaaaaabbbbbbccccccccccc"><!--冷藏-->
+	<Attribute index = "7" name = "Freeze" probability = "20" reduceSpeed = "0.0" frozenTime = "2.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--冷藏-->
 		<SpecialEffect type = "6" bufferCount = "1" />
 		<SpecialEffect type = "7" bufferCount = "10" />
 	</Attribute>
-	<Attribute index = "8" name = "Electric" probability = "25" reduceDamage = "0.3" description = "aaaaaaaabbbbbbccccccccccc"><!--漏电-->
-		<SpecialEffect type = "8" bufferCount = "10" /><!--子弹形式，缓冲特殊处理-->
+	<Attribute index = "8" name = "Electric" probability = "25" reduceDamage = "0.3" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--漏电-->
+		<SpecialEffect type = "8" bufferCount = "10" />
+		<!--子弹形式，缓冲特殊处理-->
 	</Attribute>
-	<Attribute index = "9" name = "Alien" damage = "0.3" attFrequency = "1.5" addMoveSpeedPercent = "0.0" description = "aaaaaaaabbbbbbccccccccccc"><!--变异者-->
+	<Attribute index = "9" name = "Alien" damage = "0.3" attFrequency = "1.5" addMoveSpeedPercent = "0.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--变异者-->
 		<SpecialEffect type = "18" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "10" name = "Hellfire" frequency = "5.0" description = "aaaaaaaabbbbbbccccccccccc"><!--地狱火-->
+	<Attribute index = "10" name = "Hellfire" frequency = "5.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--地狱火-->
 		<SpecialEffect type = "28" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "11" name = "Enhance" hpMax = "1.0" description = "aaaaaaaabbbbbbccccccccccc"><!--强化-->
+	<Attribute index = "11" name = "Enhance" hpMax = "1.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--强化-->
 	</Attribute>
-	<Attribute index = "12" name = "Endure" probability = "35" duration = "3.0" description = "aaaaaaaabbbbbbccccccccccc"><!--霸体-->
+	<Attribute index = "12" name = "Endure" probability = "35" duration = "3.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--霸体-->
 		<SpecialEffect type = "27" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "13" name = "Biobomb" probability = "10" description = "aaaaaaaabbbbbbccccccccccc"><!--生体炸弹-->
+	<Attribute index = "13" name = "Biobomb" probability = "10" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--生体炸弹-->
 		<SpecialEffect type = "9" bufferCount = "20" />
 	</Attribute>
-	<Attribute index = "14" name = "Bloodlust" addSpeedPercent = "0.03" damage = "0.05" duration = "3" accumulate = "30" description = "aaaaaaaabbbbbbccccccccccc"><!--嗜血-->
+	<Attribute index = "14" name = "Bloodlust" addSpeedPercent = "0.03" damage = "0.05" duration = "3" accumulate = "30" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--嗜血-->
 	</Attribute>
-	<Attribute index = "15" name = "Diminish" reduceDamage = "0.15" description = "aaaaaaaabbbbbbccccccccccc"><!--远程弱化-->
+	<Attribute index = "15" name = "Diminish" reduceDamage = "0.15" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--远程弱化-->
 		<SpecialEffect type = "10" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "16" name = "Field" critDamage = "5.0" normalDamage = "0.1" description = "aaaaaaaabbbbbbccccccccccc"><!--领域-->
+	<Attribute index = "16" name = "Field" critDamage = "5.0" normalDamage = "0.1" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--领域-->
 		<SpecialEffect type = "19" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "17" name = "Strike" probability = "30" bombDamage = "2.0" frozenTime = "3.0" description = "aaaaaaaabbbbbbccccccccccc"><!--反击-->
+	<Attribute index = "17" name = "Strike" probability = "30" bombDamage = "2.0" frozenTime = "3.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--反击-->
 	</Attribute>
-	<Attribute index = "18" name = "Nullify" description = "aaaaaaaabbbbbbccccccccccc"><!--技能无效-->
+	<Attribute index = "18" name = "Nullify" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--技能无效-->
 		<SpecialEffect type = "20" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "19" name = "Sting" probability = "100" duration = "5.0" damage = "0.02-0.05" description = "aaaaaaaabbbbbbccccccccccc"><!--毒爪-->
+	<Attribute index = "19" name = "Sting" probability = "100" duration = "5.0" damage = "0.02-0.05" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--毒爪-->
 	</Attribute>
-	<Attribute index = "20" name = "Exacerbate" probability = "100" duration = "5.0" damage = "3-5" description = "aaaaaaaabbbbbbccccccccccc"><!--恶化-->
+	<Attribute index = "20" name = "Exacerbate" probability = "100" duration = "5.0" damage = "3-5" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--恶化-->
 	</Attribute>
-	<Attribute index = "21" name = "Knell" probability = "30" description = "aaaaaaaabbbbbbccccccccccc"><!--丧钟-->
+	<Attribute index = "21" name = "Knell" probability = "30" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--丧钟-->
 	</Attribute>
-	<Attribute index = "22" name = "Elegy" frequency = "20" hp = "0.15" description = "aaaaaaaabbbbbbccccccccccc"><!--挽歌-->
+	<Attribute index = "22" name = "Elegy" frequency = "20" hp = "0.15" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--挽歌-->
 	</Attribute>
-	<Attribute index = "23" name = "Vampire" description = "aaaaaaaabbbbbbccccccccccc"><!--吸血鬼-->
+	<Attribute index = "23" name = "Vampire" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--吸血鬼-->
 		<SpecialEffect type = "11" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "24" name = "Crush" reduceAtt = "0.5" reduceMoveSpeed = "0.0" duration = "5.0" description = "aaaaaaaabbbbbbccccccccccc"><!--碾压-->
+	<Attribute index = "24" name = "Crush" reduceAtt = "0.5" reduceMoveSpeed = "0.0" duration = "5.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--碾压-->
 	</Attribute>
-	<Attribute index = "25" name = "Split" hp = "0.5" newHp = "0.3" description = "aaaaaaaabbbbbbccccccccccc"><!--分裂-->
+	<Attribute index = "25" name = "Split" hp = "0.5" newHp = "0.3" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--分裂-->
 		<SpecialEffect type = "22" bufferCount = "2" />
 	</Attribute>
-	<Attribute index = "26" name = "Tornado" attFrequency = "0.3" damage = "0.01-0.02" description = "aaaaaaaabbbbbbccccccccccc"><!--龙卷风-->
+	<Attribute index = "26" name = "Tornado" attFrequency = "0.3" damage = "0.01-0.02" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--龙卷风-->
 		<SpecialEffect type = "12" bufferCount = "3" />
 	</Attribute>
-	<Attribute index = "27" name = "Invincible" frequency = "10" duration = "2.5" description = "aaaaaaaabbbbbbccccccccccc"><!--无敌-->
+	<Attribute index = "27" name = "Invincible" frequency = "10" duration = "2.5" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--无敌-->
 		<SpecialEffect type = "16" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "28" name = "Pus" frequency = "12" damage = "1.0" poisonDuration = "5.0" poisonFrequency = "0.5" description = "aaaaaaaabbbbbbccccccccccc"><!--脓血-->
+	<Attribute index = "28" name = "Pus" frequency = "12" damage = "1.0" poisonDuration = "5.0" poisonFrequency = "0.5" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--脓血-->
 		<SpecialEffect type = "13" bufferCount = "3" />
 	</Attribute>
-	<Attribute index = "29" name = "Bomb" frequency = "10" damage = "3.0" description = "aaaaaaaabbbbbbccccccccccc"><!--炸弹-->
+	<Attribute index = "29" name = "Bomb" frequency = "10" damage = "3.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--炸弹-->
 		<SpecialEffect type = "14" bufferCount = "3" />
 	</Attribute>
-	<Attribute index = "30" name = "Nitrogen" frequency = "10" damage = "1.0" frozenTime = "3.0" description = "aaaaaaaabbbbbbccccccccccc"><!--液氮-->
+	<Attribute index = "30" name = "Nitrogen" frequency = "10" damage = "1.0" frozenTime = "3.0" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--液氮-->
 		<SpecialEffect type = "15" bufferCount = "3" />
 	</Attribute>
-	<Attribute index = "31" name = "Summon" frequency = "10" zombie = "20" zombieBomb = "10" addSpeedPercent = "0.2" description = "aaaaaaaabbbbbbccccccccccc"><!--召唤-->
+	<Attribute index = "31" name = "Summon" frequency = "10" zombie = "20" zombieBomb = "10" addSpeedPercent = "0.2" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--召唤-->
 		<SpecialEffect type = "21" bufferCount = "1" />
 	</Attribute>
-	<Attribute index = "32" name = "Linkage" description = "aaaaaaaabbbbbbccccccccccc"><!--生命链接-->
+	<Attribute index = "32" name = "Linkage" description = "aaaaaaaabbbbbbccccccccccc">
+		<!--生命链接-->
 		<SpecialEffect type = "17" bufferCount = "3" />
 	</Attribute>
 </SpecialAttribute>

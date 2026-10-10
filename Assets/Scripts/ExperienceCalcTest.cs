@@ -14,7 +14,7 @@ public static class ExperienceCalcTest
 	public static void Init()
 	{
 		EconomyConfig.EnsureLoaded();
-		int rows = Mathf.Max(EconomyConfig.TeamXPRows, EconomyConfig.TeamMaxLevel + 1);
+		int rows = EconomyConfig.TeamMaxLevel + 1;
 		int xpIncrease = EconomyConfig.TeamXPIncrease;
 		int currentXPAdd = 0;
 		levelTest = new int[rows];

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Effect> line is one visual effect for zombie special powers (SpecialAttribute.xml).
+- animType = 0 particle, 1 animation, 2 animator, 3 mixed. playTime = seconds (-1 = until stopped).
+
+How to add a brand new effect into this config:
+  - This needs code. The index must be a value in SpecialAttribute.SpecialAttributeEffectType.
+  1. Add the new value to SpecialAttributeEffectType in the code.
+  2. Copy the last <Effect ... /> line, paste it at the end, and set index to that value.
+  3. Set fileName to the effect prefab.
+-->
 <!-- effect Data -->
-<Effects><!--index:索引 fileNmae:文件名 animType:是否是模型动画(0粒子，1 animation, 2 animator 3 combie) playTime:特效播放时间 -->
+<Effects>
+	<!--index:索引 fileNmae:文件名 animType:是否是模型动画(0粒子，1 animation, 2 animator 3 combie) playTime:特效播放时间 -->
 	<Effect index = "0" fileName = "strong" animType = "0" playTime = "1.0"/>
 	<Effect index = "1" fileName = "Manic" animType = "0" playTime = "1.0"/>
 	<Effect index = "2" fileName = "Rapid" animType = "0" playTime = "1.0"/>
@@ -30,5 +42,4 @@
 	<Effect index = "26" fileName = "Small_halo_Y" animType = "0" playTime = "-1"/>
 	<Effect index = "27" fileName = "monsters_04" animType = "3" playTime = "-1"/>
 	<Effect index = "28" fileName = "HellFirePower" animType = "3" playTime = "1.5"/>
-	
 </Effects>

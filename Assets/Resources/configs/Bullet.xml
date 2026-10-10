@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Bullet> line is one bullet look. Weapons in Weapons.xml use the index number.
+- fileName = the bullet prefab. isModel = 1 if it is a 3D model, 0 if not.
+- hitType = the hit effect, as an index from Effect.xml.
+
+How to add a new bullet type into this config:
+  1. Copy the last <Bullet ... /> line and paste it at the END of the list.
+  2. Set index to the next number (last index + 1). Do not skip numbers. The game finds bullets by their place in the list.
+  3. Set fileName, isModel and hitType.
+  4. Use the new index as Bullet type in Weapons.xml.
+-->
 <!-- Bullet Data -->
-<Bullets><!--index:索引 fileNmae:文件名 isModel:是否是模型(0不是，1是) hitType:打击特效(对应Effects列表里的索引) -->
+<Bullets>
+	<!--index:索引 fileNmae:文件名 isModel:是否是模型(0不是，1是) hitType:打击特效(对应Effects列表里的索引) -->
 	<Bullet index = "0" fileName = "BulletFake" isModel = "0" hitType = "1"/>
 	<Bullet index = "1" fileName = "Pistol_Bullet" isModel = "1" hitType = "1"/>
 	<Bullet index = "2" fileName = "Sniper_03_Bullet" isModel = "1" hitType = "1"/>
@@ -28,16 +41,16 @@
 	<Bullet index = "24" fileName = "Zombie_Nurse_venom" isModel = "0" hitType = "31"/>
 	<Bullet index = "25" fileName = "FireBall" isModel = "0" hitType = "4"/>
 	<Bullet index = "26" fileName = "IceBall" isModel = "0" hitType = "23"/>
-  <Bullet index = "27" fileName = "Pistol_Bullet_Collide" isModel = "1" hitType = "1"/>
-  <Bullet index = " 28" fileName = "Putridifier_Attack" isModel = "0" hitType = "47"/>
-  <Bullet index = " 29" fileName = "DeathLight_Attack_1_G" isModel = "0" hitType = "31"/>
-  <Bullet index = " 30" fileName = "Zombie_Spore_Green_L_baozi_fly" isModel = "1" hitType = "31"/>
-  <Bullet index = " 31" fileName = "Zombie_Spore_Purple_L_baozi_fly" isModel = "1" hitType = "31"/>
-  <Bullet index = " 32" fileName = "Pyro_Attack" isModel = "0" hitType = "22"/>
-  <Bullet index = " 33" fileName = "pest_Attack_Bullet" isModel = "0" hitType = "41"/>
-  <Bullet index = " 34" fileName = "Doctor_Attack_Bullet" isModel = "1" hitType = "44"/>
-  <Bullet index = " 35" fileName = "Missile" isModel = "1" hitType = "4"/>
-  <Bullet index = " 36" fileName = "BlackholeBullet" isModel = "1" hitType = "4"/>
-  <Bullet index = " 37" fileName = "DeathLight_Attack_1_Z" isModel = "0" hitType = "31"/>
-  <Bullet index = " 38" fileName = "Casting" isModel = "1" hitType = "-1"/>
+	<Bullet index = "27" fileName = "Pistol_Bullet_Collide" isModel = "1" hitType = "1"/>
+	<Bullet index = " 28" fileName = "Putridifier_Attack" isModel = "0" hitType = "47"/>
+	<Bullet index = " 29" fileName = "DeathLight_Attack_1_G" isModel = "0" hitType = "31"/>
+	<Bullet index = " 30" fileName = "Zombie_Spore_Green_L_baozi_fly" isModel = "1" hitType = "31"/>
+	<Bullet index = " 31" fileName = "Zombie_Spore_Purple_L_baozi_fly" isModel = "1" hitType = "31"/>
+	<Bullet index = " 32" fileName = "Pyro_Attack" isModel = "0" hitType = "22"/>
+	<Bullet index = " 33" fileName = "pest_Attack_Bullet" isModel = "0" hitType = "41"/>
+	<Bullet index = " 34" fileName = "Doctor_Attack_Bullet" isModel = "1" hitType = "44"/>
+	<Bullet index = " 35" fileName = "Missile" isModel = "1" hitType = "4"/>
+	<Bullet index = " 36" fileName = "BlackholeBullet" isModel = "1" hitType = "4"/>
+	<Bullet index = " 37" fileName = "DeathLight_Attack_1_Z" isModel = "0" hitType = "31"/>
+	<Bullet index = " 38" fileName = "Casting" isModel = "1" hitType = "-1"/>
 </Bullets>

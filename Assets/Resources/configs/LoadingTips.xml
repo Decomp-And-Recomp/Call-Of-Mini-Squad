@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <tip> line is one tip shown on the loading screen. One is picked at random.
 
+How to add a new loading tip into this config:
+  1. Copy a <tip ... /> line.
+  2. Change the text inside description="...".
+  3. Do not use the " character inside the text. Write &quot; instead.
+-->
 <tips>
-    <tip description="When upgrading genius, notifying the genius information as some of them are only for certain characters."/>
-    <tip description="Login the game everyday to claim tcrystals reward."/>
-    <tip description="If team's Battle Points are lower that proper BP , your team will be in danger."/>
-    <tip description="Fierce zombies have many special attributes of danger."/>
-    <tip description="The current max level for the team is 50."/>
-    <tip description="Shooting on the run will decrease team's moving speeds."/>
-    <tip description="You can pause the feature of changing interfaces during the battle."/>
-    <tip description="Equipment enhancement of each team member will increase team's total BP."/>
-    <tip description="Upgrading character's skills will help you to clear the stage."/>
-    <tip description="In battle, you can switch between individual and team battle modes."/>
-    <tip description="Please feel free to contact with us, and provide us your feedback and suggestions."/>
-    <tip description="Repeatedly challenging the same stage will reduce the rewards you obtained."/>
-    <tip description="Genius and evolution can raise team's capability."/>
+	<tip description="When upgrading genius, notifying the genius information as some of them are only for certain characters."/>
+	<tip description="Login the game everyday to claim tcrystals reward."/>
+	<tip description="If team's Battle Points are lower that proper BP , your team will be in danger."/>
+	<tip description="Fierce zombies have many special attributes of danger."/>
+	<tip description="The current max level for the team is 50."/>
+	<tip description="Shooting on the run will decrease team's moving speeds."/>
+	<tip description="You can pause the feature of changing interfaces during the battle."/>
+	<tip description="Equipment enhancement of each team member will increase team's total BP."/>
+	<tip description="Upgrading character's skills will help you to clear the stage."/>
+	<tip description="In battle, you can switch between individual and team battle modes."/>
+	<tip description="Please feel free to contact with us, and provide us your feedback and suggestions."/>
+	<tip description="Repeatedly challenging the same stage will reduce the rewards you obtained."/>
+	<tip description="Genius and evolution can raise team's capability."/>
 </tips>

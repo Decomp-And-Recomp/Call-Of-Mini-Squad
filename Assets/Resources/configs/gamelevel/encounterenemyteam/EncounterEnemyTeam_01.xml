@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+How does this config work:
+- This is for the half-implemented PvP mode. The game can load it, but no stage uses it, so it is never loaded.
+- This is the enemy team for an encounter stage (battleMode="2" in a GameLevel file).
+- The stage points to this file with enenyTeamID="EncounterEnemyTeam_01".
+- This file is a template. All values are empty.
+
+How to make an enemy team in this config:
+  1. Set teamLevel. Fill every value with a number.
+  2. Talent index = from the Talent part of TeamSpecialAttribute.xml. Evolve index = from its Evolve part.
+  3. Each <Hero> is one team member (up to 5). heroIndex = from Heroes.xml. siteNum = team slot (0 to 4). equip...Index = from Equips.xml.
+-->
 <Team teamLevel = "" ><!---->
 	<Talents>
-		<Talent index = "" level = "">
-		<Talent index = "" level = "">
+		<Talent index = "" level = ""/>
+		<Talent index = "" level = ""/>
 	</Talents>
 	<Evolves>
-		<Evolve index = "" level = "">
-		<Evolve index = "" level = "">
+		<Evolve index = "" level = ""/>
+		<Evolve index = "" level = ""/>
 	</Evolves>
 	<Heroes>
 		<Hero heroIndex = "" weaponLevel = "" skillLevel = "" siteNum = "" equipHelmetIndex = "" equipHelmetLevel = "" equipArmorIndex = "" equipArmorLevel = "" equipOrnamentIndex = "" equipOrnamentLevel = "" />

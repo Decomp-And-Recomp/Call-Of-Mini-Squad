@@ -1,210 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <Weapon> block is the weapon of one hero (see weaponType in Heroes.xml).
+- Bullet = how the bullet flies and hits (speed, range, knockback). Bullet type = index in Bullet.xml.
+- Feature = aim spread and when the bullet leaves the gun in the animation.
+- UpgradePhase = one <Phase> per weapon star. damageIncr = extra damage per level.
+- fireFrequence = shots per minute. ammo = -1 means no reload.
+- levelPerPhase at the top = how many levels are in each star.
+
+How to change the values of a weapon in the config:
+- Edit the numbers. Number ranges are written "min-max" (example: repelDis="4-6.5").
+
+How to add a new weapon into this config:
+  - This needs code. The type must be a value in Weapon.WeaponType, and the weapon needs its own script.
+  1. Add the new type to Weapon.WeaponType in the code.
+  2. Copy a whole <Weapon> block (start tag to end tag) and set type to the new number.
+  3. Set name, modelFileName and iconFileName, then the stats.
+  4. Keep the same number of <Phase> lines as the other weapons.
+-->
 <!-- Weapons Data -->
-<Weapons levelPerPhase = "5"><!--levelPerPhase:武器每阶段有n级-->
-  <Weapon type="0" name="Remington Pipe" modelFileName="ShotGun_01" iconFileName="13" >
-    <!--Bullet: range:射程 hitType:伤害检测类型(0为弹道检测，1为碰撞检测) repelDis:击退距离 repelTime:击退时间 effectHitType:打击特效 hitStrength:打击强度 extra:暂定最多5项 特殊武器专用 不需要不添加-->
-    <Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="1" hitStrength = "4" />
-    <!--Feature: emitTimeInAnimation:动画发射子弹的时间点 deviationStart：从第几发子弹开始偏离(-1为无偏离) deviationRecoverTime：偏离恢复时间 deviationDeltaAngle：偏离叠加角度 deviationMaxAngle：最大偏离角度(若是散弹枪此值为散射角度)-->
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="1.0" />
-    <UpgradePhase>
-      <!--Phase: damageIncr:升级伤害增加率 ammo:无限填-1 rapid:一次开火连射数(≤1都视为单发) rapidInterval:连射间隔秒-->
-      <Phase index = "0" damage = "136-136" damageIncr = "16" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "218-218" damageIncr = "32" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "381-381" damageIncr = "49" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "626-626" damageIncr = "65" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "952-952" damageIncr = "82" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="1" name="M4A1" modelFileName="MachineGun_02" iconFileName="5" >
-    <Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="26" hitStrength = "1" />
-    <Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "65-65" damageIncr = "7" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "104-104" damageIncr = "15" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "182-182" damageIncr = "23" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "299-299" damageIncr = "31" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "455-455" damageIncr = "39" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="2" name="Peacemaker" modelFileName="Skill_Doctor_01" iconFileName="36" >
-    <!--extra1:伤害的x倍转换成生命-->
-    <Bullet type="34" speed="60" range="14" hitType="1" repelDis="0-0" repelTime="0" effectHitType="44" hitStrength = "1" extra1="0.75"/>
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "32-32" damageIncr = "3" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "51-51" damageIncr = "7" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "90-90" damageIncr = "11" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "147-147" damageIncr = "15" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "224-224" damageIncr = "19" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="3" name="Judge" modelFileName="Sniper_03" iconFileName="20" >
-    <Bullet type="1" speed="60" range="18" hitType="0" repelDis="5-7" repelTime="0.2" effectHitType="3" hitStrength = "4" />
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "233-233" damageIncr = "28" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "373-373" damageIncr = "55" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "652-652" damageIncr = "84" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "1072-1072" damageIncr = "111" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "1631-1631" damageIncr = "140" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="4" name="M202A1 FLASH" modelFileName="Grenade_03" iconFileName="1" >
-    <Bullet type="3" speed="40" range="15" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="4" hitStrength = "5" />
-    <Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "175-175" damageIncr = "21" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
-	  <Phase index = "1" damage = "280-280" damageIncr = "42" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
-      <Phase index = "2" damage = "490-490" damageIncr = "63" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
-      <Phase index = "3" damage = "805-805" damageIncr = "84" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
-      <Phase index = "4" damage = "1225-1225" damageIncr = "105" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="5" name="Muramasa" modelFileName="Ninjia_03" iconFileName="32" >
-    <Bullet type="14" speed="15" range="6" hitType="1" repelDis="3-5" repelTime="0.2" effectHitType="22" hitStrength = "3" />
-    <Feature emitTimeInAnimation="0.2" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "205-205" damageIncr = "24" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "328-328" damageIncr = "49" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "574-574" damageIncr = "73" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "943-943" damageIncr = "98" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "1435-1435" damageIncr = "123" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="6" name="Shinobi Katana" modelFileName="Ninjia_Ice_02" iconFileName="31" >
-    <Bullet type="16" speed="15" range="6" hitType="1" repelDis="3-5" repelTime="0.2" effectHitType="23" hitStrength = "3" />
-    <Feature emitTimeInAnimation="0.2" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-     <UpgradePhase>
-      <Phase index = "0" damage = "205-205" damageIncr = "24" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "328-328" damageIncr = "49" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "574-574" damageIncr = "73" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "943-943" damageIncr = "98" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "1435-1435" damageIncr = "123" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="7" name="RPG" modelFileName="Grenade_01" iconFileName="2" >
-    <Bullet type="3" speed="40" range="15" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="4" hitStrength = "5" />
-    <Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "450-450" damageIncr = "54" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "720-720" damageIncr = "108" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "1260-1260" damageIncr = "162" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "2070-2070" damageIncr = "216" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "3150-3150" damageIncr = "271" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="8" name="Pulsar" modelFileName="Laser_02" iconFileName="24" >
-    <Bullet type="7" speed="0" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="16" hitStrength = "3" />
-    <Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "580-580" damageIncr = "69" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "928-928" damageIncr = "139" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "1624-1624" damageIncr = "208" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "2668-2668" damageIncr = "278" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "4060-4060" damageIncr = "348" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="9" name="Magnum" modelFileName="44 magnum" iconFileName="35" >
-    <Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="2" hitStrength = "1" />
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "143-143" damageIncr = "17" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "229-229" damageIncr = "34" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "400-400" damageIncr = "51" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "658-658" damageIncr = "68" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "1001-1001" damageIncr = "86" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="10" name="Sounds of Paradise" modelFileName="virus_04" iconFileName="30" >
-    <!--extra1:buff持续时间秒 extra2:buff下所造成的伤害提升倍率-->
-    <Bullet type="20" speed="60" range="14" hitType="0" repelDis="0-0" repelTime="0" effectHitType="30" hitStrength = "1" extra1="3" extra2="0.3"/>
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "118-118" damageIncr = "14" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "189-189" damageIncr = "28" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "330-330" damageIncr = "42" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "543-543" damageIncr = "56" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "826-826" damageIncr = "71" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="11" name="Zombie Buster" modelFileName="ShotGun_02" iconFileName="14" >
-    <Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="1" hitStrength = "4" />
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "416-416" damageIncr = "50" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
-      <Phase index = "1" damage = "666-666" damageIncr = "99" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
-      <Phase index = "2" damage = "1165-1165" damageIncr = "149" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
-      <Phase index = "3" damage = "1914-1914" damageIncr = "199" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
-      <Phase index = "4" damage = "2912-2912" damageIncr = "250" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="12" name="O.I.C.W" modelFileName="MachineGun_Tanya" iconFileName="6" >
-    <Bullet type="1" speed="60" range="10" hitType="0" repelDis="0-0" repelTime="0" effectHitType="27" hitStrength = "2" />
-    <Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "125-125" damageIncr = "15" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
-      <Phase index = "1" damage = "200-200" damageIncr = "30" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
-      <Phase index = "2" damage = "350-350" damageIncr = "45" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
-      <Phase index = "3" damage = "575-575" damageIncr = "60" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
-      <Phase index = "4" damage = "875-875" damageIncr = "75" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="13" name="Zeus' Thunder" modelFileName="Pistol_04" iconFileName="11" >
-    <Bullet type="19" speed="60" range="14" hitType="0" repelDis="0-0" repelTime="0" effectHitType="29" hitStrength = "2" />
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "570-570" damageIncr = "68" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "912-912" damageIncr = "136" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "1596-1596" damageIncr = "205" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "2622-2622" damageIncr = "273" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "3990-3990" damageIncr = "342" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="14" name="War Machine" modelFileName="MachineGun_04" iconFileName="7" >
-    <Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="28" hitStrength = "3" />
-    <Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "83-83" damageIncr = "10" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "133-133" damageIncr = "19" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "232-232" damageIncr = "30" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "382-382" damageIncr = "39" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "581-581" damageIncr = "50" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="15" name="Death Roll" modelFileName="Sniper_04" iconFileName="21" >
-    <!--extra1:一次开枪射出x发子弹 extra2:一次射出子弹间的延迟 extra3:一次射出子弹间的角度-->
-    <Bullet type="1" speed="60" range="12" hitType="0" repelDis="5-7" repelTime="0.2" effectHitType="3" hitStrength = "4" extra1="3" extra2="0.1" extra3="8"/>
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "905-905" damageIncr = "108" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "1448-1448" damageIncr = "217" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "2534-2534" damageIncr = "325" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "4163-4163" damageIncr = "434" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "6335-6335" damageIncr = "543" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="16" name="Justice" modelFileName="ShotGun_04" iconFileName="16" >
-    <!--extra1:x%的几率造成冰冻 extra2:冰冻持续时间-->
-    <Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="20" hitStrength = "4" extra1="20" extra2="3" />
-    <Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "215-215" damageIncr = "25" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
-      <Phase index = "1" damage = "344-344" damageIncr = "51" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
-      <Phase index = "2" damage = "602-602" damageIncr = "77" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
-      <Phase index = "3" damage = "989-989" damageIncr = "103" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
-      <Phase index = "4" damage = "1505-1505" damageIncr = "129" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
-  <Weapon type="17" name="Annihilator" modelFileName="Grenade_04" iconFileName="3" >
-    <!--extra1:爆裂半径 extra2:爆裂衰减半径 extra3:衰减后的伤害倍率 extra4:爆裂伤害间隔秒 extra5:爆裂持续时间秒-->
-    <Bullet type="10" speed="10" range="14" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="-1" hitStrength = "5" extra1="3" extra2="1.5" extra3="0.4" extra4="0.5" extra5="3"/>
-    <Feature emitTimeInAnimation="0.0" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
-    <UpgradePhase>
-      <Phase index = "0" damage = "325-325" damageIncr = "39" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "1" damage = "520-520" damageIncr = "78" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "2" damage = "910-910" damageIncr = "117" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "3" damage = "1495-1495" damageIncr = "156" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-      <Phase index = "4" damage = "2275-2275" damageIncr = "195" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
-    </UpgradePhase>
-  </Weapon>
+<Weapons levelPerPhase = "5">
+	<!--levelPerPhase:武器每阶段有n级-->
+	<Weapon type="0" name="Remington Pipe" modelFileName="ShotGun_01" iconFileName="13" >
+		<!--Bullet: range:射程 hitType:伤害检测类型(0为弹道检测，1为碰撞检测) repelDis:击退距离 repelTime:击退时间 effectHitType:打击特效 hitStrength:打击强度 extra:暂定最多5项 特殊武器专用 不需要不添加-->
+		<Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="1" hitStrength = "4" />
+		<!--Feature: emitTimeInAnimation:动画发射子弹的时间点 deviationStart：从第几发子弹开始偏离(-1为无偏离) deviationRecoverTime：偏离恢复时间 deviationDeltaAngle：偏离叠加角度 deviationMaxAngle：最大偏离角度(若是散弹枪此值为散射角度)-->
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="1.0" />
+		<UpgradePhase>
+			<!--Phase: damageIncr:升级伤害增加率 ammo:无限填-1 rapid:一次开火连射数(≤1都视为单发) rapidInterval:连射间隔秒-->
+			<Phase index = "0" damage = "136-136" damageIncr = "16" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "218-218" damageIncr = "32" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "381-381" damageIncr = "49" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "626-626" damageIncr = "65" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "952-952" damageIncr = "82" ammo = "20" reload = "2.5" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="1" name="M4A1" modelFileName="MachineGun_02" iconFileName="5" >
+		<Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="26" hitStrength = "1" />
+		<Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "65-65" damageIncr = "7" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "104-104" damageIncr = "15" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "182-182" damageIncr = "23" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "299-299" damageIncr = "31" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "455-455" damageIncr = "39" ammo = "60" reload = "1.6" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="2" name="Peacemaker" modelFileName="Skill_Doctor_01" iconFileName="36" >
+		<!--extra1:伤害的x倍转换成生命-->
+		<Bullet type="34" speed="60" range="14" hitType="1" repelDis="0-0" repelTime="0" effectHitType="44" hitStrength = "1" extra1="0.75"/>
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "32-32" damageIncr = "3" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "51-51" damageIncr = "7" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "90-90" damageIncr = "11" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "147-147" damageIncr = "15" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "224-224" damageIncr = "19" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="3" name="Judge" modelFileName="Sniper_03" iconFileName="20" >
+		<Bullet type="1" speed="60" range="18" hitType="0" repelDis="5-7" repelTime="0.2" effectHitType="3" hitStrength = "4" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "233-233" damageIncr = "28" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "373-373" damageIncr = "55" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "652-652" damageIncr = "84" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "1072-1072" damageIncr = "111" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "1631-1631" damageIncr = "140" ammo = "15" reload = "2.5" fireFrequence = "60" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="4" name="M202A1 FLASH" modelFileName="Grenade_03" iconFileName="1" >
+		<Bullet type="3" speed="40" range="15" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="4" hitStrength = "5" />
+		<Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "175-175" damageIncr = "21" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
+			<Phase index = "1" damage = "280-280" damageIncr = "42" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
+			<Phase index = "2" damage = "490-490" damageIncr = "63" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
+			<Phase index = "3" damage = "805-805" damageIncr = "84" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
+			<Phase index = "4" damage = "1225-1225" damageIncr = "105" ammo = "20" reload = "3" fireFrequence = "40" rapid = "4" rapidInterval = "0.3" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="5" name="Muramasa" modelFileName="Ninjia_03" iconFileName="32" >
+		<Bullet type="14" speed="15" range="6" hitType="1" repelDis="3-5" repelTime="0.2" effectHitType="22" hitStrength = "3" />
+		<Feature emitTimeInAnimation="0.2" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "205-205" damageIncr = "24" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "328-328" damageIncr = "49" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "574-574" damageIncr = "73" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "943-943" damageIncr = "98" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "1435-1435" damageIncr = "123" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="6" name="Shinobi Katana" modelFileName="Ninjia_Ice_02" iconFileName="31" >
+		<Bullet type="16" speed="15" range="6" hitType="1" repelDis="3-5" repelTime="0.2" effectHitType="23" hitStrength = "3" />
+		<Feature emitTimeInAnimation="0.2" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "205-205" damageIncr = "24" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "328-328" damageIncr = "49" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "574-574" damageIncr = "73" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "943-943" damageIncr = "98" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "1435-1435" damageIncr = "123" ammo = "-1" reload = "0" fireFrequence = "100" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="7" name="RPG" modelFileName="Grenade_01" iconFileName="2" >
+		<Bullet type="3" speed="40" range="15" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="4" hitStrength = "5" />
+		<Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "450-450" damageIncr = "54" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "720-720" damageIncr = "108" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "1260-1260" damageIncr = "162" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "2070-2070" damageIncr = "216" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "3150-3150" damageIncr = "271" ammo = "10" reload = "4" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="8" name="Pulsar" modelFileName="Laser_02" iconFileName="24" >
+		<Bullet type="7" speed="0" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="16" hitStrength = "3" />
+		<Feature emitTimeInAnimation="0.00" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "580-580" damageIncr = "69" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "928-928" damageIncr = "139" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "1624-1624" damageIncr = "208" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "2668-2668" damageIncr = "278" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "4060-4060" damageIncr = "348" ammo = "15" reload = "2" fireFrequence = "50" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="9" name="Magnum" modelFileName="44 magnum" iconFileName="35" >
+		<Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="2" hitStrength = "1" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "143-143" damageIncr = "17" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "229-229" damageIncr = "34" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "400-400" damageIncr = "51" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "658-658" damageIncr = "68" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "1001-1001" damageIncr = "86" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="10" name="Sounds of Paradise" modelFileName="virus_04" iconFileName="30" >
+		<!--extra1:buff持续时间秒 extra2:buff下所造成的伤害提升倍率-->
+		<Bullet type="20" speed="60" range="14" hitType="0" repelDis="0-0" repelTime="0" effectHitType="30" hitStrength = "1" extra1="3" extra2="0.3"/>
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "118-118" damageIncr = "14" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "189-189" damageIncr = "28" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "330-330" damageIncr = "42" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "543-543" damageIncr = "56" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "826-826" damageIncr = "71" ammo = "35" reload = "1.25" fireFrequence = "180" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="11" name="Zombie Buster" modelFileName="ShotGun_02" iconFileName="14" >
+		<Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="1" hitStrength = "4" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "416-416" damageIncr = "50" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
+			<Phase index = "1" damage = "666-666" damageIncr = "99" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
+			<Phase index = "2" damage = "1165-1165" damageIncr = "149" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
+			<Phase index = "3" damage = "1914-1914" damageIncr = "199" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
+			<Phase index = "4" damage = "2912-2912" damageIncr = "250" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="12" name="O.I.C.W" modelFileName="MachineGun_Tanya" iconFileName="6" >
+		<Bullet type="1" speed="60" range="10" hitType="0" repelDis="0-0" repelTime="0" effectHitType="27" hitStrength = "2" />
+		<Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "125-125" damageIncr = "15" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
+			<Phase index = "1" damage = "200-200" damageIncr = "30" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
+			<Phase index = "2" damage = "350-350" damageIncr = "45" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
+			<Phase index = "3" damage = "575-575" damageIncr = "60" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
+			<Phase index = "4" damage = "875-875" damageIncr = "75" ammo = "65" reload = "1.6" fireFrequence = "100" rapid = "3" rapidInterval = "0.08" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="13" name="Zeus' Thunder" modelFileName="Pistol_04" iconFileName="11" >
+		<Bullet type="19" speed="60" range="14" hitType="0" repelDis="0-0" repelTime="0" effectHitType="29" hitStrength = "2" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "570-570" damageIncr = "68" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "912-912" damageIncr = "136" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "1596-1596" damageIncr = "205" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "2622-2622" damageIncr = "273" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "3990-3990" damageIncr = "342" ammo = "35" reload = "1.5" fireFrequence = "150" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="14" name="War Machine" modelFileName="MachineGun_04" iconFileName="7" >
+		<Bullet type="1" speed="60" range="12" hitType="0" repelDis="0-0" repelTime="0" effectHitType="28" hitStrength = "3" />
+		<Feature emitTimeInAnimation="0.0" deviationStart="4" deviationRecoverTime="0.5" deviationDeltaAngle="0.5" deviationMaxAngle="2.5" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "83-83" damageIncr = "10" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "133-133" damageIncr = "19" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "232-232" damageIncr = "30" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "382-382" damageIncr = "39" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "581-581" damageIncr = "50" ammo = "150" reload = "3" fireFrequence = "400" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="15" name="Death Roll" modelFileName="Sniper_04" iconFileName="21" >
+		<!--extra1:一次开枪射出x发子弹 extra2:一次射出子弹间的延迟 extra3:一次射出子弹间的角度-->
+		<Bullet type="1" speed="60" range="12" hitType="0" repelDis="5-7" repelTime="0.2" effectHitType="3" hitStrength = "4" extra1="3" extra2="0.1" extra3="8"/>
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "905-905" damageIncr = "108" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "1448-1448" damageIncr = "217" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "2534-2534" damageIncr = "325" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "4163-4163" damageIncr = "434" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "6335-6335" damageIncr = "543" ammo = "20" reload = "2.5" fireFrequence = "30" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="16" name="Justice" modelFileName="ShotGun_04" iconFileName="16" >
+		<!--extra1:x%的几率造成冰冻 extra2:冰冻持续时间-->
+		<Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="20" hitStrength = "4" extra1="20" extra2="3" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "215-215" damageIncr = "25" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
+			<Phase index = "1" damage = "344-344" damageIncr = "51" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
+			<Phase index = "2" damage = "602-602" damageIncr = "77" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
+			<Phase index = "3" damage = "989-989" damageIncr = "103" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
+			<Phase index = "4" damage = "1505-1505" damageIncr = "129" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
+	<Weapon type="17" name="Annihilator" modelFileName="Grenade_04" iconFileName="3" >
+		<!--extra1:爆裂半径 extra2:爆裂衰减半径 extra3:衰减后的伤害倍率 extra4:爆裂伤害间隔秒 extra5:爆裂持续时间秒-->
+		<Bullet type="10" speed="10" range="14" hitType="1" repelDis="5-7" repelTime="0.2" effectHitType="-1" hitStrength = "5" extra1="3" extra2="1.5" extra3="0.4" extra4="0.5" extra5="3"/>
+		<Feature emitTimeInAnimation="0.0" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<UpgradePhase>
+			<Phase index = "0" damage = "325-325" damageIncr = "39" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "1" damage = "520-520" damageIncr = "78" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "2" damage = "910-910" damageIncr = "117" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "3" damage = "1495-1495" damageIncr = "156" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+			<Phase index = "4" damage = "2275-2275" damageIncr = "195" ammo = "5" reload = "2.5" fireFrequence = "40" rapid = "1" rapidInterval = "0" />
+		</UpgradePhase>
+	</Weapon>
 </Weapons>

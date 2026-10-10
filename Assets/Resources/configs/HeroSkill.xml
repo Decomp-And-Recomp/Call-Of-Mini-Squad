@@ -1,272 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Every <SkillName> block is the special skill of one hero (SkillMike is Mike's skill, and so on).
+- Basic = name, icon (fileName) and cooldown in seconds (CD).
+- Description = text shown in game. [TSkill#atk*] is replaced with the damage number.
+- FixedProperty = values that do not change with level.
+- UpgradeProperty = one <Phase> per skill star. 
+- damageIncr = extra damage per level.
+- levelPerPhase at the top = how many levels are in each star.
+
+How to edit the values of a skill:
+- Edit the numbers or text inside the block. Do not rename the block or remove attributes.
+
+How to add a new hero skill for a character into this config:
+  - This needs code. Each block name is read by name in DataConf.cs (LoadHeroSkillData), and every skill has its own class and its own attributes.
+  1. Add the new hero to Player.CharacterType in the code.
+  2. Make a new skill class and load code for it in DataConf.cs.
+  3. Copy a block from a similar skill, rename it (example: SkillNewHero) and change the values.
+-->
 <!-- HeroSkill Data -->
 <!-- playerType:角色类型(0:Soldier 1:Mike 2:Swat 3:Armer 4:Policewoman 5:Researcher 6:Superman 7:Ninjia_Fire 8:Ninjia_Ice) -->
 <!--Rank:0白 1绿 2蓝 3紫-->
 <HeroSkill levelPerPhase="4">
-  <SkillMike>
-    <Basic name="Home Run" fileName="jineng_07" CD="10" />
-    <Description content="A deadly sweeping attack that deals [08cf08][TSkill#atk*][-] damage to enemies hit, knocking them back and stunning them for a short while. \nCooldown: 10 sec" />
-    <!--attackRange:攻击半径 repelDis:击退距离 stunTime:击晕时间 debuffMoveSpd:减少移动速度百分比 debuffTime:减速时间(要算上击晕时间)-->
-    <FixedProperty repelDis="6-6" stunTime="1.5" debuffMoveSpd="0.4" debuffTime="6.5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="130-130" damageIncr="15" />
-      <Phase index="1" damage="208-208" damageIncr="31" />
-      <Phase index="2" damage="364-364" damageIncr="46" />
-      <Phase index="3" damage="598-598" damageIncr="62" />
-      <Phase index="4" damage="910-910" damageIncr="78" />
-    </UpgradeProperty>
-  </SkillMike>
-  <SkillChris>
-    <Basic name="Charge" fileName="jineng_01" CD="8" />
-    <Description content="Charge forward, dealing [08cf08][TSkill#atk*][-] damage to all enemies in the path and knocking them back. \nCooldown: 8 sec" />
-    <!--dashDistance:冲锋距离 dashTime:冲锋时间 repelDis:击退距离-->
-    <FixedProperty dashDistance="10" dashTime="0.5" repelDis="4-5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="240-240" damageIncr="28" />
-      <Phase index="1" damage="384-384" damageIncr="57" />
-      <Phase index="2" damage="672-672" damageIncr="86" />
-      <Phase index="3" damage="1104-1104" damageIncr="115" />
-      <Phase index="4" damage="1680-1680" damageIncr="144" />
-    </UpgradeProperty>
-  </SkillChris>
-  <SkillLili>
-    <Basic name="Potent Shield" fileName="jineng_06" CD="40" />
-    <Description content="Form an energy shield around all team members to reduce [08cf08]10[-]% damage and to restore [08cf08]2[-]% HP for members per 2 sec (extra [08cf08][TSkill#br*][-] points of HP can be recovered at current level). Reduce damage: [08cf08][TSkill#dr*][-]%. Keep 8 sec. \nCooldown: 40 sec" />
-    <!--healTime:持续时间 healInterval:治疗间隔-->
-    <FixedProperty healTime="10" healInterval="2"/>
-    <UpgradeProperty>
-      <!--healPercent:治疗百分比 healValue:治疗定值 healValueGrow:治疗定值成长 reduceDamage:减伤百分比-->
-      <Phase index="0" healPercent="0.01" healValue="30" healValueGrow="3" reduceDamage="0.1"/>
-      <Phase index="1" healPercent="0.01" healValue="48" healValueGrow="7" reduceDamage="0.1"/>
-      <Phase index="2" healPercent="0.01" healValue="84" healValueGrow="10" reduceDamage="0.1"/>
-      <Phase index="3" healPercent="0.01" healValue="138" healValueGrow="14" reduceDamage="0.1"/>
-      <Phase index="4" healPercent="0.01" healValue="210" healValueGrow="18" reduceDamage="0.1"/>
-    </UpgradeProperty>
-  </SkillLili>
-  <SkillVasily>
-    <Basic name="Summon MachineGun" fileName="jineng_09" CD="45" />
-    <Description content="Summon a cannon that automatically attacks nearby enemies. Lasts 25 sec. Damage: [08cf08][TSkill#atk*][-]. \nCooldown: 40 sec" />
-    <!--speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
-    <FixedProperty bulletType="27" speed="60" range="12" hitType="0" effectHitType="1" fireFrequence="200" lifeTime="25"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="40-40" damageIncr="4" />
-      <Phase index="1" damage="64-64" damageIncr="9" />
-      <Phase index="2" damage="112-112" damageIncr="14" />
-      <Phase index="3" damage="184-184" damageIncr="19" />
-      <Phase index="4" damage="280-280" damageIncr="24" />
-    </UpgradeProperty>
-  </SkillVasily>
+	<SkillMike>
+		<Basic name="Home Run" fileName="jineng_07" CD="10" />
+		<Description content="A deadly sweeping attack that deals [08cf08][TSkill#atk*][-] damage to enemies hit, knocking them back and stunning them for a short while. \nCooldown: 10 sec" />
+		<!--attackRange:攻击半径 repelDis:击退距离 stunTime:击晕时间 debuffMoveSpd:减少移动速度百分比 debuffTime:减速时间(要算上击晕时间)-->
+		<FixedProperty repelDis="6-6" stunTime="1.5" debuffMoveSpd="0.4" debuffTime="6.5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="130-130" damageIncr="15" />
+			<Phase index="1" damage="208-208" damageIncr="31" />
+			<Phase index="2" damage="364-364" damageIncr="46" />
+			<Phase index="3" damage="598-598" damageIncr="62" />
+			<Phase index="4" damage="910-910" damageIncr="78" />
+		</UpgradeProperty>
+	</SkillMike>
+	<SkillChris>
+		<Basic name="Charge" fileName="jineng_01" CD="8" />
+		<Description content="Charge forward, dealing [08cf08][TSkill#atk*][-] damage to all enemies in the path and knocking them back. \nCooldown: 8 sec" />
+		<!--dashDistance:冲锋距离 dashTime:冲锋时间 repelDis:击退距离-->
+		<FixedProperty dashDistance="10" dashTime="0.5" repelDis="4-5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="240-240" damageIncr="28" />
+			<Phase index="1" damage="384-384" damageIncr="57" />
+			<Phase index="2" damage="672-672" damageIncr="86" />
+			<Phase index="3" damage="1104-1104" damageIncr="115" />
+			<Phase index="4" damage="1680-1680" damageIncr="144" />
+		</UpgradeProperty>
+	</SkillChris>
+	<SkillLili>
+		<Basic name="Potent Shield" fileName="jineng_06" CD="40" />
+		<Description content="Form an energy shield around all team members to reduce [08cf08]10[-]% damage and to restore [08cf08]2[-]% HP for members per 2 sec (extra [08cf08][TSkill#br*][-] points of HP can be recovered at current level). Reduce damage: [08cf08][TSkill#dr*][-]%. Keep 8 sec. \nCooldown: 40 sec" />
+		<!--healTime:持续时间 healInterval:治疗间隔-->
+		<FixedProperty healTime="10" healInterval="2"/>
+		<UpgradeProperty>
+			<!--healPercent:治疗百分比 healValue:治疗定值 healValueGrow:治疗定值成长 reduceDamage:减伤百分比-->
+			<Phase index="0" healPercent="0.01" healValue="30" healValueGrow="3" reduceDamage="0.1"/>
+			<Phase index="1" healPercent="0.01" healValue="48" healValueGrow="7" reduceDamage="0.1"/>
+			<Phase index="2" healPercent="0.01" healValue="84" healValueGrow="10" reduceDamage="0.1"/>
+			<Phase index="3" healPercent="0.01" healValue="138" healValueGrow="14" reduceDamage="0.1"/>
+			<Phase index="4" healPercent="0.01" healValue="210" healValueGrow="18" reduceDamage="0.1"/>
+		</UpgradeProperty>
+	</SkillLili>
+	<SkillVasily>
+		<Basic name="Summon MachineGun" fileName="jineng_09" CD="45" />
+		<Description content="Summon a cannon that automatically attacks nearby enemies. Lasts 25 sec. Damage: [08cf08][TSkill#atk*][-]. \nCooldown: 40 sec" />
+		<!--speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
+		<FixedProperty bulletType="27" speed="60" range="12" hitType="0" effectHitType="1" fireFrequence="200" lifeTime="25"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="40-40" damageIncr="4" />
+			<Phase index="1" damage="64-64" damageIncr="9" />
+			<Phase index="2" damage="112-112" damageIncr="14" />
+			<Phase index="3" damage="184-184" damageIncr="19" />
+			<Phase index="4" damage="280-280" damageIncr="24" />
+		</UpgradeProperty>
+	</SkillVasily>
 	<SkillClaire>
-    <Basic name="Full bullets fire" fileName="jineng_17" CD="12" />
-    <Description content="Fire [08cf08]5[-] missles at the same time, each dealing damge in range. Damage:[08cf08][TSkill#atk*][-]. \nCooldown: 12 sec" />
-    <!--speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
-    <FixedProperty missileCount="5" missileAngle="20"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="200-200" damageIncr="24" />
-      <Phase index="1" damage="320-320" damageIncr="48" />
-      <Phase index="2" damage="560-560" damageIncr="72" />
-      <Phase index="3" damage="920-920" damageIncr="96" />
-      <Phase index="4" damage="1400-1400" damageIncr="120" />
-    </UpgradeProperty>
+		<Basic name="Full bullets fire" fileName="jineng_17" CD="12" />
+		<Description content="Fire [08cf08]5[-] missles at the same time, each dealing damge in range. Damage:[08cf08][TSkill#atk*][-]. \nCooldown: 12 sec" />
+		<!--speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
+		<FixedProperty missileCount="5" missileAngle="20"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="200-200" damageIncr="24" />
+			<Phase index="1" damage="320-320" damageIncr="48" />
+			<Phase index="2" damage="560-560" damageIncr="72" />
+			<Phase index="3" damage="920-920" damageIncr="96" />
+			<Phase index="4" damage="1400-1400" damageIncr="120" />
+		</UpgradeProperty>
 	</SkillClaire>
-  <SkillFireDragon>
-    <Basic name="Shadow Strike: Volcano" fileName="jineng_02" CD="5" />
-    <Description content="Instantly attack all enemies in range, causing [08cf08][TSkill#atk*][-] blast damage. Your attack has a 10% chance to deal additional damage. \nCooldown: 5 sec" />
-    <!--dashDistance:一闪距离 dashTime:一闪时间 repelDis:击退距离-->
-    <FixedProperty dashDistance="10" dashTime="0.5" repelDis="4-5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="320-320" damageIncr="38" />
-      <Phase index="1" damage="512-512" damageIncr="76" />
-      <Phase index="2" damage="896-896" damageIncr="115" />
-      <Phase index="3" damage="1472-1472" damageIncr="153" />
-      <Phase index="4" damage="2240-2240" damageIncr="192" />
-    </UpgradeProperty>
-  </SkillFireDragon>
-  <SkillZero>
-    <Basic name="Shadow Strike: Glacier" fileName="jineng_11" CD="40" />
-    <Description content="Summon Stygian Dragon to deal damages to all enemies. Lasts 8 sec. Damage:[08cf08][TSkill#atk*] per 0.5 sec. \nCooldown: 40 sec" />
-    <!--summonTime:召唤时间 damageInterval:伤害作用间隔-->
-    <FixedProperty summonTime="8" damageInterval="0.5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="160-160" damageIncr="19" />
-      <Phase index="1" damage="256-256" damageIncr="38" />
-      <Phase index="2" damage="448-448" damageIncr="57" />
-      <Phase index="3" damage="736-736" damageIncr="76" />
-      <Phase index="4" damage="1120-1120" damageIncr="96" />
-    </UpgradeProperty>
-  </SkillZero>
-  <SkillArnoud>
-    <Basic name="Summon Cannon" fileName="jineng_04" CD="45" />
-    <Description content="Summon a cannon that automatically attacks nearby enemies. Lasts 25 sec. Damage: [08cf08][TSkill#atk*][-]. \nCooldown: 40 sec" />
-    <!--damageRadius:子弹攻击半径 speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
-    <FixedProperty damageRadius="1.5" speed="8" range="12" fireFrequence="40" lifeTime="25"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="120-120" damageIncr="14" />
-      <Phase index="1" damage="192-192" damageIncr="28" />
-      <Phase index="2" damage="336-336" damageIncr="43" />
-      <Phase index="3" damage="552-552" damageIncr="57" />
-      <Phase index="4" damage="840-840" damageIncr="72" />
-    </UpgradeProperty>
-  </SkillArnoud>
-  <SkillXJohnX>
-    <Basic name="High-speed particles" fileName="jineng_12" CD="30" />
-    <Description content="Coninuous light beam shooting, dealing [08cf08][TSkill#atk*][-] damage per 0.2 sec to enemies in the range. Lasts 3 sec. \nCooldown: 30 sec" />
-    <!--range:射程 laserTime:持续时间 laserInterval:伤害间隔-->
-    <FixedProperty range="20" laserInterval="0.2"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="125-125" damageIncr="15" />
-      <Phase index="1" damage="200-200" damageIncr="30" />
-      <Phase index="2" damage="350-350" damageIncr="45" />
-      <Phase index="3" damage="575-575" damageIncr="60" />
-      <Phase index="4" damage="875-875" damageIncr="75" />
-    </UpgradeProperty>
-  </SkillXJohnX>
-  <SkillClint>
-    <Basic name="Duel-Weapon" fileName="jineng_18" CD="35" />
-    <Description content="Use two weapons to attack enemies.Lasts 10 sec. damage:[08cf08][TSkill#atk*][-]. \nCooldown: 20 sec" />
-    <!--keepTime:持续时间-->
-    <FixedProperty keepTime="20"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="143-143" damageIncr="17" />
-      <Phase index="1" damage="229-229" damageIncr="34" />
-      <Phase index="2" damage="400-400" damageIncr="51" />
-      <Phase index="3" damage="658-658" damageIncr="68" />
-      <Phase index="4" damage ="1001-1001" damageIncr="86" />
-    </UpgradeProperty>
-  </SkillClint>
-  <SkillEva>
-    <Basic name="Pollution Device" fileName="jineng_13" CD="35" />
-    <Description content="Release pollutant to decrease attack, movement and hit chance of enemies by [08cf08][TSkill#TargetHitRateDecrease*][-]%.Lasts 6sec. \nCooldown: 35 sec" />
-    <!--debuffTime:持续时间-->
-    <FixedProperty debuffTime="6"/>
-    <UpgradeProperty>
-      <!--debuffHitRate:命中率降低百分比 debuffMoveSpeed:移动速度降低百分比 debuffAtk:攻击低降低百分比 debuffGrowth:成长率-->
-      <Phase index="0" debuffHitRate="0.1" debuffMoveSpeed="0.1" debuffAtk="0.1" debuffGrowth="0.01" />
-      <Phase index="1" debuffHitRate="0.16" debuffMoveSpeed="0.16" debuffAtk="0.16" debuffGrowth="0.01" />
-      <Phase index="2" debuffHitRate="0.21" debuffMoveSpeed="0.21" debuffAtk="0.21" debuffGrowth="0.01" />
-      <Phase index="3" debuffHitRate="0.27" debuffMoveSpeed="0.27" debuffAtk="0.27" debuffGrowth="0.01" />
-      <Phase index="4" debuffHitRate="0.33" debuffMoveSpeed="0.33" debuffAtk="0.33" debuffGrowth="0.01" />
-    </UpgradeProperty>
-  </SkillEva>
-  <SkillJason>
-    <Basic name="Landmine" fileName="jineng_14" CD="25" />
-    <Description content="Place [TSkill#MINECOUNT*] landmines, causing [08cf08][TSkill#atk*][-] damage to enemies in range once triggered. \nCooldown: 25 sec" />
-    <!--setRadius:放置半径 explodeRadius:爆炸半径-->
-    <FixedProperty setRadius="4" explodeRadius="2.5"/>
-    <UpgradeProperty>
-      <!--mineCount:地雷数量-->
-      <Phase index="0" damage="360-360" damageIncr="20" mineCount="4" />
-      <Phase index="1" damage="461-461" damageIncr="42" mineCount="5" />
-      <Phase index="2" damage="672-672" damageIncr="54" mineCount="6" />
-      <Phase index="3" damage="946-946" damageIncr="62" mineCount="7" />
-      <Phase index="4" damage="1260-1260" damageIncr="108" mineCount="8" />
-    </UpgradeProperty>
-  </SkillJason>
-  <SkillTanya>
-    <Basic name="Air Support" fileName="jineng_03" CD="40" />
-    <Description content="Call in air support to drop 6 bombs on screen, each dealing [08cf08][TSkill#atk*][-] damage to all enemies. \nCooldown: 40 sec" />
-    <!--damageRadius:轰炸半径 repelDis:击退距离-->
-    <FixedProperty damageRadius = "2.5" repelDis = "5-7"/>
-    <UpgradeProperty>
-      <!--fireCount:轰炸次数-->
-      <Phase index="0" damage="450-450" damageIncr="54" fireCount="6" />
-      <Phase index="1" damage="720-720" damageIncr="108" fireCount="6" />
-      <Phase index="2" damage="1260-1260" damageIncr="162" fireCount="6" />
-      <Phase index="3" damage="2070-2070" damageIncr="216" fireCount="6" />
-      <Phase index="4" damage="3150-3150" damageIncr="270" fireCount="6" />
-    </UpgradeProperty>
-  </SkillTanya>
-  <SkillBourne>
-    <Basic name="Mass Shooting" fileName="jineng_05" CD="30" />
-    <Description content="Rapidly shoot all enemies in range 8 times, causing [08cf08][TSkill#atk*][-] damage each time and slowing them for 3 sec. \nCooldown: 30 sec" />
-    <!--shootTime:乱射时间 damageCount:造成伤害次数 damageRadius:伤害半径 repelDis:最后击退距离 debuffMoveSpeed:移动速度减少百分比 debuffTime:持续时间-->
-    <FixedProperty shootTime="3" damageCount="8" damageRadius="5" repelDis="3-3" debuffMoveSpeed="0.6" debuffTime="3"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="160-160" damageIncr="19" />
-      <Phase index="1" damage="256-256" damageIncr="38" />
-      <Phase index="2" damage="448-448" damageIncr="57" />
-      <Phase index="3" damage="736-736" damageIncr="76" />
-      <Phase index="4" damage="1120-1120" damageIncr="96" />
-    </UpgradeProperty>
-  </SkillBourne>
-  <SkillRock>
-    <Basic name="Charge" fileName="jineng_01" CD="10" />
-    <Description content="Charge forward, dealing [08cf08][TSkill#atk*][-] damage to all enemies in the path and knocking them back. \nCooldown: 10 sec" />
-    <!--dashDistance:冲锋距离 dashTime:冲锋时间 repelDis:击退距离-->
-    <FixedProperty dashDistance="7" dashTime="0.5" repelDis="4-5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="435-435" damageIncr="52" />
-      <Phase index="1" damage="696-696" damageIncr="104" />
-      <Phase index="2" damage="1218-1218" damageIncr="156" />
-      <Phase index="3" damage="2001-2001" damageIncr="208" />
-      <Phase index="4" damage="3045-3045" damageIncr="261" />
-    </UpgradeProperty>
-  </SkillRock>
-  <SkillWesker>
-    <Basic name="Clockwork Bomb" fileName="jineng_08" CD="35" />
-    <Description content="Call forth 5 Clockwork Bombs that explode on impact, each dealing [08cf08][TSkill#atk*][-] damage. \nCooldown: 35 sec" />
-    <!--damageRadius:爆炸半径 repelDis:击退距离 limitTime:引爆时限 moveSpeed:炸弹移动速度 count:一次释放数量-->
-    <FixedProperty damageRadius = "2.5" repelDis = "5-7" limitTime = "6" moveSpeed = "3.5" count = "5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="530-530" damageIncr="63" />
-      <Phase index="1" damage="848-848" damageIncr="127" />
-      <Phase index="2" damage="1484-1484" damageIncr="190" />
-      <Phase index="3" damage="2438-2438" damageIncr="254" />
-      <Phase index="4" damage="3710-3710" damageIncr="318" />
-    </UpgradeProperty>
-  </SkillWesker>
-  <SkillOppenheimer>
-    <Basic name="Frost Nova" fileName="jineng_15" CD="35" />
-    <Description content="shoot ice circle to deal [08cf08][TSkill#atk*][-] damages to all enemies and freeze them 3 sec. \nCooldown: 35 sec" />
-    <!--frozeTime:冻结时间-->
-    <FixedProperty frozeTime="3"/>
-    <UpgradeProperty>
-      <!--novaPlus:冰冻中伤害增幅-->
-      <Phase index="0" damage="560-560" damageIncr="67" novaPlus="0.25"/>
-      <Phase index="1" damage="896-896" damageIncr="134" novaPlus="0.25" />
-      <Phase index="2" damage="1568-1568" damageIncr="201" novaPlus="0.25" />
-      <Phase index="3" damage="2576-2576" damageIncr="268" novaPlus="0.25" />
-      <Phase index="4" damage="3920-3920" damageIncr="336" novaPlus="0.25" />
-    </UpgradeProperty>
-  </SkillOppenheimer>
-  <SkillShepard>
-    <Basic name="High-Energy Magnetic Field" fileName="jineng_16" CD="30" />
-    <Description content="Shoot out the high-energy magnified field which moves slowly to enemeies , dealing [08cf08][TSkill#atk*][-] damages to them. The field flies for 6 sec. \nCooldown: 30 sec" />
-    <!--speed:黑洞速度 radius:黑洞半径 time:黑洞生命 damageInterval:伤害间隔-->
-    <FixedProperty speed="2" radius="3" time="6" damageInterval="0.5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="150-150" damageIncr="18" />
-      <Phase index="1" damage="240-240" damageIncr="36" />
-      <Phase index="2" damage="420-420" damageIncr="54" />
-      <Phase index="3" damage="690-690" damageIncr="72" />
-      <Phase index="4" damage="1050-1050" damageIncr="90" />
-    </UpgradeProperty>
-  </SkillShepard>
-  <SkillZombieEva>
-    <Basic name="Pollution Device" fileName="jineng_13" CD="35" />
-    <Description content="Release pollutant to decrease attack, movement and hit chance of enemies by [08cf08][TSkill#TargetHitRateDecrease*][-]%.Lasts 6sec. \nCooldown: 35 sec" />
-    <!--debuffTime:持续时间-->
-    <FixedProperty debuffTime="6"/>
-    <UpgradeProperty>
-      <!--debuffHitRate:命中率降低百分比 debuffMoveSpeed:移动速度降低百分比 debuffAtk:攻击低降低百分比 debuffGrowth:成长率-->
-      <Phase index="0" debuffHitRate="0.1" debuffMoveSpeed="0.1" debuffAtk="0.1" debuffGrowth="0.01" />
-      <Phase index="1" debuffHitRate="0.16" debuffMoveSpeed="0.16" debuffAtk="0.16" debuffGrowth="0.01" />
-      <Phase index="2" debuffHitRate="0.21" debuffMoveSpeed="0.21" debuffAtk="0.21" debuffGrowth="0.01" />
-      <Phase index="3" debuffHitRate="0.27" debuffMoveSpeed="0.27" debuffAtk="0.27" debuffGrowth="0.01" />
-      <Phase index="4" debuffHitRate="0.33" debuffMoveSpeed="0.33" debuffAtk="0.33" debuffGrowth="0.01" />
-    </UpgradeProperty>
-  </SkillZombieEva>
-  <SkillZombieShepard>
-    <Basic name="High-Energy Magnetic Field" fileName="jineng_16" CD="30" />
-    <Description content="Shoot out the high-energy magnified field which moves slowly to enemeies , dealing [08cf08][TSkill#atk*][-] damages to them. The field flies for 6 sec. \nCooldown: 30 sec" />
-    <!--speed:黑洞速度 radius:黑洞半径 time:黑洞生命 damageInterval:伤害间隔-->
-    <FixedProperty speed="2" radius="3" time="6" damageInterval="0.5"/>
-    <UpgradeProperty>
-      <Phase index="0" damage="50-50" damageIncr="18" />
-      <Phase index="1" damage="50-50" damageIncr="36" />
-      <Phase index="2" damage="50-50" damageIncr="54" />
-      <Phase index="3" damage="50-50" damageIncr="72" />
-      <Phase index="4" damage="50-50" damageIncr="90" />
-    </UpgradeProperty>
-  </SkillZombieShepard>
+	<SkillFireDragon>
+		<Basic name="Shadow Strike: Volcano" fileName="jineng_02" CD="5" />
+		<Description content="Instantly attack all enemies in range, causing [08cf08][TSkill#atk*][-] blast damage. Your attack has a 10% chance to deal additional damage. \nCooldown: 5 sec" />
+		<!--dashDistance:一闪距离 dashTime:一闪时间 repelDis:击退距离-->
+		<FixedProperty dashDistance="10" dashTime="0.5" repelDis="4-5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="320-320" damageIncr="38" />
+			<Phase index="1" damage="512-512" damageIncr="76" />
+			<Phase index="2" damage="896-896" damageIncr="115" />
+			<Phase index="3" damage="1472-1472" damageIncr="153" />
+			<Phase index="4" damage="2240-2240" damageIncr="192" />
+		</UpgradeProperty>
+	</SkillFireDragon>
+	<SkillZero>
+		<Basic name="Shadow Strike: Glacier" fileName="jineng_11" CD="40" />
+		<Description content="Summon Stygian Dragon to deal damages to all enemies. Lasts 8 sec. Damage:[08cf08][TSkill#atk*] per 0.5 sec. \nCooldown: 40 sec" />
+		<!--summonTime:召唤时间 damageInterval:伤害作用间隔-->
+		<FixedProperty summonTime="8" damageInterval="0.5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="160-160" damageIncr="19" />
+			<Phase index="1" damage="256-256" damageIncr="38" />
+			<Phase index="2" damage="448-448" damageIncr="57" />
+			<Phase index="3" damage="736-736" damageIncr="76" />
+			<Phase index="4" damage="1120-1120" damageIncr="96" />
+		</UpgradeProperty>
+	</SkillZero>
+	<SkillArnoud>
+		<Basic name="Summon Cannon" fileName="jineng_04" CD="45" />
+		<Description content="Summon a cannon that automatically attacks nearby enemies. Lasts 25 sec. Damage: [08cf08][TSkill#atk*][-]. \nCooldown: 40 sec" />
+		<!--damageRadius:子弹攻击半径 speed:射速 range:射程 fireFrequence:频率 lifeTime:持续时间-->
+		<FixedProperty damageRadius="1.5" speed="8" range="12" fireFrequence="40" lifeTime="25"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="120-120" damageIncr="14" />
+			<Phase index="1" damage="192-192" damageIncr="28" />
+			<Phase index="2" damage="336-336" damageIncr="43" />
+			<Phase index="3" damage="552-552" damageIncr="57" />
+			<Phase index="4" damage="840-840" damageIncr="72" />
+		</UpgradeProperty>
+	</SkillArnoud>
+	<SkillXJohnX>
+		<Basic name="High-speed particles" fileName="jineng_12" CD="30" />
+		<Description content="Coninuous light beam shooting, dealing [08cf08][TSkill#atk*][-] damage per 0.2 sec to enemies in the range. Lasts 3 sec. \nCooldown: 30 sec" />
+		<!--range:射程 laserTime:持续时间 laserInterval:伤害间隔-->
+		<FixedProperty range="20" laserInterval="0.2"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="125-125" damageIncr="15" />
+			<Phase index="1" damage="200-200" damageIncr="30" />
+			<Phase index="2" damage="350-350" damageIncr="45" />
+			<Phase index="3" damage="575-575" damageIncr="60" />
+			<Phase index="4" damage="875-875" damageIncr="75" />
+		</UpgradeProperty>
+	</SkillXJohnX>
+	<SkillClint>
+		<Basic name="Duel-Weapon" fileName="jineng_18" CD="35" />
+		<Description content="Use two weapons to attack enemies.Lasts 10 sec. damage:[08cf08][TSkill#atk*][-]. \nCooldown: 20 sec" />
+		<!--keepTime:持续时间-->
+		<FixedProperty keepTime="20"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="143-143" damageIncr="17" />
+			<Phase index="1" damage="229-229" damageIncr="34" />
+			<Phase index="2" damage="400-400" damageIncr="51" />
+			<Phase index="3" damage="658-658" damageIncr="68" />
+			<Phase index="4" damage ="1001-1001" damageIncr="86" />
+		</UpgradeProperty>
+	</SkillClint>
+	<SkillEva>
+		<Basic name="Pollution Device" fileName="jineng_13" CD="35" />
+		<Description content="Release pollutant to decrease attack, movement and hit chance of enemies by [08cf08][TSkill#TargetHitRateDecrease*][-]%.Lasts 6sec. \nCooldown: 35 sec" />
+		<!--debuffTime:持续时间-->
+		<FixedProperty debuffTime="6"/>
+		<UpgradeProperty>
+			<!--debuffHitRate:命中率降低百分比 debuffMoveSpeed:移动速度降低百分比 debuffAtk:攻击低降低百分比 debuffGrowth:成长率-->
+			<Phase index="0" debuffHitRate="0.1" debuffMoveSpeed="0.1" debuffAtk="0.1" debuffGrowth="0.01" />
+			<Phase index="1" debuffHitRate="0.16" debuffMoveSpeed="0.16" debuffAtk="0.16" debuffGrowth="0.01" />
+			<Phase index="2" debuffHitRate="0.21" debuffMoveSpeed="0.21" debuffAtk="0.21" debuffGrowth="0.01" />
+			<Phase index="3" debuffHitRate="0.27" debuffMoveSpeed="0.27" debuffAtk="0.27" debuffGrowth="0.01" />
+			<Phase index="4" debuffHitRate="0.33" debuffMoveSpeed="0.33" debuffAtk="0.33" debuffGrowth="0.01" />
+		</UpgradeProperty>
+	</SkillEva>
+	<SkillJason>
+		<Basic name="Landmine" fileName="jineng_14" CD="25" />
+		<Description content="Place [TSkill#MINECOUNT*] landmines, causing [08cf08][TSkill#atk*][-] damage to enemies in range once triggered. \nCooldown: 25 sec" />
+		<!--setRadius:放置半径 explodeRadius:爆炸半径-->
+		<FixedProperty setRadius="4" explodeRadius="2.5"/>
+		<UpgradeProperty>
+			<!--mineCount:地雷数量-->
+			<Phase index="0" damage="360-360" damageIncr="20" mineCount="4" />
+			<Phase index="1" damage="461-461" damageIncr="42" mineCount="5" />
+			<Phase index="2" damage="672-672" damageIncr="54" mineCount="6" />
+			<Phase index="3" damage="946-946" damageIncr="62" mineCount="7" />
+			<Phase index="4" damage="1260-1260" damageIncr="108" mineCount="8" />
+		</UpgradeProperty>
+	</SkillJason>
+	<SkillTanya>
+		<Basic name="Air Support" fileName="jineng_03" CD="40" />
+		<Description content="Call in air support to drop 6 bombs on screen, each dealing [08cf08][TSkill#atk*][-] damage to all enemies. \nCooldown: 40 sec" />
+		<!--damageRadius:轰炸半径 repelDis:击退距离-->
+		<FixedProperty damageRadius = "2.5" repelDis = "5-7"/>
+		<UpgradeProperty>
+			<!--fireCount:轰炸次数-->
+			<Phase index="0" damage="450-450" damageIncr="54" fireCount="6" />
+			<Phase index="1" damage="720-720" damageIncr="108" fireCount="6" />
+			<Phase index="2" damage="1260-1260" damageIncr="162" fireCount="6" />
+			<Phase index="3" damage="2070-2070" damageIncr="216" fireCount="6" />
+			<Phase index="4" damage="3150-3150" damageIncr="270" fireCount="6" />
+		</UpgradeProperty>
+	</SkillTanya>
+	<SkillBourne>
+		<Basic name="Mass Shooting" fileName="jineng_05" CD="30" />
+		<Description content="Rapidly shoot all enemies in range 8 times, causing [08cf08][TSkill#atk*][-] damage each time and slowing them for 3 sec. \nCooldown: 30 sec" />
+		<!--shootTime:乱射时间 damageCount:造成伤害次数 damageRadius:伤害半径 repelDis:最后击退距离 debuffMoveSpeed:移动速度减少百分比 debuffTime:持续时间-->
+		<FixedProperty shootTime="3" damageCount="8" damageRadius="5" repelDis="3-3" debuffMoveSpeed="0.6" debuffTime="3"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="160-160" damageIncr="19" />
+			<Phase index="1" damage="256-256" damageIncr="38" />
+			<Phase index="2" damage="448-448" damageIncr="57" />
+			<Phase index="3" damage="736-736" damageIncr="76" />
+			<Phase index="4" damage="1120-1120" damageIncr="96" />
+		</UpgradeProperty>
+	</SkillBourne>
+	<SkillRock>
+		<Basic name="Charge" fileName="jineng_01" CD="10" />
+		<Description content="Charge forward, dealing [08cf08][TSkill#atk*][-] damage to all enemies in the path and knocking them back. \nCooldown: 10 sec" />
+		<!--dashDistance:冲锋距离 dashTime:冲锋时间 repelDis:击退距离-->
+		<FixedProperty dashDistance="7" dashTime="0.5" repelDis="4-5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="435-435" damageIncr="52" />
+			<Phase index="1" damage="696-696" damageIncr="104" />
+			<Phase index="2" damage="1218-1218" damageIncr="156" />
+			<Phase index="3" damage="2001-2001" damageIncr="208" />
+			<Phase index="4" damage="3045-3045" damageIncr="261" />
+		</UpgradeProperty>
+	</SkillRock>
+	<SkillWesker>
+		<Basic name="Clockwork Bomb" fileName="jineng_08" CD="35" />
+		<Description content="Call forth 5 Clockwork Bombs that explode on impact, each dealing [08cf08][TSkill#atk*][-] damage. \nCooldown: 35 sec" />
+		<!--damageRadius:爆炸半径 repelDis:击退距离 limitTime:引爆时限 moveSpeed:炸弹移动速度 count:一次释放数量-->
+		<FixedProperty damageRadius = "2.5" repelDis = "5-7" limitTime = "6" moveSpeed = "3.5" count = "5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="530-530" damageIncr="63" />
+			<Phase index="1" damage="848-848" damageIncr="127" />
+			<Phase index="2" damage="1484-1484" damageIncr="190" />
+			<Phase index="3" damage="2438-2438" damageIncr="254" />
+			<Phase index="4" damage="3710-3710" damageIncr="318" />
+		</UpgradeProperty>
+	</SkillWesker>
+	<SkillOppenheimer>
+		<Basic name="Frost Nova" fileName="jineng_15" CD="35" />
+		<Description content="shoot ice circle to deal [08cf08][TSkill#atk*][-] damages to all enemies and freeze them 3 sec. \nCooldown: 35 sec" />
+		<!--frozeTime:冻结时间-->
+		<FixedProperty frozeTime="3"/>
+		<UpgradeProperty>
+			<!--novaPlus:冰冻中伤害增幅-->
+			<Phase index="0" damage="560-560" damageIncr="67" novaPlus="0.25"/>
+			<Phase index="1" damage="896-896" damageIncr="134" novaPlus="0.25" />
+			<Phase index="2" damage="1568-1568" damageIncr="201" novaPlus="0.25" />
+			<Phase index="3" damage="2576-2576" damageIncr="268" novaPlus="0.25" />
+			<Phase index="4" damage="3920-3920" damageIncr="336" novaPlus="0.25" />
+		</UpgradeProperty>
+	</SkillOppenheimer>
+	<SkillShepard>
+		<Basic name="High-Energy Magnetic Field" fileName="jineng_16" CD="30" />
+		<Description content="Shoot out the high-energy magnified field which moves slowly to enemeies , dealing [08cf08][TSkill#atk*][-] damages to them. The field flies for 6 sec. \nCooldown: 30 sec" />
+		<!--speed:黑洞速度 radius:黑洞半径 time:黑洞生命 damageInterval:伤害间隔-->
+		<FixedProperty speed="2" radius="3" time="6" damageInterval="0.5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="150-150" damageIncr="18" />
+			<Phase index="1" damage="240-240" damageIncr="36" />
+			<Phase index="2" damage="420-420" damageIncr="54" />
+			<Phase index="3" damage="690-690" damageIncr="72" />
+			<Phase index="4" damage="1050-1050" damageIncr="90" />
+		</UpgradeProperty>
+	</SkillShepard>
+	<SkillZombieEva>
+		<Basic name="Pollution Device" fileName="jineng_13" CD="35" />
+		<Description content="Release pollutant to decrease attack, movement and hit chance of enemies by [08cf08][TSkill#TargetHitRateDecrease*][-]%.Lasts 6sec. \nCooldown: 35 sec" />
+		<!--debuffTime:持续时间-->
+		<FixedProperty debuffTime="6"/>
+		<UpgradeProperty>
+			<!--debuffHitRate:命中率降低百分比 debuffMoveSpeed:移动速度降低百分比 debuffAtk:攻击低降低百分比 debuffGrowth:成长率-->
+			<Phase index="0" debuffHitRate="0.1" debuffMoveSpeed="0.1" debuffAtk="0.1" debuffGrowth="0.01" />
+			<Phase index="1" debuffHitRate="0.16" debuffMoveSpeed="0.16" debuffAtk="0.16" debuffGrowth="0.01" />
+			<Phase index="2" debuffHitRate="0.21" debuffMoveSpeed="0.21" debuffAtk="0.21" debuffGrowth="0.01" />
+			<Phase index="3" debuffHitRate="0.27" debuffMoveSpeed="0.27" debuffAtk="0.27" debuffGrowth="0.01" />
+			<Phase index="4" debuffHitRate="0.33" debuffMoveSpeed="0.33" debuffAtk="0.33" debuffGrowth="0.01" />
+		</UpgradeProperty>
+	</SkillZombieEva>
+	<SkillZombieShepard>
+		<Basic name="High-Energy Magnetic Field" fileName="jineng_16" CD="30" />
+		<Description content="Shoot out the high-energy magnified field which moves slowly to enemeies , dealing [08cf08][TSkill#atk*][-] damages to them. The field flies for 6 sec. \nCooldown: 30 sec" />
+		<!--speed:黑洞速度 radius:黑洞半径 time:黑洞生命 damageInterval:伤害间隔-->
+		<FixedProperty speed="2" radius="3" time="6" damageInterval="0.5"/>
+		<UpgradeProperty>
+			<Phase index="0" damage="50-50" damageIncr="18" />
+			<Phase index="1" damage="50-50" damageIncr="36" />
+			<Phase index="2" damage="50-50" damageIncr="54" />
+			<Phase index="3" damage="50-50" damageIncr="72" />
+			<Phase index="4" damage="50-50" damageIncr="90" />
+		</UpgradeProperty>
+	</SkillZombieShepard>
 </HeroSkill>

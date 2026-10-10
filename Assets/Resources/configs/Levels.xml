@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- This file is NOT used by the game right now. No code loads it.
+- It only has placeholder data. You can leave it alone. Delete it if you want. The game will work fine without it.
+-->
 <!-- Equips Data -->
-<Equips><!--index:索引 name:名字 fileName:文件名称 description:描述-->
+<Equips>
+	<!--index:索引 name:名字 fileName:文件名称 description:描述-->
 	<Equip index = "0" name = "equip" fileName = "" description = "aaaaaaaaabbbbbbbbbbbvvvvvvvvvv" />
 	<Equip index = "1" name = "equip" fileName = "" description = "aaaaaaaaabbbbbbbbbbbvvvvvvvvvv" />
 	<Equip index = "2" name = "equip" fileName = "" description = "aaaaaaaaabbbbbbbbbbbvvvvvvvvvv" />

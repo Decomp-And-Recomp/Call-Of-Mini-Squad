@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+How does this config work:
+- Every <Equip> line is one helmet, armor or ornament.
+- equipType = 0 helmet, 1 armor, 2 ornament. rank = 0 white, 1 green, 2 blue, 3 purple.
+- hp = life given at each level, split by commas (one number per level). Values like 0.05 mean 5 percent.
+- Every hero has 33 equipment slots, and each slot uses the equipment with the same index. Index 0 to 10 are helmets, 11 to 21 are armor, 22 to 32 are ornaments.
+
+How to change the equipment in this config:
+- Edit the stats, name or description of an existing <Equip> line. Keep the same count of numbers in hp.
+
+How to add brand new equipment into this config:
+- This needs code. The game only builds 33 equipment slots per hero (see DefaultCreator.cs), so a line with an index higher than 32 is never used.
+  For Your Information: new heroes start with equipment 0, 11 and 22, so do not remove those.
+-->
 <Equips>
 	<Equip index="0" name="Goggle" fileName="helmet001" equipType="0" rank="0" hp="585,720,855,990,1125,1260" def="0.05" proCrit="0" critDamagePercent="0" proResilience="0" proHit="0" hpPercent="0" proDodge="0" proStab="0" atkPercent="0" atkFrequencyPercent="0" reduceDamagePercent="0" moveSpeedPercent="0" atkRange="0" specialAttr="1234" description="aaaaaaaaaaaaaaavvvvvvvvvvvvvvv"/>
 	<Equip index="1" name="Faical Mask" fileName="helmet002" equipType="0" rank="1" hp="1530,1800,2070,2340,2610,2880" def="0.1" proCrit="0" critDamagePercent="0" proResilience="0" proHit="0" hpPercent="0" proDodge="0" proStab="0" atkPercent="0.03" atkFrequencyPercent="0" reduceDamagePercent="0" moveSpeedPercent="0" atkRange="0" specialAttr="1234" description="aaaaaaaaaaaaaaavvvvvvvvvvvvvvv"/>

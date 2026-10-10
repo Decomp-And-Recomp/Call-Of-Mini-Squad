@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- This file is NOT used by the game right now. No code loads it.
+- Changing it will not change the game unless code is added to read it.
+-->
 <RewardBox>
-	<Reward index = "0" name = "MoveSpeed" probability = "20" durcation = "20" icon = "ico_buff_02"><!--移动速度增加-->
+	<Reward index = "0" name = "MoveSpeed" probability = "20" durcation = "20" icon = "ico_buff_02">
+		<!--移动速度增加-->
 		<Property percentage = "0.3"/>
 	</Reward>
-	<Reward index = "1" name = "AddDamage" probability = "10" durcation = "20" icon = "ico_buff_03"><!--攻击力提升-->
+	<Reward index = "1" name = "AddDamage" probability = "10" durcation = "20" icon = "ico_buff_03">
+		<!--攻击力提升-->
 		<Property percentage = "0.2"/>
 	</Reward>
-	<Reward index = "2" name = "SkillDamagePercent" probability = "10" durcation = "20" icon = "ico_buff_01"><!--技能伤害提升-->
+	<Reward index = "2" name = "SkillDamagePercent" probability = "10" durcation = "20" icon = "ico_buff_01">
+		<!--技能伤害提升-->
 		<Property percentage = "0.2"/>
 	</Reward>
-	<Reward index = "3" name = "DropGold" probability = "20" durcation = "0" icon = ""><!--金币掉落-->
+	<Reward index = "3" name = "DropGold" probability = "20" durcation = "0" icon = "">
+		<!--金币掉落-->
 	</Reward>
-	<Reward index = "4" name = "DropCrystal" probability = "5" durcation = "0" icon = ""><!--水晶掉落-->
+	<Reward index = "4" name = "DropCrystal" probability = "5" durcation = "0" icon = "">
+		<!--水晶掉落-->
 		<Stage dropCount = "5,5,10,10"/>
 		<Difficult multiple = "1,2,3" />
 	</Reward>
-	<!--<Reward index = "5" name = "HpMaxPercent" probability = "15" durcation = "20" icon = "ico_buff_04">--><!--血量上升-->
-		<!--<Property percentage = "0.4"/>-->
+	<!--<Reward index = "5" name = "HpMaxPercent" probability = "15" durcation = "20" icon = "ico_buff_04">-->
+	<!--血量上升-->
+	<!--<Property percentage = "0.4"/>-->
 	<!--</Reward>-->
-	<Reward index = "6" name = "SkillCoolDownCancel" probability = "10" durcation = "60" icon = "ico_buff_06"><!--技能CD时间取消-->
+	<Reward index = "6" name = "SkillCoolDownCancel" probability = "10" durcation = "60" icon = "ico_buff_06">
+		<!--技能CD时间取消-->
 	</Reward>
-	<Reward index = "7" name = "Invincible" probability = "15" durcation = "60" icon = "ico_buff_05"><!--无敌-->
+	<Reward index = "7" name = "Invincible" probability = "15" durcation = "60" icon = "ico_buff_05">
+		<!--无敌-->
 	</Reward>
-	<Reward index = "8" name = "AddHP" probability = "15" durcation = "20" icon = "ico_buff_04"><!--血量上升-->
+	<Reward index = "8" name = "AddHP" probability = "15" durcation = "20" icon = "ico_buff_04">
+		<!--血量上升-->
 		<Property percentage = "0.4"/>
 	</Reward>
 </RewardBox>

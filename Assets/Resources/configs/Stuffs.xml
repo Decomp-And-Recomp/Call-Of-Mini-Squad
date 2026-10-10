@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Stuffs><!--type : 物品类型 0:材料 1:设计图 2:宝箱 3:钥匙 4:雷达 5:经验书--><!--boxRank:宝箱品质 0:铜 1:银 2:金--><!--calType:计算类型 0:整数 1:百分比--><!--cost:花费,-1为无法购买-->
+<!--
+This config is NOT used by the game right now:
+- The game loads this file when it starts, but nothing in the game uses the items.
+- This is a leftover from the BETA version of the game (v0.5). It was never finished, even in the beta, and it is not used in the current game.
+- Players never get these items. The bag, chests, keys, shop and item drops were never finished.
+- Radar is always 0, and EXP tomes are never used.
+- The materials were meant to raise level caps: Steel for weapons, Alloy for helmets and armor, Gem for ornaments and Fuel for skills.
+- In the beta, the shop would have sold these items for tcrystals, or swapped them for another currency called Element. The shop files for that (Store and StoreExchange) only exist in the beta, not in this project.
+- The final game replaced all of this with breakthroughs that cost tcrystals and a team level (see Upgrades.xml).
+- Changing this file does nothing in game. But it is still loaded, so a broken edit can stop the game from starting.
+
+What the lines mean (for if this is ever fully implemented):
+- <Stuff> = materials, blueprints, keys, radar (see stuffType below).
+- <Box> = chests. Each <BoxItem> is one possible prize. 
+- needKey = the index of the key that opens it.
+- <ExpTome> = items that give XP. 
+- calType 0 = a flat number, 1 = a percent.
+- rank = 0 white, 1 green, 2 blue, 3 purple. 
+- cost = -1 means it can not be bought.
+- Every index must be different from ALL other items in this file.
+-->
+<Stuffs>
+	<!--type : 物品类型 0:材料 1:设计图 2:宝箱 3:钥匙 4:雷达 5:经验书-->
+	<!--boxRank:宝箱品质 0:铜 1:银 2:金-->
+	<!--calType:计算类型 0:整数 1:百分比-->
+	<!--cost:花费,-1为无法购买-->
 	<ExpTome index="0" stuffType = "5" name="EXP Tome" fileName="EXP001" rank="1" cost = "-1" value = "10000" calType = "0" description="+10000 EXP"/>
 	<ExpTome index="1" stuffType = "5" name="Great EXP Tome" fileName="EXP002" rank="2" cost = "-1" value = "50000" calType = "0" description="+50000 EXP"/>
 	<ExpTome index="2" stuffType = "5" name="Super EXP Tome" fileName="EXP003" rank="3" cost = "-1" value = "25" calType = "1" description="+25% EXP"/>

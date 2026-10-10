@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+How does this config work:
+- Tells the game which animation clip to play for each action.
+- typeName = the action (the game asks for this name, do not change it).
+- fileName = the animation clip name. count = how many versions exist (example: hurt01 and hurt02 means fileName="hurt" and count="2"; one is picked at random).
+- CharacterAnimation = default animations for heroes.
+- NewCharacterAnimation = animations for one hero. 
+- <Character name> must be the hero name in Heroes.xml.
+- EnemyAnimation = animations for one zombie. <Enemy name> must be the modelName in Enemies.xml.
+- WeaponAnimation = animations for each kind of weapon.
+
+How to add new animations to a character or zombie into this config:
+  1. Copy a whole <Character> (or <Enemy>) block, from its start tag to its end tag.
+  2. Change name so it matches the hero name (or zombie modelName).
+  3. Change each fileName to the new animation clips. Keep the typeName values the same.
+  4. Do not put the same typeName twice inside one block.
+-->
 <!-- Animation Data typeName：分类名称程序定 fileName：对应的动画文件名（若此类动画有多个随机去除后面的数字） count：此类动画的个数（比如受伤动画有hurt01 hurt02 fileName应写"hurt"，count应写"2"）-->
 <Animations>
 	<CharacterAnimation>
@@ -22,350 +39,350 @@
 		<Anim typeName = "Lower_Body_Run_L" fileName = "_Run03" count = "1" />
 		<Anim typeName = "Lower_Body_Run_R" fileName = "_Run04" count = "1" />
 	</CharacterAnimation>
-  <NewCharacterAnimation>
-    <Character name = "Mike">
-      <Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Baseball_bat_Skill02" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Chris">
-      <Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "item_Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "MachineGun_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "MachineGun_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />.
-	  <Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "MachineGun_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Lili">
-      <Anim typeName = "Back" fileName = "Doctor_Back_v2" count = "1" />
-      <Anim typeName = "Skill" fileName = "Doctor_Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Doctor_Charge_v2" count = "1" />
-      <Anim typeName = "Death" fileName = "Doctor_Die_v2" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Doctor_Hurt01_v2" count = "1" />
-      <Anim typeName = "Idle" fileName = "Doctor_Idle_v2" count = "1" />
-      <Anim typeName = "Reload" fileName = "Doctor_Reload_v2" count = "1" />
-      <Anim typeName = "Shift" fileName = "Doctor_Change_v2" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Doctor_Fire_v2" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Doctor_Standby_v2" count = "1" />
-	  <Anim typeName = "Show" fileName = "Doctor_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Doctor_Stun_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Doctor_Run01_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Doctor_Run02_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Doctor_Run03_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Doctor_Run04_v2" count = "1" />
-    </Character>
-    <Character name = "Vasily">
-      <Anim typeName = "Back" fileName = "Sniper_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "SKill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Sniper_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Sniper_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Sniper_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Sniper_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Sniper_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Sniper_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Sniper_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Sniper_Standby" count = "1" />
-	   <Anim typeName = "Show" fileName = "Sniper_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Sniper_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Sniper_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Sniper_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Sniper_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Sniper_Run04" count = "1" />
-    </Character>
-    <Character name = "Claire">
-      <Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
-    </Character>
-    <Character name = "Fire Dragon">
-      <Anim typeName = "Back" fileName = "Ninjia_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Ninjia_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Ninjia_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Ninjia_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Ninjia_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Ninjia_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Ninjia_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Ninjia_Fire" count = "3" />
-      <Anim typeName = "ReadyFire" fileName = "Ninjia_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Ninjia_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Ninjia_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Ninjia_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Ninjia_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Ninjia_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Ninjia_Run04" count = "1" />
-    </Character>
-    <Character name = "Zero">
-      <Anim typeName = "Back" fileName = "Ninjia_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Ninjia_Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Ninjia_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Ninjia_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Ninjia_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Ninjia_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Ninjia_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Ninjia_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Ninjia_Fire" count = "3" />
-      <Anim typeName = "ReadyFire" fileName = "Ninjia_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Ninjia_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Ninjia_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Ninjia_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Ninjia_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Ninjia_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Ninjia_Run04" count = "1" />
-    </Character>
-    <Character name = "X-John-X">
-      <Anim typeName = "Back" fileName = "Laser_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Laser_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Laser_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Laser_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Laser_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Laser_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Laser_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Laser_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Laser_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Laser_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Laser_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Laser_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Laser_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Laser_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Laser_Run04" count = "1" />
-    </Character>
-    <Character name = "Clint">
-      <Anim typeName = "Back" fileName = "magnum_Back_v2" count = "1" />
-      <Anim typeName = "Skill" fileName = "magnum_Skill01" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "magnum_Charge_v2" count = "1" />
-      <Anim typeName = "Death" fileName = "magnum_Die_v2" count = "2" />
-      <Anim typeName = "Hurt" fileName = "magnum_Hurt01_v2" count = "1" />
-      <Anim typeName = "Idle" fileName = "magnum_Idle_v2" count = "1" />
-      <Anim typeName = "Reload" fileName = "magnum_Reload_v2" count = "1" />
-      <Anim typeName = "Shift" fileName = "magnum_Change_v2" count = "1" />
-      <Anim typeName = "Shoting" fileName = "magnum_Fire_v2" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "magnum_Standby_v2" count = "1" />
-	  <Anim typeName = "Show" fileName = "magnum_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "magnum_Stun_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "magnum_Run01_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "magnum_Run02_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "magnum_Run03_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "magnum_Run04_v2" count = "1" />
-    </Character>
-    <Character name = "Clint2">
-      <Anim typeName = "Back" fileName = "magnum_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "magnum_Skill01" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "magnum_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "magnum_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "magnum_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "magnum_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "magnum_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "magnum_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "magnum_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "magnum_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "magnum_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "magnum_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "magnum_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "magnum_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "magnum_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "magnum_Run04" count = "1" />
-    </Character>
-    <Character name = "Eva">
-      <Anim typeName = "Back" fileName = "Virus_Back_v2" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Virus_Charge_v2" count = "1" />
-      <Anim typeName = "Death" fileName = "Virus_Die_v2" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Virus_Hurt01_v2" count = "1" />
-      <Anim typeName = "Idle" fileName = "Virus_Idle_v2" count = "1" />
-      <Anim typeName = "Reload" fileName = "Virus_Reload_v2" count = "1" />
-      <Anim typeName = "Shift" fileName = "Virus_Change_v2" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Virus_Fire_v2" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Virus_Standby_v2" count = "1" />
-	  <Anim typeName = "Show" fileName = "Virus_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Virus_Stun_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Virus_Run01_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Virus_Run02_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Virus_Run03_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Virus_Run04_v2" count = "1" />
-    </Character>
-    <Character name = "Arnoud">
-      <Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Grenade_Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
-	  <Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
-    </Character>
-    <Character name = "Jason">
-      <Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Tanya">
-      <Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "MachineGun_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "MachineGun_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "MachineGun_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Bourne">
-      <Anim typeName = "Back" fileName = "Pistol_Back_v2" count = "1" />
-      <Anim typeName = "Skill" fileName = "Pistol_Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Pistol_Charge_v2" count = "1" />
-      <Anim typeName = "Death" fileName = "Pistol_Die_v2" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Pistol_Hurt01_v2" count = "1" />
-      <Anim typeName = "Idle" fileName = "Pistol_Idle_v2" count = "1" />
-      <Anim typeName = "Reload" fileName = "Pistol_Reload_v2" count = "1" />
-      <Anim typeName = "Shift" fileName = "Pistol_Change_v2" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Pistol_Fire_v2" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Pistol_Standby_v2" count = "1" />
-	  <Anim typeName = "Show" fileName = "Pistol_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Pistol_Stun_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Pistol_Run01_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Pistol_Run02_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Pistol_Run03_v2" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Pistol_Run04_v2" count = "1" />
-    </Character>
-    <Character name = "Rock">
-      <Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill02" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "" count = "1" />
-      <Anim typeName = "Death" fileName = "MachineGun_Die02" count = "1" />
-      <Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "MachineGun_stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Wesker">
-      <Anim typeName = "Back" fileName = "Sniper_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Sniper_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Sniper_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Sniper_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Sniper_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Sniper_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Sniper_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Sniper_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Sniper_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Sniper_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Sniper_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Sniper_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Sniper_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Sniper_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Sniper_Run04" count = "1" />
-    </Character>
-    <Character name = "Oppenheimer">
-      <Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
-    </Character>
-    <Character name = "Shepard">
-      <Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
-      <Anim typeName = "Skill" fileName = "Skill01" count = "1" />
-      <Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
-      <Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
-      <Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
-      <Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
-      <Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
-      <Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
-      <Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
-      <Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
-	  <Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
-      <Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
-      <Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
-      <Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
-      <Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
-      <Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
-    </Character>
-  </NewCharacterAnimation>
+	<NewCharacterAnimation>
+		<Character name = "Mike">
+			<Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Baseball_bat_Skill02" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Chris">
+			<Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "item_Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "MachineGun_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "MachineGun_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />.
+			<Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "MachineGun_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Lili">
+			<Anim typeName = "Back" fileName = "Doctor_Back_v2" count = "1" />
+			<Anim typeName = "Skill" fileName = "Doctor_Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Doctor_Charge_v2" count = "1" />
+			<Anim typeName = "Death" fileName = "Doctor_Die_v2" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Doctor_Hurt01_v2" count = "1" />
+			<Anim typeName = "Idle" fileName = "Doctor_Idle_v2" count = "1" />
+			<Anim typeName = "Reload" fileName = "Doctor_Reload_v2" count = "1" />
+			<Anim typeName = "Shift" fileName = "Doctor_Change_v2" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Doctor_Fire_v2" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Doctor_Standby_v2" count = "1" />
+			<Anim typeName = "Show" fileName = "Doctor_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Doctor_Stun_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Doctor_Run01_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Doctor_Run02_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Doctor_Run03_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Doctor_Run04_v2" count = "1" />
+		</Character>
+		<Character name = "Vasily">
+			<Anim typeName = "Back" fileName = "Sniper_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "SKill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Sniper_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Sniper_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Sniper_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Sniper_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Sniper_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Sniper_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Sniper_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Sniper_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Sniper_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Sniper_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Sniper_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Sniper_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Sniper_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Sniper_Run04" count = "1" />
+		</Character>
+		<Character name = "Claire">
+			<Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
+		</Character>
+		<Character name = "Fire Dragon">
+			<Anim typeName = "Back" fileName = "Ninjia_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Ninjia_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Ninjia_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Ninjia_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Ninjia_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Ninjia_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Ninjia_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Ninjia_Fire" count = "3" />
+			<Anim typeName = "ReadyFire" fileName = "Ninjia_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Ninjia_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Ninjia_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Ninjia_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Ninjia_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Ninjia_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Ninjia_Run04" count = "1" />
+		</Character>
+		<Character name = "Zero">
+			<Anim typeName = "Back" fileName = "Ninjia_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Ninjia_Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Ninjia_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Ninjia_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Ninjia_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Ninjia_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Ninjia_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Ninjia_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Ninjia_Fire" count = "3" />
+			<Anim typeName = "ReadyFire" fileName = "Ninjia_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Ninjia_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Ninjia_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Ninjia_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Ninjia_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Ninjia_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Ninjia_Run04" count = "1" />
+		</Character>
+		<Character name = "X-John-X">
+			<Anim typeName = "Back" fileName = "Laser_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Laser_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Laser_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Laser_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Laser_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Laser_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Laser_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Laser_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Laser_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Laser_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Laser_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Laser_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Laser_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Laser_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Laser_Run04" count = "1" />
+		</Character>
+		<Character name = "Clint">
+			<Anim typeName = "Back" fileName = "magnum_Back_v2" count = "1" />
+			<Anim typeName = "Skill" fileName = "magnum_Skill01" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "magnum_Charge_v2" count = "1" />
+			<Anim typeName = "Death" fileName = "magnum_Die_v2" count = "2" />
+			<Anim typeName = "Hurt" fileName = "magnum_Hurt01_v2" count = "1" />
+			<Anim typeName = "Idle" fileName = "magnum_Idle_v2" count = "1" />
+			<Anim typeName = "Reload" fileName = "magnum_Reload_v2" count = "1" />
+			<Anim typeName = "Shift" fileName = "magnum_Change_v2" count = "1" />
+			<Anim typeName = "Shoting" fileName = "magnum_Fire_v2" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "magnum_Standby_v2" count = "1" />
+			<Anim typeName = "Show" fileName = "magnum_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "magnum_Stun_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "magnum_Run01_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "magnum_Run02_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "magnum_Run03_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "magnum_Run04_v2" count = "1" />
+		</Character>
+		<Character name = "Clint2">
+			<Anim typeName = "Back" fileName = "magnum_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "magnum_Skill01" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "magnum_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "magnum_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "magnum_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "magnum_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "magnum_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "magnum_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "magnum_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "magnum_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "magnum_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "magnum_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "magnum_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "magnum_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "magnum_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "magnum_Run04" count = "1" />
+		</Character>
+		<Character name = "Eva">
+			<Anim typeName = "Back" fileName = "Virus_Back_v2" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Virus_Charge_v2" count = "1" />
+			<Anim typeName = "Death" fileName = "Virus_Die_v2" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Virus_Hurt01_v2" count = "1" />
+			<Anim typeName = "Idle" fileName = "Virus_Idle_v2" count = "1" />
+			<Anim typeName = "Reload" fileName = "Virus_Reload_v2" count = "1" />
+			<Anim typeName = "Shift" fileName = "Virus_Change_v2" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Virus_Fire_v2" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Virus_Standby_v2" count = "1" />
+			<Anim typeName = "Show" fileName = "Virus_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Virus_Stun_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Virus_Run01_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Virus_Run02_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Virus_Run03_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Virus_Run04_v2" count = "1" />
+		</Character>
+		<Character name = "Arnoud">
+			<Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Grenade_Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
+			<Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
+		</Character>
+		<Character name = "Jason">
+			<Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Tanya">
+			<Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "MachineGun_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "MachineGun_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "MachineGun_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Bourne">
+			<Anim typeName = "Back" fileName = "Pistol_Back_v2" count = "1" />
+			<Anim typeName = "Skill" fileName = "Pistol_Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Pistol_Charge_v2" count = "1" />
+			<Anim typeName = "Death" fileName = "Pistol_Die_v2" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Pistol_Hurt01_v2" count = "1" />
+			<Anim typeName = "Idle" fileName = "Pistol_Idle_v2" count = "1" />
+			<Anim typeName = "Reload" fileName = "Pistol_Reload_v2" count = "1" />
+			<Anim typeName = "Shift" fileName = "Pistol_Change_v2" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Pistol_Fire_v2" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Pistol_Standby_v2" count = "1" />
+			<Anim typeName = "Show" fileName = "Pistol_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Pistol_Stun_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Pistol_Run01_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Pistol_Run02_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Pistol_Run03_v2" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Pistol_Run04_v2" count = "1" />
+		</Character>
+		<Character name = "Rock">
+			<Anim typeName = "Back" fileName = "MachineGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill02" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "" count = "1" />
+			<Anim typeName = "Death" fileName = "MachineGun_Die02" count = "1" />
+			<Anim typeName = "Hurt" fileName = "MachineGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "MachineGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "MachineGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "MachineGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "MachineGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "MachineGun_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "MachineGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "MachineGun_stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "MachineGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "MachineGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "MachineGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "MachineGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Wesker">
+			<Anim typeName = "Back" fileName = "Sniper_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Sniper_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Sniper_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Sniper_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Sniper_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Sniper_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Sniper_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Sniper_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Sniper_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Sniper_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Sniper_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Sniper_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Sniper_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Sniper_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Sniper_Run04" count = "1" />
+		</Character>
+		<Character name = "Oppenheimer">
+			<Anim typeName = "Back" fileName = "ShotGun_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "ShotGun_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "ShotGun_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "ShotGun_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "ShotGun_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "ShotGun_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "ShotGun_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "ShotGun_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "ShotGun_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "ShotGun_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "ShotGun_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "ShotGun_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "ShotGun_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "ShotGun_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "ShotGun_Run04" count = "1" />
+		</Character>
+		<Character name = "Shepard">
+			<Anim typeName = "Back" fileName = "Grenade_Back" count = "1" />
+			<Anim typeName = "Skill" fileName = "Skill01" count = "1" />
+			<Anim typeName = "Charge_Lower" fileName = "Grenade_Charge" count = "1" />
+			<Anim typeName = "Death" fileName = "Grenade_Die" count = "2" />
+			<Anim typeName = "Hurt" fileName = "Grenade_Hurt01" count = "1" />
+			<Anim typeName = "Idle" fileName = "Grenade_Idle" count = "1" />
+			<Anim typeName = "Reload" fileName = "Grenade_Reload" count = "1" />
+			<Anim typeName = "Shift" fileName = "Grenade_Change" count = "1" />
+			<Anim typeName = "Shoting" fileName = "Grenade_Fire" count = "1" />
+			<Anim typeName = "ReadyFire" fileName = "Grenade_Standby" count = "1" />
+			<Anim typeName = "Show" fileName = "Grenade_Show" count = "1" />
+			<Anim typeName = "SeriousInjury" fileName = "Grenade_Stun" count = "1" />
+			<Anim typeName = "Lower_Body_Run_F" fileName = "Grenade_Run01" count = "1" />
+			<Anim typeName = "Lower_Body_Run_B" fileName = "Grenade_Run02" count = "1" />
+			<Anim typeName = "Lower_Body_Run_L" fileName = "Grenade_Run03" count = "1" />
+			<Anim typeName = "Lower_Body_Run_R" fileName = "Grenade_Run04" count = "1" />
+		</Character>
+	</NewCharacterAnimation>
 	<EnemyAnimation>
 		<Enemy name = "Zombie">
 			<Anim typeName = "Idle" fileName = "Idle01" count = "1" />
@@ -456,97 +473,96 @@
 			<Anim typeName = "Appear" fileName = "Standby_ShotGun" count = "1" />
 			<Anim typeName = "Shoting" fileName = "Fire_ShotGun" count = "1" />
 		</Enemy>
-    <Enemy name = "Zombie_Pestilence">
-      <Anim typeName = "Idle" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward01" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Damage" count = "3" />
-      <Anim typeName = "Death" fileName = "Death01" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Attack" fileName = "Fire01" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Cowboy">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Hook_Demon">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Move" fileName = "Run" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "Skill_A" count = "1" />
-      <Anim typeName = "Attack_Special_01_B" fileName = "Skill_B" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Dead light">
-      <Anim typeName = "Idle" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward01" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Damage" count = "3" />
-      <Anim typeName = "Death" fileName = "Death01" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Attack" fileName = "Fire01" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "Skill01_1" count = "1" />
-      <Anim typeName = "Attack_Special_01_B" fileName = "Skill01_2" count = "1" />
-      <Anim typeName = "Attack_Special_01_C" fileName = "Skill01_3" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Spore">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "1" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
-      <Anim typeName = "Attack_Special_01_B" fileName = "skill01_02" count = "1" />
-      <Anim typeName = "Attack_Special_01_C" fileName = "skill01_03" count = "1" />
-      <Anim typeName = "Attack_Special_02_A" fileName = "skill02" count = "1" />
-      <Anim typeName = "Attack_Special_02_B" fileName = "skill02_02" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Guter_Trennung">
-      <Anim typeName = "Idle" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward01" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Damage" count = "3" />
-      <Anim typeName = "Death" fileName = "Death01" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle01" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack01" count = "1" />
-      <Anim typeName = "StartMove" fileName = "Forward00" count = "1" />
-      <Anim typeName = "StopMove" fileName = "Forward01_2" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Butcher">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_Blaze">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "skill03" count = "1" />
-    </Enemy>
-    <Enemy name = "Zombie_PestilenceJar">
-      <Anim typeName = "Idle" fileName = "Idle" count = "1" />
-      <Anim typeName = "Move" fileName = "Forward" count = "1" />
-      <Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
-      <Anim typeName = "Death" fileName = "Die" count = "1" />
-      <Anim typeName = "Appear" fileName = "Idle" count = "1" />
-      <Anim typeName = "Attack" fileName = "Attack" count = "1" />
-      <Anim typeName = "Attack_Special_01_A" fileName = "skill03" count = "1" />
-    </Enemy>
+		<Enemy name = "Zombie_Pestilence">
+			<Anim typeName = "Idle" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward01" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Damage" count = "3" />
+			<Anim typeName = "Death" fileName = "Death01" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Attack" fileName = "Fire01" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Cowboy">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Hook_Demon">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Run" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "Skill_A" count = "1" />
+			<Anim typeName = "Attack_Special_01_B" fileName = "Skill_B" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Dead light">
+			<Anim typeName = "Idle" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward01" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Damage" count = "3" />
+			<Anim typeName = "Death" fileName = "Death01" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Attack" fileName = "Fire01" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "Skill01_1" count = "1" />
+			<Anim typeName = "Attack_Special_01_B" fileName = "Skill01_2" count = "1" />
+			<Anim typeName = "Attack_Special_01_C" fileName = "Skill01_3" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Spore">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "1" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "skill01" count = "1" />
+			<Anim typeName = "Attack_Special_01_B" fileName = "skill01_02" count = "1" />
+			<Anim typeName = "Attack_Special_01_C" fileName = "skill01_03" count = "1" />
+			<Anim typeName = "Attack_Special_02_A" fileName = "skill02" count = "1" />
+			<Anim typeName = "Attack_Special_02_B" fileName = "skill02_02" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Guter_Trennung">
+			<Anim typeName = "Idle" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward01" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Damage" count = "3" />
+			<Anim typeName = "Death" fileName = "Death01" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle01" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack01" count = "1" />
+			<Anim typeName = "StartMove" fileName = "Forward00" count = "1" />
+			<Anim typeName = "StopMove" fileName = "Forward01_2" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Butcher">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_Blaze">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "skill03" count = "1" />
+		</Enemy>
+		<Enemy name = "Zombie_PestilenceJar">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+			<Anim typeName = "Appear" fileName = "Idle" count = "1" />
+			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
+			<Anim typeName = "Attack_Special_01_A" fileName = "skill03" count = "1" />
+		</Enemy>
 	</EnemyAnimation>
 	<WeaponAnimation>
-		<WeaponType name = "DoubleGun">
-		</WeaponType>
+		<WeaponType name = "DoubleGun"></WeaponType>
 		<WeaponType name = "HandGun">
 			<Anim typeName = "Lower_Body_Idle" fileName = "44 Magnum_Lowerbody_Idle01" />
 			<Anim typeName = "Lower_Body_Reload" fileName = "AK_LowerBody_Reload01" />
