@@ -24,8 +24,8 @@ How to change the values in the config:
 	- coinsStartIncreasing / xpStartIncreasing = how much more the second stage gives. 
 	- coinsIncrease / xpIncrease = how much bigger that jump gets for each stage after that. 
 	- combatStarting / combatStartIncreasing / combatIncrease = the same, but for the recommended team power shown on the stage. 
-	- rows = how many stages get a reward (150 is enough for all 4 locations on every difficulty). -->
-	<StageRewards rows="150" coinsStarting="1500" coinsStartIncreasing="10" coinsIncrease="5" xpStarting="510" xpStartIncreasing="280" xpIncrease="20" combatStarting="350" combatStartIncreasing="40" combatIncrease="20" />
+	- rows = how many stages get a reward (200 is enough for all 4 locations on every difficulty: Normal 20 stages each, Hard and Hell 15 each). -->
+	<StageRewards rows="200" coinsStarting="1500" coinsStartIncreasing="10" coinsIncrease="5" xpStarting="510" xpStartIncreasing="280" xpIncrease="20" combatStarting="350" combatStartIncreasing="40" combatIncrease="20" />
 
 	<!-- XP needed to level up the team. Level 1 needs xpStarting. Each level after that needs more XP than the one before, and the jump gets a little bigger every level (xpIncreaseGrowth). It goes up to maxLevel in Team.xml by itself. -->
 	<TeamExperience xpStarting="510" xpStartIncreasing="240" xpIncrease="240" xpIncreaseGrowth="30" />

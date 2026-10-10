@@ -6,7 +6,17 @@ public static class GameProgressController
 {
 	public static int GetRewardIndex()
 	{
-		return DataCenter.State().selectAreaNode + ((int)DataCenter.State().selectLevelMode * 30) + (DataCenter.State().selectWorldNode * 20);
+		int location = DataCenter.State().selectWorldNode;
+		int area = DataCenter.State().selectAreaNode;
+		switch (DataCenter.State().selectLevelMode)
+		{
+		case Defined.LevelMode.Hard:
+			return 80 + location * 15 + area;
+		case Defined.LevelMode.Hell:
+			return 140 + location * 15 + area;
+		default:
+			return location * 20 + area;
+		}
 	}
 
 	public static void Progress()

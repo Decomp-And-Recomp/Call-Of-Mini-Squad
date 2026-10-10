@@ -11,7 +11,8 @@ public static class LevelRewardController
 			LevelCalcTest.Init();
 		}
 
-		int[] rewards = LevelCalcTest.LevelRewards[DataCenter.State().selectAreaNode];
+		int index = Mathf.Clamp(GameProgressController.GetRewardIndex(), 0, LevelCalcTest.LevelRewards.Count - 1);
+		int[] rewards = LevelCalcTest.LevelRewards[index];
 
 		DataCenter.Save().selectLevelDropData = new LevelDropData
 		{

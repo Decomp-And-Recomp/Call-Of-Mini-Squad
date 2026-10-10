@@ -69,7 +69,7 @@ public static class EconomyConfig
 	public static int FirstThreeStarCrystals = 5;
 	public static int TutorialRewardMoney = 1000;
 	public static int TutorialRewardCrystals = 50;
-	public static int StageRewardRows = 150;
+	public static int StageRewardRows = 200;
 	public static int CoinsStarting = 1500, CoinsStartIncreasing = 10, CoinsIncrease = 5;
 	public static int StageXPStarting = 510, StageXPStartIncreasing = 280, StageXPIncrease = 20;
 	public static int StageCombatStarting = 350, StageCombatStartIncreasing = 40, StageCombatIncrease = 20;
