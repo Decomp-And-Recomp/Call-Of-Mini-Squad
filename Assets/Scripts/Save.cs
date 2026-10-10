@@ -289,6 +289,8 @@ public class SaveData
 	public float lastLoginTime;
 
 	public bool tutorialChangeMode;
+
+	public int tutorialStep;
 }
 
 public class Currency

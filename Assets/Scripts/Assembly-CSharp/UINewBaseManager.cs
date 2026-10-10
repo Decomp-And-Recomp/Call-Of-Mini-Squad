@@ -161,7 +161,7 @@ public class UINewBaseManager : MonoBehaviour
 		HttpRequestHandle.instance.SendRequest(HttpRequestHandle.RequestType.Get_PlayerData, OnGetPlayerDataFinished);
 		if (DataCenter.State().lastSceneType == Defined.SceneType.Battle)
 		{
-			if (DataCenter.Save().bNewUser)
+			if (DataCenter.Save().bNewUser || DataCenter.Save().tutorialStep == Defined.TutorialStep.CreateNameFinish)
 			{
 				DataConf.GameLevelNodeData currentWorldLevelNode = DataCenter.Save().GetCurrentWorldLevelNode();
 				EnterWorldMapImmediately(SolidMapCameraControl.mInstance.levelPointsInfo[currentWorldLevelNode.index].stagePartStageCameraTrans.localPosition);
@@ -532,6 +532,10 @@ public class UINewBaseManager : MonoBehaviour
 
 	public void HandleWavePointClickEvent(UtilUIBaseWavePointInfoData data)
 	{
+		if (UIBASECOURSEINFO.TutorialInProgress && data.ID == 0 && UIBASECOURSEINFO.GetCourse(2).STATE == UtilUICourseInfo.CoursePhaseState.InProgress)
+		{
+			UIBASECOURSEINFO.GetCourse(2).STATE = UtilUICourseInfo.CoursePhaseState.Done;
+		}
 		if (data.STARS >= 0)
 		{
 			UIEffectManager.Instance.ShowEffect(UIEffectManager.EffectType.E_Loading, 5);
@@ -546,10 +550,6 @@ public class UINewBaseManager : MonoBehaviour
 		else
 		{
 			UIDialogManager.Instance.ShowDriftMsgInfoUI("Complete last mission to unlock.");
-		}
-		if (UIBASECOURSEINFO.TutorialInProgress && data.ID == 0 && UIBASECOURSEINFO.GetCourse(2).STATE == UtilUICourseInfo.CoursePhaseState.InProgress)
-		{
-			UIBASECOURSEINFO.GetCourse(2).STATE = UtilUICourseInfo.CoursePhaseState.Done;
 		}
 	}
 
@@ -592,7 +592,7 @@ public class UINewBaseManager : MonoBehaviour
 			UIBASECOURSEINFO.GetCourse(10).STATE = UtilUICourseInfo.CoursePhaseState.Done;
 			DataCenter.Save().tutorialStep = Defined.TutorialStep.EnterBattle;
 		}
-		if (gameLevelData.index == 0 && DataCenter.State().selectWorldNode == 0 && DataCenter.Save().tutorialStep != Defined.TutorialStep.Finish)
+		if (gameLevelData.index == 0 && DataCenter.State().selectWorldNode == 0 && (DataCenter.Save().tutorialStep == Defined.TutorialStep.EnterBattle || DataCenter.Save().tutorialStep == Defined.TutorialStep.SetTeam))
 		{
 			DataCenter.Save().tutorialStep = Defined.TutorialStep.FinishStageOneWaveOne;
 		}

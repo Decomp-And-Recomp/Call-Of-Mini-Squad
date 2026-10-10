@@ -44,7 +44,8 @@ namespace Zweronz.SavingSystem
 	            playSound = DataCenter.Save().PlaySound,
 	            cameraView = (int)DataCenter.Save().CameraView,
 	            lastLoginTime = DataCenter.Save().lastLoginTime,
-	            tutorialChangeMode = DataCenter.Save().tutorialChangeMode
+	            tutorialChangeMode = DataCenter.Save().tutorialChangeMode,
+	            tutorialStep = (int)DataCenter.Save().tutorialStep
 	        };
 	    }
 	}

@@ -44,6 +44,12 @@ namespace Zweronz.SavingSystem
 			DataCenter.Save().CameraView = (Defined.CameraView)loadObject.cameraView;
 			DataCenter.Save().lastLoginTime = loadObject.lastLoginTime;
 			DataCenter.Save().tutorialChangeMode = loadObject.tutorialChangeMode;
+			Defined.TutorialStep savedTutorialStep = (Defined.TutorialStep)loadObject.tutorialStep;
+			if (savedTutorialStep == Defined.TutorialStep.None && !loadObject.bNewUser)
+			{
+				savedTutorialStep = Defined.TutorialStep.Finish;
+			}
+			DataCenter.Save().tutorialStep = savedTutorialStep;
 			DataCenter.Save().MigrateTutorialDummyTeamSites();
 		}
 

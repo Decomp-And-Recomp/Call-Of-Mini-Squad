@@ -107,7 +107,23 @@ public class DataSave
 
 	public float lastLoginTime;
 
-	public Defined.TutorialStep tutorialStep = Defined.TutorialStep.None;
+	private Defined.TutorialStep m_tutorialStep = Defined.TutorialStep.None;
+
+	public Defined.TutorialStep tutorialStep
+	{
+		get
+		{
+			return m_tutorialStep;
+		}
+		set
+		{
+			if (m_tutorialStep != value)
+			{
+				m_tutorialStep = value;
+				Save.RequestWrite();
+			}
+		}
+	}
 
 	private TeamData m_teamData;
 

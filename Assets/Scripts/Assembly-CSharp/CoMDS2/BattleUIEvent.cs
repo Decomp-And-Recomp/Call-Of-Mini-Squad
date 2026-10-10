@@ -2458,7 +2458,7 @@ namespace CoMDS2
 			bool wasNewUser = DataCenter.Save().bNewUser;
 			if (DataCenter.Save().bNewUser)
 			{
-				DataCenter.Save().tutorialStep = Defined.TutorialStep.TutorialBattle;
+				DataCenter.Save().tutorialStep = Defined.TutorialStep.CreateNameFinish;
 				if (DataCenter.State().battleResult == Defined.BattleResult.Win)
 				{
 					DataCenter.Save().Money += EconomyConfig.TutorialRewardMoney;
