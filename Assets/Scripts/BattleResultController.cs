@@ -6,8 +6,11 @@ public static class BattleResultController
 {
 	public static void Get()
 	{
+		int battleGold = TakeGoldFromBattle();
+
 		if (DataCenter.State().battleResult != Defined.BattleResult.Win)
 		{
+			PayGold(battleGold);
 			GameBattle.m_instance.bGetBattleResultData = true;
 			return;
 		}
@@ -15,6 +18,7 @@ public static class BattleResultController
 		GameProgressData wpd = DataCenter.Save().GetWorldProgressData(DataCenter.State().selectWorldNode);
 		if (wpd == null)
 		{
+			PayGold(battleGold);
 			GameBattle.m_instance.bGetBattleResultData = true;
 			return;
 		}
@@ -45,7 +49,7 @@ public static class BattleResultController
 
 		int[] baseRewards = new int[2]
 		{
-			LevelCalcTest.LevelRewards[rewardIndex][0] * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
+			(LevelCalcTest.LevelRewards[rewardIndex][0] + battleGold) * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
 			LevelCalcTest.LevelRewards[rewardIndex][1] * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
 		};
 
@@ -60,6 +64,27 @@ public static class BattleResultController
 		Save.RequestWrite();
 
 		GameBattle.m_instance.bGetBattleResultData = true;
+	}
+
+	private static int TakeGoldFromBattle()
+	{
+		if (GameBattle.m_instance == null)
+		{
+			return 0;
+		}
+		int gold = GameBattle.m_instance.getMoneyInBattle;
+		GameBattle.m_instance.getMoneyInBattle = 0;
+		return gold;
+	}
+
+	private static void PayGold(int gold)
+	{
+		if (gold <= 0)
+		{
+			return;
+		}
+		DataCenter.Save().Money += gold;
+		Save.RequestWrite();
 	}
 
 	public static int GetExtraCrystals()
