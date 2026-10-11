@@ -162,11 +162,13 @@ namespace CoMDS2
 						if (sqrMagnitude > num)
 						{
 							m_activeObject.ChangeToDefaultAIState();
+							return;
 						}
 					}
 					else
 					{
 						m_activeObject.ChangeToDefaultAIState();
+						return;
 					}
 				}
 			}

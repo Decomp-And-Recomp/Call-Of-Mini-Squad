@@ -450,8 +450,21 @@ namespace CoMDS2
 			SetAnimationsMixing();
 		}
 
+		protected virtual string DebugExtraInfo()
+		{
+			return string.Empty;
+		}
+
 		public override void Update(float deltaTime)
 		{
+#if UNITY_EDITOR
+			DS2ObjectStub debugStub = GetGameObject().GetComponent<DS2ObjectStub>();
+			if (debugStub != null)
+			{
+				AIState debugState = GetCurrentAIState();
+				debugStub.RefreshDebug(debugState != null ? debugState.name : "(none)", base.hp, base.hpMax, isRage, m_godTime > 0f, isStuck, 0, DebugExtraInfo());
+			}
+#endif
 			if (m_godTime > 0f)
 			{
 				m_godTime -= deltaTime;
@@ -958,6 +971,11 @@ namespace CoMDS2
 				}
 				return hitResultInfo;
 			}
+			if (hitInfo.bSkill && ChestBuffs.SkillDamageBonus > 0f && base.clique == Clique.Computer)
+			{
+				hitInfo = new HitInfo(hitInfo);
+				hitInfo.damage = new NumberSection<float>(hitInfo.damage.left * (1f + ChestBuffs.SkillDamageBonus), hitInfo.damage.right * (1f + ChestBuffs.SkillDamageBonus));
+			}
 			if (hitInfo.bSkill && isIgnoreSkillDamage)
 			{
 				EffectNumManager.instance.GenerageEffectNum(EffectNumber.EffectNumType.Ignore, 0f, m_effectPoint.position);
@@ -1049,7 +1067,10 @@ namespace CoMDS2
 					if (num3 > 0f && NegativeAffectEnable)
 					{
 						Vector3 vector = hitInfo.repelDirection * -1f;
-						GetModelTransform().forward = vector;
+						if (vector.sqrMagnitude > 0.0001f)
+						{
+							GetModelTransform().forward = vector;
+						}
 						Vector3 faceDirectionImmediately = vector;
 						SetFaceDirectionImmediately(faceDirectionImmediately);
 						float time = ((!hitInfo.bViolent) ? hitInfo.repelTime : (hitInfo.repelTime * 3f));
@@ -1145,7 +1166,10 @@ namespace CoMDS2
 							base.autoNextState = GetAIState("Stun");
 						}
 						Vector3 vector = hitInfo.repelDirection * -1f;
-						GetModelTransform().forward = vector;
+						if (vector.sqrMagnitude > 0.0001f)
+						{
+							GetModelTransform().forward = vector;
+						}
 						Vector3 faceDirectionImmediately2 = vector;
 						SetFaceDirectionImmediately(faceDirectionImmediately2);
 						aIStateRepel.SetRepel(num4, hitInfo.repelTime, hitInfo.repelDirection);
@@ -1216,6 +1240,10 @@ namespace CoMDS2
 				if (num3 < 0)
 				{
 					num3 = 0;
+				}
+				else if (num3 == 0 && base.clique == Clique.Computer && (hitInfo.damage.right > 0f || hitInfo.critDamage > 0f))
+				{
+					num3 = Mathf.Max(1, (int)((float)base.hpMax * 0.005f));
 				}
 				hitResultInfo.damage = num3;
 			}
@@ -1430,6 +1458,11 @@ namespace CoMDS2
 		public float GetSkillTotalCDTime()
 		{
 			return m_skillTotalCDTime;
+		}
+
+		public void ClearSkillCDTime()
+		{
+			m_skillCDTime = 0f;
 		}
 
 		public void FillCDTime()

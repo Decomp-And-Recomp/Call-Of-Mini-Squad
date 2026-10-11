@@ -149,7 +149,7 @@ How to add a new weapon into this config:
 	</Weapon>
 	<Weapon type="11" name="Zombie Buster" modelFileName="ShotGun_02" iconFileName="14" >
 		<Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="1" hitStrength = "4" />
-		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="1.0" />
 		<UpgradePhase>
 			<Phase index = "0" damage = "416-416" damageIncr = "50" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
 			<Phase index = "1" damage = "666-666" damageIncr = "99" ammo = "18" reload = "2.5" fireFrequence = "80" rapid = "0" rapidInterval = "0" />
@@ -206,7 +206,7 @@ How to add a new weapon into this config:
 	<Weapon type="16" name="Justice" modelFileName="ShotGun_04" iconFileName="16" >
 		<!--extra1:x%的几率造成冰冻 extra2:冰冻持续时间-->
 		<Bullet type="0" speed="60" range="8" hitType="0" repelDis="4-6.5" repelTime="0.2" effectHitType="20" hitStrength = "4" extra1="20" extra2="3" />
-		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="0" />
+		<Feature emitTimeInAnimation="0.03" deviationStart="0" deviationRecoverTime="0" deviationDeltaAngle="0" deviationMaxAngle="1.0" />
 		<UpgradePhase>
 			<Phase index = "0" damage = "215-215" damageIncr = "25" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />
 			<Phase index = "1" damage = "344-344" damageIncr = "51" ammo = "18" reload = "2.5" fireFrequence = "100" rapid = "0" rapidInterval = "0" />

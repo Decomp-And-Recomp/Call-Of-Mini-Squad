@@ -393,6 +393,10 @@ namespace CoMDS2
 			}
 			m_state.Update(deltaTime);
 			AIState aIState = m_state.NextState();
+			if (aIState != m_state && IsDeadEnemyLeavingDeath(aIState))
+			{
+				aIState = m_state;
+			}
 			if (aIState != m_state)
 			{
 				m_state.Exit();
@@ -408,8 +412,17 @@ namespace CoMDS2
 			}
 		}
 
+		private bool IsDeadEnemyLeavingDeath(AIState next)
+		{
+			return objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ENEMY && !Alive() && m_state != null && m_state.name == "Death" && (next == null || next.name != "Death");
+		}
+
 		public virtual void SwitchFSM(AIState state)
 		{
+			if (IsDeadEnemyLeavingDeath(state))
+			{
+				return;
+			}
 			if (m_state != null)
 			{
 				m_state.Exit();

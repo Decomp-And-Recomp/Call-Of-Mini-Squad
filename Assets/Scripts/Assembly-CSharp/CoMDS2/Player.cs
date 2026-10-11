@@ -283,6 +283,28 @@ namespace CoMDS2
 			}
 		}
 
+		private bool InFireOrSkillState()
+		{
+			AIState state = GetCurrentAIState();
+			if (state == null)
+			{
+				return false;
+			}
+			string stateName = state.name;
+			return stateName == "Shoot" || stateName == "MoveShoot" || stateName == "FireReady" || stateName == "Skill" || stateName == "SkillReady" || stateName == "SkillFindTarget";
+		}
+
+		private bool InSkillState()
+		{
+			AIState state = GetCurrentAIState();
+			if (state == null)
+			{
+				return false;
+			}
+			string stateName = state.name;
+			return stateName == "Skill" || stateName == "SkillReady" || stateName == "SkillFindTarget";
+		}
+
 		public bool CurrentController
 		{
 			get
@@ -319,7 +341,7 @@ namespace CoMDS2
 							AIStatePVPGuard aIStatePVPGuard = GetAIState("GuardPVP") as AIStatePVPGuard;
 							aIStatePVPGuard.SetGuard(playerData.siteNum);
 							SetDefaultAIState(aIStatePVPGuard);
-							if (Alive())
+							if (Alive() && !InSkillState())
 							{
 								SwitchFSM(aIStatePVPGuard);
 							}
@@ -328,7 +350,7 @@ namespace CoMDS2
 						{
 							AIState aIState = GetAIState("Idle");
 							SetDefaultAIState(aIState);
-							if (Alive())
+							if (Alive() && !InSkillState())
 							{
 								SwitchFSM(aIState);
 							}
@@ -339,7 +361,7 @@ namespace CoMDS2
 						AIState aIState2 = GetAIState("AutoControl");
 						SetDefaultAIState(aIState2);
 						AutoControl = true;
-						if (Alive())
+						if (Alive() && !InSkillState())
 						{
 							SwitchFSM(aIState2);
 							FaceDirection = GetModelTransform().forward;
@@ -351,7 +373,7 @@ namespace CoMDS2
 					{
 						AIState aIState3 = GetAIState("Idle");
 						SetDefaultAIState(aIState3);
-						if (Alive())
+						if (Alive() && !InSkillState())
 						{
 							SwitchFSM(aIState3);
 						}
@@ -370,7 +392,7 @@ namespace CoMDS2
 						AIStateSquadGuard aIStateSquadGuard = GetAIState("SquadGuard") as AIStateSquadGuard;
 						aIStateSquadGuard.SetGuard(SquadSite);
 						SetDefaultAIState(aIStateSquadGuard);
-						if (Alive())
+						if (Alive() && !InSkillState())
 						{
 							SwitchFSM(aIStateSquadGuard);
 						}
@@ -381,7 +403,7 @@ namespace CoMDS2
 						AIStatePVPGuard aIStatePVPGuard2 = GetAIState("GuardPVP") as AIStatePVPGuard;
 						aIStatePVPGuard2.SetGuard(playerData.siteNum);
 						SetDefaultAIState(aIStatePVPGuard2);
-						if (Alive())
+						if (Alive() && !InSkillState())
 						{
 							SwitchFSM(aIStatePVPGuard2);
 						}
@@ -391,7 +413,7 @@ namespace CoMDS2
 						AIStateAllyGuard aIStateAllyGuard = GetAIState("Guard") as AIStateAllyGuard;
 						aIStateAllyGuard.SetGuard(GameBattle.m_instance.GetPlayer());
 						SetDefaultAIState(aIStateAllyGuard);
-						if (Alive())
+						if (Alive() && !InSkillState())
 						{
 							SwitchFSM(aIStateAllyGuard);
 						}
@@ -711,6 +733,10 @@ namespace CoMDS2
 					GetNavMeshAgent().Stop(false);
 				}
 			}
+			if (CurrentController && !FaceToMoveDirection && !FireKeyDown && !m_fire && !InFireOrSkillState())
+			{
+				FaceToMoveDirection = true;
+			}
 			if (CurrentController && FaceToMoveDirection && !m_fire && GameBattle.m_instance != null)
 			{
 				float y = m_moveCopy.transform.eulerAngles.y;
@@ -1008,6 +1034,7 @@ namespace CoMDS2
 				SwitchFSM(GetAIState("SeriousInjury"));
 			}
 			DataCenter.State().battleStars = 1;
+			DataCenter.State().battleSquadMemberFell = true;
 		}
 
 		public void Restart()
@@ -1688,7 +1715,10 @@ namespace CoMDS2
 		public override void SetMove(bool move, Vector3 moveDirection)
 		{
 			base.SetMove(move, moveDirection);
-			m_moveCopy.transform.forward = moveDirection;
+			if (moveDirection.sqrMagnitude > 0.0001f)
+			{
+				m_moveCopy.transform.forward = moveDirection;
+			}
 		}
 
 		public override void UseWeapon(int index)
@@ -1955,6 +1985,10 @@ namespace CoMDS2
 		{
 			base.SkillEnd();
 			SetGodTime(0f);
+			if (CurrentController)
+			{
+				FaceToMoveDirection = true;
+			}
 		}
 	}
 }

@@ -114,7 +114,10 @@ namespace CoMDS2
 		public virtual void SetBullet(DS2ActiveObject creator, BulletAttribute attribute, Vector3 position, Vector3 direction)
 		{
 			GetGameObject().transform.position = position;
-			GetGameObject().transform.forward = direction;
+			if (direction.sqrMagnitude > 0.0001f)
+			{
+				GetGameObject().transform.forward = direction;
+			}
 			m_creator = creator;
 			if (attribute != null)
 			{

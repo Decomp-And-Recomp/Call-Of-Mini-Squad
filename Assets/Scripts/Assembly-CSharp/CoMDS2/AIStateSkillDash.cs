@@ -44,6 +44,8 @@ namespace CoMDS2
 
 		private UnityEngine.AI.NavMeshAgent m_dashAgent;
 
+		private UnityEngine.AI.NavMeshAgent m_pausedAgent;
+
 		public AIStateSkillDash(Character obj, string name, Controller controller = Controller.System)
 			: base(obj, name, controller)
 		{
@@ -77,11 +79,19 @@ namespace CoMDS2
 			m_timer = 0f;
 			UnityEngine.AI.NavMeshAgent agent = m_character.GetNavMeshAgent();
 			m_dashAgent = (agent != null && agent.enabled && agent.isOnNavMesh) ? agent : null;
+			m_pausedAgent = null;
+			Player dashPlayer = m_character as Player;
+			if (agent != null && agent.enabled && dashPlayer != null && !dashPlayer.CurrentController)
+			{
+				agent.enabled = false;
+				m_pausedAgent = agent;
+				m_dashAgent = null;
+			}
 			m_character.AnimationStop(m_activeObject.animUpperBody);
 			m_character.AnimationStop(m_activeObject.animLowerBody);
 			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY || m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER)
 			{
-				m_character.MoveDirection = m_character.GetModelTransform().forward;
+				m_character.MoveDirection = GetDashDirection();
 				m_character.UpdateLowerBodyMoveDir4();
 				base.animName = m_character.animLowerBody;
 				DS2ActiveObject activeObject = m_activeObject;
@@ -107,6 +117,41 @@ namespace CoMDS2
 			m_animChargeLower = m_character.GetAnimationNameByWeapon("Charge_Lower");
 		}
 
+		private Vector3 GetDashDirection()
+		{
+			Vector3 direction = m_character.GetModelTransform().forward;
+			Player player = m_character as Player;
+			if (player != null && !player.CurrentController)
+			{
+				direction = m_character.GetTransform().forward;
+				if (GameBattle.m_instance != null)
+				{
+					DS2ActiveObject target = GameBattle.m_instance.GetNearestObjFromTargetList(m_character.GetTransform().position, m_character.clique);
+					if (target != null && target.Alive())
+					{
+						Vector3 toTarget = target.GetTransform().position - m_character.GetTransform().position;
+						toTarget.y = 0f;
+						if (toTarget.sqrMagnitude > 0.0001f)
+						{
+							direction = toTarget;
+						}
+					}
+				}
+			}
+			direction.y = 0f;
+			if (direction.sqrMagnitude < 0.0001f)
+			{
+				direction = m_character.GetTransform().forward;
+				direction.y = 0f;
+			}
+			direction.Normalize();
+			if (player != null && !player.CurrentController)
+			{
+				m_character.GetModelTransform().forward = direction;
+			}
+			return direction;
+		}
+
 		protected override void OnExit()
 		{
 			base.OnExit();
@@ -125,6 +170,19 @@ namespace CoMDS2
 				}
 			}
 			m_dashAgent = null;
+			if (m_pausedAgent != null)
+			{
+				UnityEngine.AI.NavMeshHit hit;
+				Vector3 endPosition = m_character.GetTransform().position;
+				if (UnityEngine.AI.NavMesh.SamplePosition(endPosition, out hit, 3f, UnityEngine.AI.NavMesh.AllAreas))
+				{
+					endPosition = hit.position;
+				}
+				m_pausedAgent.enabled = true;
+				m_pausedAgent.Warp(endPosition);
+				m_pausedAgent.ResetPath();
+				m_pausedAgent = null;
+			}
 			m_character.SetAttackCollider(false, AttackCollider.AttackColliderType.Dash);
 			m_character.SetGodTime(0f);
 			if (m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_PLAYER ||m_character.objectType == Defined.OBJECT_TYPE.OBJECT_TYPE_ALLY)
@@ -213,6 +271,26 @@ namespace CoMDS2
 				if (m_dashAgent != null && m_dashAgent.enabled && m_dashAgent.isOnNavMesh)
 				{
 					m_dashAgent.Move(m_direction.normalized * m_dashSpeed * deltaTime);
+				}
+				else if (m_pausedAgent != null)
+				{
+					Vector3 position = m_character.GetTransform().position;
+					Vector3 step = m_direction.normalized * m_dashSpeed * deltaTime;
+					UnityEngine.AI.NavMeshHit edge;
+					if (UnityEngine.AI.NavMesh.Raycast(position, position + step, out edge, UnityEngine.AI.NavMesh.AllAreas))
+					{
+						step = edge.position - position;
+						step.y = 0f;
+						m_timer = m_dashTime;
+					}
+					if ((bool)m_characterController)
+					{
+						m_characterController.Move(step);
+					}
+					else
+					{
+						m_character.GetTransform().Translate(step, Space.World);
+					}
 				}
 				else if ((bool)m_characterController)
 				{

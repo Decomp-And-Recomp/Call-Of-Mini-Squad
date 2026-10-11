@@ -324,6 +324,8 @@ namespace CoMDS2
 			GetModelTransform().rotation = rotation;
 		}
 
+		private float m_deadTime;
+
 		public override void Update(float deltaTime)
 		{
 			AIState currentAIState = GetCurrentAIState();
@@ -333,8 +335,17 @@ namespace CoMDS2
 			UpdateSpecialAttribute();
 			if (!Alive())
 			{
+				m_deadTime += deltaTime;
+				if (m_deadTime > 8f)
+				{
+					m_deadTime = float.NegativeInfinity;
+					Debug.LogWarning("Enemy " + GetGameObject().name + " was still there 8 s after dying (state " + (GetCurrentAIState() != null ? GetCurrentAIState().name : "none") + "), removing it.");
+					SetAttackCollider(false);
+					OnDeathOver();
+				}
 				return;
 			}
+			m_deadTime = 0f;
 			if (m_hpBar != null)
 			{
 				if (m_showHpBarTimer < 2f)
@@ -554,6 +565,19 @@ namespace CoMDS2
 					GameBattle.s_enemyCount = 0;
 				}
 			}
+		}
+
+		protected override string DebugExtraInfo()
+		{
+			string info = (isBoss ? "boss " : string.Empty) + (eliteType != EnemyEliteType.None ? "elite " : string.Empty) + "visible=" + Visible;
+			if (specialAttribute != null)
+			{
+				foreach (SpecialAttribute.AttributeType attribute in specialAttribute)
+				{
+					info += " " + attribute;
+				}
+			}
+			return info;
 		}
 
 		public override void Reset()
@@ -2272,6 +2296,10 @@ namespace CoMDS2
 			if (aIStateRepel != null)
 			{
 				aIStateRepel.HurtTime = num;
+			}
+			if (specialAttribute.Contains(SpecialAttribute.AttributeType.RangeWeaken) || specialAttribute.Contains(SpecialAttribute.AttributeType.Territory))
+			{
+				hitInfo = new HitInfo(hitInfo);
 			}
 			if (specialAttribute.Contains(SpecialAttribute.AttributeType.RangeWeaken))
 			{

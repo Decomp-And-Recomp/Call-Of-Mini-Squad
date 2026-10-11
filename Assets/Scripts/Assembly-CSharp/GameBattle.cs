@@ -812,7 +812,6 @@ public class GameBattle : MonoBehaviour
 		DataCenter.State().battleSquadMemberFell = false;
 		GoldenGoblinSpawner.ResetForBattle();
 		ChestSpawner.ResetForBattle();
-		EnemySpawnPointMain.ResetForBattle();
 		KillEnemiesCount = 0;
 		if ((float)DataCenter.Save().GetTeamData().GetTeamCombat() < (float)DataCenter.Save().selectLevelDropData.recommendCombat * 0.5f)
 		{
@@ -2122,6 +2121,7 @@ public class GameBattle : MonoBehaviour
 		}
 		if (Util.s_squadMode)
 		{
+			s_bInputLocked = false;
 			CameraFocus = m_squadController;
 			m_squadController.MoveSpeed = m_squadController.OriginalSpeed;
 		}
