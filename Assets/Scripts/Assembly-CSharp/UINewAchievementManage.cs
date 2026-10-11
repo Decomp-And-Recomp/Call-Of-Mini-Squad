@@ -39,6 +39,12 @@ public class UINewAchievementManage : MonoBehaviour
 
 	protected Dictionary<GameObject, string> dictMapAchievementInfo = new Dictionary<GameObject, string>();
 
+	private UILabel dailyEmptyLabel;
+
+	private UILabel achievementEmptyLabel;
+
+	private float nextCountdownUpdate;
+
 	public UtilUIPropertyInfo UIPROPERTYINFO
 	{
 		get
@@ -142,6 +148,7 @@ public class UINewAchievementManage : MonoBehaviour
 			SerializeItem(achIndex++, data.id, data, autoCreate[1]);
 			UpdateItemUI(data.id);
 		}
+		UpdateEmptyLabels(dailyIndex == 0, achIndex == 0);
 		for (int gi = 0; gi < grid.Length; gi++)
 		{
 			if (grid[gi] == null) continue;
@@ -174,6 +181,83 @@ public class UINewAchievementManage : MonoBehaviour
 			grid[gi].repositionNow = true;
 			grid[gi].Reposition();
 		}
+	}
+
+	private void Update()
+	{
+		if (dailyEmptyLabel == null || !dailyEmptyLabel.gameObject.activeSelf || Time.unscaledTime < nextCountdownUpdate)
+		{
+			return;
+		}
+		nextCountdownUpdate = Time.unscaledTime + 1f;
+		if (DataCenter.Save().achDailyResetDate != System.DateTime.Now.ToString("yyyy-MM-dd"))
+		{
+			LoadAchievements();
+			return;
+		}
+		dailyEmptyLabel.text = GetDailyEmptyText();
+	}
+
+	private static string GetDailyEmptyText()
+	{
+		System.DateTime now = System.DateTime.Now;
+		System.TimeSpan left = now.Date.AddDays(1.0) - now;
+		int hours = (int)left.TotalHours;
+		string time = hours > 0 ? hours + "h " + left.Minutes + "m" : left.Minutes + "m";
+		return "You completed all of the daily missions. Come back in " + time + " to do more daily missions.";
+	}
+
+	private void UpdateEmptyLabels(bool dailyEmpty, bool achievementsEmpty)
+	{
+		if (grid.Length > 0)
+		{
+			dailyEmptyLabel = SetEmptyLabel(dailyEmptyLabel, grid[0], dailyEmpty, GetDailyEmptyText());
+		}
+		if (grid.Length > 1)
+		{
+			achievementEmptyLabel = SetEmptyLabel(achievementEmptyLabel, grid[1], achievementsEmpty, "There is nothing left to work towards. All achievements have been completed.");
+		}
+	}
+
+	private UILabel SetEmptyLabel(UILabel label, UIGrid g, bool show, string text)
+	{
+		if (g == null)
+		{
+			return label;
+		}
+		if (label == null)
+		{
+			if (!show || autoCreate.Length == 0 || autoCreate[0] == null || autoCreate[0].Prefab == null)
+			{
+				return null;
+			}
+			UtilUIAchievementInfo template = autoCreate[0].Prefab.GetComponent<UtilUIAchievementInfo>();
+			if (template == null || template.TitleLabel == null)
+			{
+				return null;
+			}
+			GameObject go = Object.Instantiate(template.TitleLabel.gameObject) as GameObject;
+			go.name = "EmptyLabel";
+			go.transform.SetParent(g.transform.parent, false);
+			go.transform.localScale = Vector3.one;
+			go.transform.localPosition = g.transform.localPosition + new Vector3(0f, -rowHeight * 0.5f, 0f);
+			label = go.GetComponent<UILabel>();
+			label.leftAnchor.target = null;
+			label.rightAnchor.target = null;
+			label.topAnchor.target = null;
+			label.bottomAnchor.target = null;
+			label.pivot = UIWidget.Pivot.Center;
+			label.alignment = NGUIText.Alignment.Center;
+			label.overflowMethod = UILabel.Overflow.ResizeHeight;
+			label.multiLine = true;
+			label.width = 640;
+		}
+		label.gameObject.SetActive(show);
+		if (show)
+		{
+			label.text = text;
+		}
+		return label;
 	}
 
     private void LoadAchievements()

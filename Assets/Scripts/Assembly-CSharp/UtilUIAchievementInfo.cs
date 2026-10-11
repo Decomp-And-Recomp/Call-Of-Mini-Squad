@@ -48,6 +48,14 @@ public class UtilUIAchievementInfo : MonoBehaviour
 
 	private UtilUIAchievementInfo_ClaimBtnClicked_Delegate _event;
 
+	public UILabel TitleLabel
+	{
+		get
+		{
+			return title;
+		}
+	}
+
 	public void UpdateTitle(string _str)
 	{
 		title.text = _str;
