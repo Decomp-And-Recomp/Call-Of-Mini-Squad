@@ -85,6 +85,14 @@ namespace CoMDS2
 			return hitResultInfo;
 		}
 
+		private static void ShakeCamera()
+		{
+			if (GameBattle.m_instance != null)
+			{
+				GameBattle.m_instance.SetCameraQuake(Defined.CameraQuakeType.Quake_D);
+			}
+		}
+
 		public void OnIdle(AIState.AIPhase phase)
 		{
 			switch (phase)
@@ -120,7 +128,7 @@ namespace CoMDS2
 				}
 				else if (m_timer >= m_explodeWaitTime + 3f)
 				{
-					GameBattle.m_instance.SetCameraQuake(Defined.CameraQuakeType.Quake_D);
+					ShakeCamera();
 					ChangeAIState("Death");
 				}
 				break;
@@ -152,13 +160,13 @@ namespace CoMDS2
 				{
 					if (Vector3.Distance(target.GetTransform().position, GetTransform().position) <= radius + ((Character)target).radius + 0.3f)
 					{
-						GameBattle.m_instance.SetCameraQuake(Defined.CameraQuakeType.Quake_D);
+						ShakeCamera();
 						ChangeAIState("Death");
 					}
 				}
 				else if (Vector3.Distance(target.GetTransform().position, GetTransform().position) <= 4f)
 				{
-					GameBattle.m_instance.SetCameraQuake(Defined.CameraQuakeType.Quake_D);
+					ShakeCamera();
 					ChangeAIState("Death");
 				}
 				break;
@@ -177,7 +185,7 @@ namespace CoMDS2
 				m_timer += Time.deltaTime;
 				if (m_timer >= 0.1f)
 				{
-					BattleBufferManager.Instance.GenerateEffectFromBuffer(Defined.EFFECT_TYPE.EFFECT_BOMB_1, new Vector3(GetTransform().position.x, 1f, GetTransform().position.z), 2f);
+					BattleBufferManager.Instance.GenerateEffectFromBuffer(Defined.EFFECT_TYPE.EFFECT_BOMB_1, new Vector3(GetTransform().position.x, (GameBattle.m_instance != null) ? 1f : (GetTransform().position.y + 1f), GetTransform().position.z), 2f);
 					int layerMask = ((m_creator.clique != 0) ? 1536 : 2048);
 					Collider[] array = Physics.OverlapSphere(GetTransform().position, m_damageRadius, layerMask);
 					Collider[] array2 = array;
