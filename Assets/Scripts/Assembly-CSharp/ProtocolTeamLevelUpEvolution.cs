@@ -21,6 +21,12 @@ public class ProtocolTeamLevelUpEvolution : Protocol
 
 	public override int GetResponse(string response)
 	{
+		return EvolutionController.TryLevelUp(DataCenter.State().selectEvolveIndex);
+	}
+
+	/*
+	public override int GetResponse(string response)
+	{
 		try
 		{
 			JsonData jsonData = JsonMapper.ToObject(response);
@@ -59,4 +65,5 @@ public class ProtocolTeamLevelUpEvolution : Protocol
 			return -1;
 		}
 	}
+	*/
 }

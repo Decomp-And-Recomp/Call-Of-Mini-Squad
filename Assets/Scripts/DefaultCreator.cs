@@ -97,7 +97,7 @@ namespace Zweronz.SavingSystem
 			{
 				int tier = i / 5;
 				int unlockPoint = tier * 5;
-				Defined.ItemState startState = (tier == 0) ? Defined.ItemState.Purchase : Defined.ItemState.Locked;
+				Defined.ItemState startState = (tier == 0) ? Defined.ItemState.Available : Defined.ItemState.Locked;
 
 				geniusList[i] = new TeamAttributeData()
 				{

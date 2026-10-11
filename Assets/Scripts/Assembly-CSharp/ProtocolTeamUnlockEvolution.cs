@@ -22,6 +22,12 @@ public class ProtocolTeamUnlockEvolution : Protocol
 
 	public override int GetResponse(string response)
 	{
+		return EvolutionController.TryUnlock(DataCenter.State().selectEvolveIndex);
+	}
+
+	/*
+	public override int GetResponse(string response)
+	{
 		try
 		{
 			JsonData jsonData = JsonMapper.ToObject(response);
@@ -56,4 +62,5 @@ public class ProtocolTeamUnlockEvolution : Protocol
 			return -1;
 		}
 	}
+	*/
 }

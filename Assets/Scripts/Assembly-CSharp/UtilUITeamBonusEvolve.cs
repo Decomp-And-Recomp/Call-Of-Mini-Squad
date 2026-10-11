@@ -92,6 +92,7 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 
 	public void Init(DataSave.TeamAttributeSaveData data, UtilUITeamBonusEvolve_OnChanged_Delegate _dele)
 	{
+		EvolutionController.RefreshStates();
 		attributeSaveData = data;
 		_onChangedEvent = _dele;
 		for (int i = 0; i < lsEvolveItems.Count; i++)
@@ -170,7 +171,7 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 		detailUpgradePartGO.SetActive(false);
 		if (info.teamAttributeData.state == Defined.ItemState.Available)
 		{
-			detailUpgradePartGO.SetActive(true);
+			detailUpgradePartGO.SetActive(info.teamAttributeData.level < info.teamAttributeData.maxLevel);
 			UILabel component = detailUpgradePartGO.transform.Find("Gold Container").Find("Label").GetComponent<UILabel>();
 			UISprite component2 = detailUpgradePartGO.transform.Find("Gold Container").Find("Sprite").GetComponent<UISprite>();
 			component2.spriteName = UIUtil.GetCurrencyIconSpriteNameByCurrencyType(info.teamAttributeData.costType);
@@ -192,12 +193,7 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 		}
 		else
 		{
-			detailUnlockPartGO.SetActive(true);
-			UIImageButton component8 = detailUnlockPartGO.transform.Find("Break Button").GetComponent<UIImageButton>();
-			UILabel component9 = detailUnlockPartGO.transform.Find("Gold Container").Find("Label").GetComponent<UILabel>();
-			UISprite component10 = detailUnlockPartGO.transform.Find("Gold Container").Find("Sprite").GetComponent<UISprite>();
-			component10.spriteName = UIUtil.GetCurrencyIconSpriteNameByCurrencyType(info.teamAttributeData.costType);
-			component9.text = ((info.teamAttributeData.cost <= 0) ? "0" : info.teamAttributeData.cost.ToString("###,###"));
+			detailIntro.text = UIUtil.GetCombinationString(UIUtil._UIRedColor, "Unlock at team level " + EconomyConfig.EvolutionUnlockTeamLevel + ". \n") + array[0] + "\n" + text;
 		}
 	}
 
@@ -244,7 +240,7 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 
 	protected void HandleItemUpgradedBtnClickEvent()
 	{
-		if (true)
+		if (nowSelectEvolveItem.teamAttributeData.level < nowSelectEvolveItem.teamAttributeData.maxLevel)
 		{
 			RequestLevelupEvolve(0);
 		}
@@ -262,6 +258,11 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 	{
 		UIEffectManager.Instance.HideEffect(UIEffectManager.EffectType.E_Loading, 15);
 		UIDialogManager.Instance.HideBlock(15);
+		if (code == EvolutionController.CODE_NOT_ENOUGH || code == EvolutionController.CODE_NO_CRYSTALS)
+		{
+			UIDialogManager.Instance.ShowDriftMsgInfoUI(code == EvolutionController.CODE_NO_CRYSTALS ? "Not enough tCrystals." : "Not enough gold.");
+			return;
+		}
 		if (code != 0)
 		{
 			string strInput = "update " + nowSelectEvolveItem.teamAttributeConf.name + "?";
@@ -287,6 +288,11 @@ public class UtilUITeamBonusEvolve : MonoBehaviour
 	{
 		UIEffectManager.Instance.HideEffect(UIEffectManager.EffectType.E_Loading, 16);
 		UIDialogManager.Instance.HideBlock(16);
+		if (code == EvolutionController.CODE_NOT_ENOUGH || code == EvolutionController.CODE_NO_CRYSTALS)
+		{
+			UIDialogManager.Instance.ShowDriftMsgInfoUI(code == EvolutionController.CODE_NO_CRYSTALS ? "Not enough tCrystals." : "Not enough gold.");
+			return;
+		}
 		if (code != 0)
 		{
 			string strInput = "unlock " + nowSelectEvolveItem.teamAttributeConf.name + "?";

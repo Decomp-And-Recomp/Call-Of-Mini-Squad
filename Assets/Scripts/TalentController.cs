@@ -11,6 +11,26 @@ public static class TalentController
 		DataSave.TeamAttributeSaveData s = DataCenter.Save().teamAttributeSaveData;
 		if (td == null || s == null) return;
 
+		if (s.teamAttributeTalent != null)
+		{
+			for (int i = 0; i < s.teamAttributeTalent.Length; i++)
+			{
+				TeamAttributeData node = s.teamAttributeTalent[i];
+				if (node == null)
+				{
+					continue;
+				}
+				if (node.state == Defined.ItemState.Purchase && node.cost <= 0)
+				{
+					node.state = Defined.ItemState.Available;
+				}
+				else if (node.state == Defined.ItemState.Locked && s.teamAttributeAssignedPoint >= node.unlockPoint)
+				{
+					node.state = Defined.ItemState.Available;
+				}
+			}
+		}
+
 		if (td.talents == null)
 		{
 			td.talents = new System.Collections.Generic.Dictionary<CoMDS2.TeamSpecialAttribute.TeamAttributeType, int>();
@@ -153,9 +173,7 @@ public static class TalentController
 		for (int i = 0; i < s.teamAttributeTalent.Length; i++)
 		{
 			TeamAttributeData node = s.teamAttributeTalent[i];
-			node.state = (node.unlockPoint == 0 || s.teamAttributeAssignedPoint >= node.unlockPoint)
-				? Defined.ItemState.Purchase
-				: Defined.ItemState.Locked;
+			node.state = (node.unlockPoint == 0 || s.teamAttributeAssignedPoint >= node.unlockPoint) ? Defined.ItemState.Available : Defined.ItemState.Locked;
 		}
 
 		SyncDictionaries();
@@ -174,13 +192,13 @@ public static class TalentController
 			if (node.state == Defined.ItemState.Locked &&
 				s.teamAttributeAssignedPoint >= node.unlockPoint)
 			{
-				node.state = Defined.ItemState.Purchase;
+				node.state = Defined.ItemState.Available;
 				DataCenter.State().lsUpdatedTalentIndexs.Add(i);
 			}
 		}
 	}
 
-	private static bool TrySpend(Defined.COST_TYPE type, int amount)
+	public static bool TrySpend(Defined.COST_TYPE type, int amount)
 	{
 		if (amount <= 0) return true;
 		switch (type)

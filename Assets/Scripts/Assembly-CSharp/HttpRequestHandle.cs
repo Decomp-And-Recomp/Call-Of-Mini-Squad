@@ -304,7 +304,9 @@ public class HttpRequestHandle : MonoBehaviour
 		RequestType.Team_BuyTeamSite,
 		RequestType.Team_LevelUpEquipment,
 		RequestType.Team_UnlockEquipment,
-		RequestType.Team_UseEquipment
+		RequestType.Team_UseEquipment,
+		RequestType.Team_UnlockEvolution,
+		RequestType.Team_LevelUpEvolution
 	};
 
 	private static List<RequestType> locallyImplementedRequestTypes = new List<RequestType>
@@ -313,7 +315,9 @@ public class HttpRequestHandle : MonoBehaviour
 		RequestType.Team_LevelUpGenius,
 		RequestType.Team_UnlockGenius,
 		RequestType.Team_BuyGeniusPoint,
-		RequestType.Team_ResetGenius
+		RequestType.Team_ResetGenius,
+		RequestType.Team_UnlockEvolution,
+		RequestType.Team_LevelUpEvolution
 	};
 
 	public void SendRequest(RequestType requestType, OnRequestFinish callBack)

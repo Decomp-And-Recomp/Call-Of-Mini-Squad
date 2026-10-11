@@ -169,7 +169,7 @@ public class UtilUITeamBonusTalent : MonoBehaviour
 		detailUpgradePartGO.SetActive(false);
 		if (info.teamAttributeData.state == Defined.ItemState.Available)
 		{
-			detailUpgradePartGO.SetActive(true);
+			detailUpgradePartGO.SetActive(info.teamAttributeData.level < info.teamAttributeData.maxLevel);
 			detailIntro.text = array[0] + "\n" + text;
 			UILabel component = detailUpgradePartGO.transform.Find("Gold Container").Find("Label").GetComponent<UILabel>();
 			UISprite component2 = detailUpgradePartGO.transform.Find("Gold Container").Find("Sprite").GetComponent<UISprite>();
@@ -263,6 +263,10 @@ public class UtilUITeamBonusTalent : MonoBehaviour
 
 	protected void HandleItemUpgradedBtnClickEvent()
 	{
+		if (nowSelectTalentItem.teamAttributeData.level >= nowSelectTalentItem.teamAttributeData.maxLevel)
+		{
+			return;
+		}
 		if (attributeSaveData.teamAttributeRemainingPoints > 0)
 		{
 			DataCenter.State().selectTalentIndex = nowSelectTalentItem.teamAttributeData.index;
