@@ -294,6 +294,11 @@ public class UINewTeamManager : MonoBehaviour
 	{
 		UIEffectManager.Instance.HideEffect(UIEffectManager.EffectType.E_Loading, 2);
 		UIDialogManager.Instance.HideBlock(2);
+		if (code == 1000)
+		{
+			UIDialogManager.Instance.ShowDriftMsgInfoUI("Not enough tCrystals.");
+			return;
+		}
 		if (code != 0)
 		{
 			string strInput = "unlock site " + DataCenter.State().selectTeamSiteIndex + "?";

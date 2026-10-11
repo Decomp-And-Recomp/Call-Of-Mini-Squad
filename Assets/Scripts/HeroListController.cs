@@ -62,7 +62,7 @@ public static class HeroListController
 			return 0;
 		}
 
-		return -1;
+		return 1000;
 	}
 
 	public static void Equip()
