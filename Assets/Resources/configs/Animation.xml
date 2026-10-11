@@ -560,6 +560,12 @@ How to add new animations to a character or zombie into this config:
 			<Anim typeName = "Attack" fileName = "Attack" count = "1" />
 			<Anim typeName = "Attack_Special_01_A" fileName = "skill03" count = "1" />
 		</Enemy>
+		<Enemy name = "Zombie_Clown_H">
+			<Anim typeName = "Idle" fileName = "Idle" count = "1" />
+			<Anim typeName = "Move" fileName = "Forward" count = "1" />
+			<Anim typeName = "Hurt" fileName = "Hurt" count = "3" />
+			<Anim typeName = "Death" fileName = "Die" count = "1" />
+		</Enemy>
 	</EnemyAnimation>
 	<WeaponAnimation>
 		<WeaponType name = "DoubleGun"></WeaponType>

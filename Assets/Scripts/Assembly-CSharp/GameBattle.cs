@@ -121,6 +121,8 @@ public class GameBattle : MonoBehaviour
 
 	public int getMoneyInBattle;
 
+	public int getCrystalInBattle;
+
 	private State m_gameState;
 
 	private float m_cameraViewDisY = 10f;
@@ -292,6 +294,20 @@ public class GameBattle : MonoBehaviour
 		return false;
 	}
 
+	public static int StarTimeLimitSeconds()
+	{
+		int minutes = 4;
+		if (DataCenter.State().selectLevelMode == Defined.LevelMode.Hard)
+		{
+			minutes = 5;
+		}
+		else if (DataCenter.State().selectLevelMode == Defined.LevelMode.Hell)
+		{
+			minutes = 6;
+		}
+		return minutes * 60 + 30;
+	}
+
 	public State GameState
 	{
 		get
@@ -396,17 +412,8 @@ public class GameBattle : MonoBehaviour
 				DataCenter.State().battleResult = Defined.BattleResult.Win;
 				int hp = GetPlayer().hp;
 				int hpMax = GetPlayer().hpMax;
-				bool flag = (float)hp > (float)hpMax * 0.5f && DataCenter.State().battleStars != 1;
-				int num = 4;
-				if (DataCenter.State().selectLevelMode == Defined.LevelMode.Hard)
-				{
-					num = 5;
-				}
-				else if (DataCenter.State().selectLevelMode == Defined.LevelMode.Hell)
-				{
-					num = 6;
-				}
-				if ((DataCenter.State().battleTime < (float)(num * 60 + 30) && flag) || !DataCenter.Save().BattleTutorialFinished)
+				bool flag = (float)hp > (float)hpMax * 0.5f && !DataCenter.State().battleSquadMemberFell;
+				if ((DataCenter.State().battleTime < (float)StarTimeLimitSeconds() && flag) || !DataCenter.Save().BattleTutorialFinished)
 				{
 					DataCenter.State().battleStars = 3;
 				}
@@ -801,6 +808,11 @@ public class GameBattle : MonoBehaviour
 		bGameStateToWin = false;
 		m_gameStateToWinTimer = 0f;
 		getMoneyInBattle = 0;
+		getCrystalInBattle = 0;
+		DataCenter.State().battleSquadMemberFell = false;
+		GoldenGoblinSpawner.ResetForBattle();
+		ChestSpawner.ResetForBattle();
+		EnemySpawnPointMain.ResetForBattle();
 		KillEnemiesCount = 0;
 		if ((float)DataCenter.Save().GetTeamData().GetTeamCombat() < (float)DataCenter.Save().selectLevelDropData.recommendCombat * 0.5f)
 		{

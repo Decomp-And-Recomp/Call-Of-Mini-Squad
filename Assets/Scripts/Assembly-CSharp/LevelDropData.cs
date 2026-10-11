@@ -14,9 +14,13 @@ public class LevelDropData
 
 	public int extraMoney;
 
+	public int extraExp;
+
 	public int extraCrystal;
 
 	public int recommendCombat;
+
+	public bool bDropGoldenMonster;
 
 	public List<StuffData> stuffs;
 
@@ -27,6 +31,7 @@ public class LevelDropData
 		honor = 0;
 		extraHonor = 0;
 		extraMoney = 0;
+		extraExp = 0;
 		extraCrystal = 0;
 		recommendCombat = 0;
 		stuffs = new List<StuffData>();

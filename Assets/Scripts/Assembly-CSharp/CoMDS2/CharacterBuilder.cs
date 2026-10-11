@@ -312,6 +312,17 @@ namespace CoMDS2
 				enemy.GetGameObject().SetActive(false);
 				break;
 			}
+			case Enemy.EnemyType.GoldenGoblin:
+			{
+				enemy = new EnemyGoldenGoblin();
+				enemy.enemyType = type;
+				enemy.objectType = Defined.OBJECT_TYPE.OBJECT_TYPE_ENEMY;
+				enemy.enemyAnimTag = enemyDataByType.modelFileName;
+				GameObject prefab11 = Resources.Load<GameObject>("Models/Characters/Enemies/" + enemyDataByType.modelFileName);
+				enemy.Initialize(prefab11, enemyDataByType.name, position, rotation, layer);
+				enemy.GetGameObject().SetActive(false);
+				break;
+			}
 			case Enemy.EnemyType.PestilenceJar:
 			case Enemy.EnemyType.PestilenceJar_Purple:
 			{

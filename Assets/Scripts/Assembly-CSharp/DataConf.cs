@@ -219,6 +219,8 @@ public class DataConf
 
 		public int money;
 
+		public int crystal;
+
 		public float increase;
 	}
 
@@ -2192,6 +2194,7 @@ public class DataConf
 			enemyData.dropData.probability = ushort.Parse(xmlElement2.GetAttribute("probability"));
 			enemyData.dropData.eruptProbability = ushort.Parse(xmlElement2.GetAttribute("eruptProbability"));
 			enemyData.dropData.money = int.Parse(xmlElement2.GetAttribute("money"));
+			enemyData.dropData.crystal = (xmlElement2.HasAttribute("crystal") ? int.Parse(xmlElement2.GetAttribute("crystal")) : 0);
 			enemyData.dropData.increase = float.Parse(xmlElement2.GetAttribute("increase"));
 			XmlElement xmlElement3 = (XmlElement)item.GetElementsByTagName("Skills").Item(0);
 			if (xmlElement3 != null)

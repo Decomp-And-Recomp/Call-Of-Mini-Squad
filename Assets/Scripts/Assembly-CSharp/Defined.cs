@@ -71,7 +71,8 @@ public class Defined
 		heores_Prayer = 54,
 		heores_Focus = 55,
 		heores_Splash_01 = 56,
-		COUNT = 57,
+		crystal = 57,
+		COUNT = 58,
 		NONE = -1
 	}
 

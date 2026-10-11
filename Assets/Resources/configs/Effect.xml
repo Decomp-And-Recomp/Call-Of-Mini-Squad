@@ -73,4 +73,5 @@ How to add a new effect into this config:
 	<Effect index = "54" fileName = "heores_Prayer" animType = "0" playTime = "5.0" bufferNum = "5" />
 	<Effect index = "55" fileName = "heores_Focus" animType = "0" playTime = "1.0" bufferNum = "5" />
 	<Effect index = "56" fileName = "heores_Splash_01" animType = "0" playTime = "1.0" bufferNum = "5" />
+	<Effect index = "57" fileName = "Gold_jet" animType = "0" playTime = "0.7" bufferNum = "1" />
 </Effects>

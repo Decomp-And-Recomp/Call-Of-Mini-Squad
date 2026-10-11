@@ -7,6 +7,7 @@ public static class BattleResultController
 	public static void Get()
 	{
 		int battleGold = TakeGoldFromBattle();
+		CreditCrystalsFromBattle();
 
 		if (DataCenter.State().battleResult != Defined.BattleResult.Win)
 		{
@@ -47,19 +48,22 @@ public static class BattleResultController
 
 		int rewardIndex = GameProgressController.GetRewardIndex();
 
-		int[] baseRewards = new int[2]
-		{
-			(LevelCalcTest.LevelRewards[rewardIndex][0] + battleGold) * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
-			LevelCalcTest.LevelRewards[rewardIndex][1] * (DataCenter.State().battleStars == 3 ? EconomyConfig.ThreeStarMultiplier : 1),
-		};
+		int baseMoney = LevelCalcTest.LevelRewards[rewardIndex][0] + battleGold;
+		int baseExp = LevelCalcTest.LevelRewards[rewardIndex][1];
 
-		DataCenter.Save().Money += baseRewards[0];
-		DataCenter.Save().GetTeamData().teamExp += baseRewards[1];
+		int bonusMultiplier = DataCenter.State().battleStars == 3 ? Mathf.Max(EconomyConfig.ThreeStarMultiplier - 1, 0) : 0;
+		int bonusMoney = baseMoney * bonusMultiplier;
+		int bonusExp = baseExp * bonusMultiplier;
+
+		DataCenter.Save().Money += baseMoney + bonusMoney;
+		DataCenter.Save().GetTeamData().teamExp += baseExp + bonusExp;
 
 		TeamLevelController.OnReceivedXP();
 
-		DataCenter.Save().selectLevelDropData.money = baseRewards[0];
-		DataCenter.Save().selectLevelDropData.exp = baseRewards[1];
+		DataCenter.Save().selectLevelDropData.money = baseMoney;
+		DataCenter.Save().selectLevelDropData.exp = baseExp;
+		DataCenter.Save().selectLevelDropData.extraMoney = bonusMoney;
+		DataCenter.Save().selectLevelDropData.extraExp = bonusExp;
 
 		Save.RequestWrite();
 
@@ -85,6 +89,47 @@ public static class BattleResultController
 		}
 		DataCenter.Save().Money += gold;
 		Save.RequestWrite();
+	}
+
+	private static void CreditCrystalsFromBattle()
+	{
+		if (GameBattle.m_instance == null)
+		{
+			return;
+		}
+		int crystals = GameBattle.m_instance.getCrystalInBattle;
+		if (crystals <= 0)
+		{
+			return;
+		}
+		GameBattle.m_instance.getCrystalInBattle = 0;
+		DataCenter.Save().Crystal += crystals;
+		if (DataCenter.Save().selectLevelDropData != null)
+		{
+			DataCenter.Save().selectLevelDropData.crystal += crystals;
+		}
+		Save.RequestWrite();
+	}
+
+	public static string GetStarReason()
+	{
+		if (!DataCenter.Save().BattleTutorialFinished)
+		{
+			return string.Empty;
+		}
+		int limit = GameBattle.StarTimeLimitSeconds();
+		switch (DataCenter.State().battleStars)
+		{
+		case 3:
+		{
+			int seconds = (int)DataCenter.State().battleTime;
+			return "Cleared in " + (seconds / 60) + ":" + (seconds % 60).ToString("00") + ", no one lost";
+		}
+		case 2:
+			return "Slower than " + (limit / 60) + ":" + (limit % 60).ToString("00");
+		default:
+			return DataCenter.State().battleSquadMemberFell ? "A squad member fell" : "Leader below 50% HP";
+		}
 	}
 
 	public static int GetExtraCrystals()

@@ -37,6 +37,8 @@ public class DataState
 
 	public int battleStars { get; set; }
 
+	public bool battleSquadMemberFell { get; set; }
+
 	public float battleTime { get; set; }
 
 	public string selectIAPID { get; set; }

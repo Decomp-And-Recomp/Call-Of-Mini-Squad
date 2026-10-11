@@ -93,6 +93,8 @@ public class EnemySpawnPointMain : EnemySpawnPoint
 					GameBattle.s_envetProcessingCount++;
 					GameBattle.s_enemyLimitCount = 30;
 					m_triggered = true;
+					GoldenGoblinSpawner.OnChainTriggered(this);
+					ChestSpawner.OnChainTriggered(this);
 					GameBattle.m_instance.bMainPointInProcess = true;
 					MinimapNGUI.instance.SetSpawnPointInBattle(base.gameObject.GetInstanceID());
 					GameBattle.m_instance.GetPlayer().audioTalkManager.PlayFire();
@@ -187,6 +189,7 @@ public class EnemySpawnPointMain : EnemySpawnPoint
 					TriggerEvent component = openDoor.GetComponent<TriggerEvent>();
 					component.Enable = true;
 				}
+				ChestSpawner.OnAreaCleared(this, MinimapNGUI.instance.GetSpawnPointLeftCount() <= 0);
 				if (MinimapNGUI.instance.GetSpawnPointLeftCount() <= 0)
 				{
 					GameBattle.m_instance.GameState = GameBattle.State.Win;

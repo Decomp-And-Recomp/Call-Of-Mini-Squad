@@ -11,10 +11,14 @@ How to change the values in the config:
 - Tutorial = gold and tcrystals given for finishing the tutorial map. Default is currently 1000 gold and 50 tcrystals.
 - StageRewards rows = how many stages get a reward. Make it bigger if you add more locations.
 - TeamExperience makes one value for every team level, up to maxLevel in Team.xml.
+- GoldenGoblin spawnChance = the chance (0 to 100) that a stage has a golden goblin. Its loot is set on the GoldenGoblin line in Enemies.xml.
 -->
 <Rewards>
 	<!-- Winning with 3 stars multiplies gold and XP by threeStarMultiplier. firstThreeStarCrystals: tcrystals for the first 3-star clear of a stage. -->
 	<Stars threeStarMultiplier="2" firstThreeStarCrystals="5" />
+
+	<!-- Chance (0 to 100) that a stage has a golden goblin. The original game decided this on its server, so the real chance is unknown. -->
+	<GoldenGoblin spawnChance="5" />
 
 	<!-- Reward payout for finishing the tutorial map: gold, and tcrystals as the 3-star bonus. -->
 	<Tutorial money="1000" crystal="50" />

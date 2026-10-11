@@ -11,6 +11,8 @@ public class Gold : MonoBehaviour
 
 	public int money;
 
+	public bool isCrystal;
+
 	private GoldState m_state;
 
 	private Rigidbody m_rigidBody;
@@ -32,6 +34,14 @@ public class Gold : MonoBehaviour
 		set
 		{
 			m_idleTime = value;
+		}
+	}
+
+	private Defined.EFFECT_TYPE PickupEffect
+	{
+		get
+		{
+			return isCrystal ? Defined.EFFECT_TYPE.crystal : Defined.EFFECT_TYPE.gold;
 		}
 	}
 
@@ -58,7 +68,7 @@ public class Gold : MonoBehaviour
 			m_timer += Time.deltaTime;
 			if (sqrMagnitude <= 1f && m_timer > 1f)
 			{
-				BattleBufferManager.Instance.GenerateEffectFromBuffer(Defined.EFFECT_TYPE.gold, player2.m_effectPoint.position, 0f, player2.m_effectPoint);
+				BattleBufferManager.Instance.GenerateEffectFromBuffer(PickupEffect, player2.m_effectPoint.position, 0f, player2.m_effectPoint);
 				Object.DestroyImmediate(m_rigidBody);
 				base.gameObject.SetActive(false);
 			}
@@ -75,7 +85,7 @@ public class Gold : MonoBehaviour
 			speed *= 1f + accelerate;
 			if (sqrMagnitude2 <= 1f)
 			{
-				BattleBufferManager.Instance.GenerateEffectFromBuffer(Defined.EFFECT_TYPE.gold, player2.m_effectPoint.position, 0f, player2.m_effectPoint);
+				BattleBufferManager.Instance.GenerateEffectFromBuffer(PickupEffect, player2.m_effectPoint.position, 0f, player2.m_effectPoint);
 				Object.DestroyImmediate(m_rigidBody);
 				base.gameObject.SetActive(false);
 			}

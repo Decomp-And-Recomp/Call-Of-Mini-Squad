@@ -577,56 +577,8 @@ namespace CoMDS2
 				m_labelText = base.gameObject.GetComponent<UILabel>();
 				break;
 			case UIControlID.Win_ExtraRewards:
-			{
-				//thanks triniti
-				DataCenter.Save().selectLevelDropData.extraCrystal = BattleResultController.GetExtraCrystals();
-				Transform[] array = new Transform[3];
-				for (int num15 = 1; num15 <= 3; num15++)
-				{
-					array[num15 - 1] = base.transform.Find("Items/ItemPos" + num15);
-				}
-				GameObject gameObject5 = base.transform.Find("Items/ItemMoney").gameObject;
-				GameObject gameObject6 = base.transform.Find("Items/ItemCrystal").gameObject;
-				GameObject gameObject7 = base.transform.Find("Items/ItemHonor").gameObject;
-				UILabel componentInChildren = gameObject5.GetComponentInChildren<UILabel>();
-				UILabel componentInChildren2 = gameObject6.GetComponentInChildren<UILabel>();
-				UILabel componentInChildren3 = gameObject7.GetComponentInChildren<UILabel>();
-				int num16 = 0;
-				if (DataCenter.Save().selectLevelDropData.extraHonor > 0)
-				{
-					gameObject7.SetActive(true);
-					gameObject7.transform.localPosition = array[num16].localPosition;
-					componentInChildren3.text = string.Empty + DataCenter.Save().selectLevelDropData.extraHonor;
-					num16++;
-				}
-				else
-				{
-					gameObject7.SetActive(false);
-				}
-				if (DataCenter.Save().selectLevelDropData.extraCrystal > 0)
-				{
-					gameObject6.SetActive(true);
-					gameObject6.transform.localPosition = array[num16].localPosition;
-					componentInChildren2.text = string.Empty + DataCenter.Save().selectLevelDropData.extraCrystal;
-					num16++;
-				}
-				else
-				{
-					gameObject6.SetActive(false);
-				}
-				if (DataCenter.Save().selectLevelDropData.extraMoney > 0)
-				{
-					gameObject5.SetActive(true);
-					gameObject5.transform.localPosition = array[num16].localPosition;
-					componentInChildren.text = string.Empty + DataCenter.Save().selectLevelDropData.extraMoney;
-					num16++;
-				}
-				else
-				{
-					gameObject5.SetActive(false);
-				}
+				RefreshExtraRewards();
 				break;
-			}
 			case UIControlID.Label_Select_Item:
 				base.gameObject.SetActive(false);
 				break;
@@ -1179,6 +1131,7 @@ namespace CoMDS2
 					m_labelText.text = string.Empty + m_iValue;
 					break;
 				case UIControlID.Win_Label_TeamExp:
+					ShowBattleCrystals();
 					if (m_fValue < (float)m_iValueMax)
 					{
 						m_fValue += m_fDeltaValue * Time.deltaTime;
@@ -1278,9 +1231,10 @@ namespace CoMDS2
 						if (m_timer >= 1f)
 						{
 							m_timer = -1f;
-							if (DataCenter.Save().selectLevelDropData.extraCrystal > 0 || DataCenter.Save().selectLevelDropData.extraHonor > 0 || DataCenter.Save().selectLevelDropData.extraMoney > 0)
+							if (DataCenter.Save().selectLevelDropData.extraCrystal > 0 || DataCenter.Save().selectLevelDropData.extraHonor > 0 || DataCenter.Save().selectLevelDropData.extraMoney > 0 || DataCenter.Save().selectLevelDropData.extraExp > 0)
 							{
 								GameObject control = UIControlManager.Instance.GetControl(121);
+								control.GetComponent<BattleUIEvent>().RefreshExtraRewards();
 								control.SetActive(true);
 							}
 							GameObject control2 = UIControlManager.Instance.GetControl(116);
@@ -2250,6 +2204,94 @@ namespace CoMDS2
 					base.gameObject.SetActive(false);
 				}
 				break;
+			}
+		}
+
+		private bool m_crystalsShown;
+
+		private void ShowBattleCrystals()
+		{
+			if (m_crystalsShown)
+			{
+				return;
+			}
+			m_crystalsShown = true;
+			int crystals = DataCenter.Save().selectLevelDropData.crystal;
+			Transform box = base.transform.parent.parent.Find("Crystal");
+			if (crystals <= 0 || box == null)
+			{
+				return;
+			}
+			UILabel label = box.GetComponentInChildren<UILabel>();
+			if (label != null)
+			{
+				label.text = string.Empty + crystals;
+			}
+			box.gameObject.SetActive(true);
+		}
+
+		public void RefreshExtraRewards()
+		{
+			LevelDropData drop = DataCenter.Save().selectLevelDropData;
+			bool tutorial = !DataCenter.Save().BattleTutorialFinished;
+			if (tutorial)
+			{
+				//thanks triniti
+				drop.extraCrystal = BattleResultController.GetExtraCrystals();
+			}
+			bool threeStars = tutorial || DataCenter.State().battleStars >= 3;
+			int[] amounts = new int[3]
+			{
+				threeStars ? drop.extraMoney : 0,
+				threeStars ? drop.extraExp : 0,
+				threeStars ? drop.extraCrystal : 0
+			};
+			string[] itemNames = new string[3] { "Items/ItemMoney", "Items/ItemExp", "Items/ItemCrystal" };
+			Transform[] slots = new Transform[3];
+			for (int i = 0; i < 3; i++)
+			{
+				slots[i] = base.transform.Find("Items/ItemPos" + (i + 1));
+			}
+			Transform honor = base.transform.Find("Items/ItemHonor");
+			if (honor != null)
+			{
+				honor.gameObject.SetActive(false);
+			}
+			int shown = 0;
+			for (int i = 0; i < 3; i++)
+			{
+				Transform item = base.transform.Find(itemNames[i]);
+				if (item == null)
+				{
+					continue;
+				}
+				if (amounts[i] > 0)
+				{
+					item.gameObject.SetActive(true);
+					item.localPosition = slots[shown].localPosition;
+					UILabel count = item.GetComponentInChildren<UILabel>();
+					if (count != null)
+					{
+						count.text = "+" + amounts[i];
+					}
+					shown++;
+				}
+				else
+				{
+					item.gameObject.SetActive(false);
+				}
+			}
+			string note = "(3 STAR: GOLD AND XP x" + EconomyConfig.ThreeStarMultiplier + ")";
+			if (drop.extraCrystal > 0)
+			{
+				note = "(3 STAR: x" + EconomyConfig.ThreeStarMultiplier + " AND FIRST TIME TCRYSTALS)";
+			}
+			foreach (UILabel label in GetComponentsInChildren<UILabel>(true))
+			{
+				if (label.text != null && (label.text.Contains("FIRST TIME") || label.text.StartsWith("(3 STAR:")))
+				{
+					label.text = note;
+				}
 			}
 		}
 

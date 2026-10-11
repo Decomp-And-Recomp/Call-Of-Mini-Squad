@@ -36,7 +36,8 @@ namespace CoMDS2
 			Blaze_Purple = 25,
 			PestilenceJar_Purple = 26,
 			Zombie_Purple = 27,
-			ZombieBomb_Purple = 28
+			ZombieBomb_Purple = 28,
+			GoldenGoblin = 29
 		}
 
 		public enum EnemyEliteType
@@ -397,11 +398,17 @@ namespace CoMDS2
 				return;
 			}
 			DataConf.EnemyDropData dropData = DataCenter.Conf().GetEnemyDataByType(enemyType).dropData;
+			if (enemyType == EnemyType.GoldenGoblin)
+			{
+				DropGoldenGoblinLoot(dropData);
+				return;
+			}
 			int num = UnityEngine.Random.Range(0, 100);
 			if (num >= dropData.probability)
 			{
 				return;
 			}
+			DropCrystals(dropData.crystal);
 			int num2 = 1;
 			int num3 = (int)((float)dropData.money * (1f + (float)m_level * dropData.increase));
 			if (eliteType == EnemyEliteType.None)
@@ -449,6 +456,61 @@ namespace CoMDS2
 					vector = new Vector3(vector.x * (float)num5, num6, vector.z * (float)num5);
 					component2.Emit(vector);
 				}
+			}
+		}
+
+		private void DropGoldenGoblinLoot(DataConf.EnemyDropData dropData)
+		{
+			if (dropData.crystal > 0)
+			{
+				DropCrystals(dropData.crystal);
+				return;
+			}
+			for (int i = 0; i < 10; i++)
+			{
+				DS2StaticObject dS2StaticObject = BattleBufferManager.Instance.GetObjectFromBuffer(BattleBufferManager.PreLoadObjectBufferType.Gold) as DS2StaticObject;
+				if (dS2StaticObject == null)
+				{
+					continue;
+				}
+				dS2StaticObject.GetTransform().position = m_effectPoint.position;
+				dS2StaticObject.GetTransform().localScale = Vector3.one;
+				dS2StaticObject.GetGameObject().SetActive(true);
+				Gold component = dS2StaticObject.GetGameObject().GetComponent<Gold>();
+				component.money = dropData.money;
+				float num = 36f;
+				Vector3 vector = new Vector3(Mathf.Cos(num * (float)i * ((float)Math.PI / 180f)), 300f, Mathf.Sin(num * (float)i * ((float)Math.PI / 180f)));
+				int num2 = UnityEngine.Random.Range(20, 50);
+				int num3 = UnityEngine.Random.Range(300, 500);
+				component.IdleTime = 5.3333f;
+				vector = new Vector3(vector.x * (float)num2, num3, vector.z * (float)num2);
+				component.Emit(vector);
+			}
+			GameBattle.m_instance.getMoneyInBattle += dropData.money;
+		}
+
+		private void DropCrystals(int count)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				DS2StaticObject dS2StaticObject = BattleBufferManager.Instance.GetObjectFromBuffer(BattleBufferManager.PreLoadObjectBufferType.Crystal) as DS2StaticObject;
+				if (dS2StaticObject == null)
+				{
+					continue;
+				}
+				dS2StaticObject.GetTransform().position = m_effectPoint.position;
+				dS2StaticObject.GetTransform().localScale = Vector3.one;
+				dS2StaticObject.GetGameObject().SetActive(true);
+				Gold component = dS2StaticObject.GetGameObject().GetComponent<Gold>();
+				component.money = 1;
+				GameBattle.m_instance.getCrystalInBattle++;
+				float num = 360f / (float)count;
+				Vector3 vector = new Vector3(Mathf.Cos(num * (float)i * ((float)Math.PI / 180f)), 300f, Mathf.Sin(num * (float)i * ((float)Math.PI / 180f)));
+				int num2 = UnityEngine.Random.Range(20, 50);
+				int num3 = 300 + i * 10;
+				component.IdleTime = 5f * (1f + (float)i * 10f / 300f);
+				vector = new Vector3(vector.x * (float)num2, num3, vector.z * (float)num2);
+				component.Emit(vector);
 			}
 		}
 

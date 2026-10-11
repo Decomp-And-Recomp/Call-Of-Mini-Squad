@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 How does this config work:
-- This file is NOT used by the game right now. No code loads it.
-- Changing it will not change the game unless code is added to read it.
+- Reward chests. In a stage, every room that is closed off by a door is a round. When the first group of zombies of a round wakes up, a countdown of killTime seconds starts.
+- If the squad gets through the round before the countdown ends, a chest appears behind the leader. Walking into it opens it and gives ONE reward from the list below.
+- Every Reward has a probability. The higher the number, the more often it is picked. They do not have to add up to 100.
+- Needs code: this file only changes the numbers. A new kind of reward needs code, because each index (0 to 8) is a fixed kind of reward.
+
+How to change the values in the config:
+- Chest killTime = seconds the squad has to finish a round to earn a chest. 
+- lifeTime = seconds an unopened chest stays before it disappears.
+- Set killTime to 0 to switch chests off.
+- For each Reward:
+  - probability = how often it is picked compared with the others.
+  - durcation = how many seconds a bonus lasts. 0 for gold and tcrystals, which are given at once.
+  - icon = the name of the picture shown while the bonus is running (a file in Assets/Resources/ui/battle/textures/buffs, without .png).
+  - Property percentage = how strong it is. 0.3 means 30% more.
+- Reward 3 (DropGold): 
+	- Property pieces = how many gold pieces fly out. 
+	- stageGoldPercent = how much of the stage's gold reward all the pieces are worth together.
+- Reward 4 (DropCrystal): 
+	- Stage dropCount = tcrystals for each location, in order (the first number is the first location). 
+	- Difficult multiple = how many times more on Normal, Hard and Hell.
+- Reward 5 (HpMaxPercent) is switched off (commented out) and was never used in the original game. Remove the comment marks for it to appear in drops. It uses the same icon as reward 8 so you may want to make a new icon for it.
 -->
 <RewardBox>
+	<Chest killTime = "120" lifeTime = "120" />
 	<Reward index = "0" name = "MoveSpeed" probability = "20" durcation = "20" icon = "ico_buff_02">
 		<!--移动速度增加-->
 		<Property percentage = "0.3"/>
@@ -19,6 +39,7 @@ How does this config work:
 	</Reward>
 	<Reward index = "3" name = "DropGold" probability = "20" durcation = "0" icon = "">
 		<!--金币掉落-->
+		<Property pieces = "10" stageGoldPercent = "20" />
 	</Reward>
 	<Reward index = "4" name = "DropCrystal" probability = "5" durcation = "0" icon = "">
 		<!--水晶掉落-->

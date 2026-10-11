@@ -13,7 +13,8 @@ namespace CoMDS2
 			EnemySpecAttrLeakage = 2,
 			EnemySpecAttrFireBall = 3,
 			EnemySpecAttrIceBall = 4,
-			Gold = 5
+			Gold = 5,
+			Crystal = 6
 		}
 
 		private static BattleBufferManager m_instance;
@@ -110,6 +111,7 @@ namespace CoMDS2
 			CreateEffectBuffer();
 			CreateObjectBuffer();
 			CreateGoldBuffer();
+			CreateCrystalBuffer();
 		}
 
 		public Bullet GetBulletFromBuffer(Bullet.BULLET_TYPE type)
@@ -716,6 +718,28 @@ namespace CoMDS2
 				dS2ObjectBuffer.AddObj(dS2StaticObject);
 			}
 			AddObjectToPreloadBuffer(PreLoadObjectBufferType.Gold, dS2ObjectBuffer);
+		}
+
+		private void CreateCrystalBuffer()
+		{
+			CreateEffectBufferByType(Defined.EFFECT_TYPE.crystal);
+			GameObject gameObject = new GameObject();
+			gameObject.name = "Crystal";
+			gameObject.transform.parent = s_objectRoot.transform;
+			DS2ObjectBuffer dS2ObjectBuffer = new DS2ObjectBuffer(20);
+			for (int i = 0; i < dS2ObjectBuffer.Size; i++)
+			{
+				DS2StaticObject dS2StaticObject = new DS2StaticObject();
+				dS2StaticObject.Initialize(UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Models/Items/Crystal")) as GameObject);
+				dS2StaticObject.Layer = 28;
+				dS2StaticObject.objectType = Defined.OBJECT_TYPE.OBJECT_TYPE_ITEM;
+				dS2StaticObject.GetGameObject().transform.parent = gameObject.transform;
+				dS2StaticObject.GetGameObject().name = "crystal";
+				dS2StaticObject.GetGameObject().GetComponent<Gold>().isCrystal = true;
+				dS2StaticObject.GetGameObject().SetActive(false);
+				dS2ObjectBuffer.AddObj(dS2StaticObject);
+			}
+			AddObjectToPreloadBuffer(PreLoadObjectBufferType.Crystal, dS2ObjectBuffer);
 		}
 
 		public void AddObjToInteractObjectListForUIExhibition(DS2Object obj)
